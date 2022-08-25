@@ -1,0 +1,60 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+#        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'true'
+#    database-platform: org.hibernate.dialect.H2Dialect
+
+#  datasource:
+#    driverClassName: org.h2.Driver
+#    password: '1'
+#    username: sa
+#    url: jdbc:h2:tcp://localhost/~/reborn
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    password: '1234'
+    username: bootuser
+    url: jdbc:mariadb://localhost:3306/bootex
+
+  thymeleaf:
+    cache: 'false'
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      enabled: 'true'
+      max-request-size: 30MB
+      location: D:\upload
+
+  h2:
+    console:
+      path: /h2-console
+      enabled: 'true'
+
+  output:
+    ansi:
+      enabled: always
+
+  devtools:
+    livereload:
+      enabled: 'true'
+
+  jwt:
+    secret-key: 'adssdadasdaeijqriqejriejqirjeiwjrwqieiqjeiqwejiqwjeiqjweijqweijqwiejqwiejiq'
+
+  profiles:
+    include: oauth
+
+server:
+  port: '8080'
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: trace
