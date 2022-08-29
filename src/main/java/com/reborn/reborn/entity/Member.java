@@ -1,17 +1,14 @@
 package com.reborn.reborn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
@@ -28,15 +25,19 @@ public class Member extends BaseTimeEntity {
 
     private String phone;
 
+    @Enumerated(EnumType.STRING)
+    private MemberRole memberRole;
+
     @Embedded
     private Address address;
 
     @Builder
-    public Member(String email, String password, String name, String phone, Address address) {
+    public Member(String email, String password, String name, String phone, Address address, MemberRole memberRole) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.memberRole = memberRole;
     }
 }

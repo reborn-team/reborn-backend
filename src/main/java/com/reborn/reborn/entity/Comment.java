@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,10 +42,9 @@ public class Comment extends BaseTimeEntity{
     private List<Comment> child = new ArrayList<>();
 
     @Builder
-    public Comment(Member member, String content, Comment parent, List<Comment> child) {
+    public Comment(Member member, String content) {
         this.member = member;
         this.content = content;
-        this.parent = parent;
-        this.child = child;
     }
+
 }

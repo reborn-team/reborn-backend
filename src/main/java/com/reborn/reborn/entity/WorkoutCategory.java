@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,14 +35,13 @@ public class WorkoutCategory {
     @JoinColumn(name = "parent_id")
     private WorkoutCategory parent;
 
-
     @OneToMany(mappedBy = "parent",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WorkoutCategory> child = new ArrayList<>();
 
-    @Builder
-    public WorkoutCategory(String part, WorkoutCategory parent, List<WorkoutCategory> child) {
+
+    public WorkoutCategory(String part) {
         this.part = part;
-        this.parent = parent;
-        this.child = child;
+
     }
+
 }
