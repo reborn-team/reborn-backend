@@ -37,8 +37,6 @@ spring:
       path: /h2-console
       enabled: 'true'
 
-
-
   devtools:
     livereload:
       enabled: 'true'
