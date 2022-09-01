@@ -10,14 +10,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootTest
 public class RepositoryTest {
 
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    MemberRepository memberRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @Test
     public void memberRepositoryTest() throws Exception{
         //given
-        memberRepository.save(Member.builder().email("reborn11@naver.com")
+        memberRepository.save(Member.builder().email("reborn111@naver.com")
                 .password(passwordEncoder.encode("1")).memberRole(MemberRole.USER).build());
 
         //when
