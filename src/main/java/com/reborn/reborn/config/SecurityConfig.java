@@ -2,8 +2,6 @@ package com.reborn.reborn.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.security.filter.LocalMemberLoginFilter;
-import com.reborn.reborn.security.handler.LoginSuccessHandler;
-import com.reborn.reborn.security.jwt.TokenProvider;
 import com.reborn.reborn.security.service.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,8 +24,6 @@ public class SecurityConfig {
 
     private final MemberDetailsService memberDetailsService;
     private final ObjectMapper objectMapper;
-    private final TokenProvider tokenProvider;
-    private final LoginSuccessHandler loginSuccessHandler;
 
 
     @Bean
@@ -35,9 +31,7 @@ public class SecurityConfig {
 
         http.csrf().disable()
                 .formLogin().disable();
-        http.authorizeRequests()
-                        .antMatchers("/**")
-                                .permitAll();
+
         http.addFilterBefore(localMemberLoginFilter(authManager(http,memberDetailsService)),
                 UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -54,11 +48,8 @@ public class SecurityConfig {
     public LocalMemberLoginFilter localMemberLoginFilter(AuthenticationManager authenticationManager){
         LocalMemberLoginFilter filter = new LocalMemberLoginFilter(objectMapper);
         filter.setAuthenticationManager(authenticationManager);
-        filter.setAuthenticationSuccessHandler(loginSuccessHandler);
         return filter;
     }
-
-
     @Bean
     public AuthenticationManager authManager(HttpSecurity http, UserDetailsService userDetailsService)
             throws Exception {
