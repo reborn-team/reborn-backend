@@ -64,27 +64,8 @@ public class TestController {
 
 
     @Test
-    @WithAnonymousUser
-    public void 메인화면() throws Exception {
-        mockMvc.perform(get("/"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"))
-                .andDo(document("get-han"
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        requestFields( 						// (4)
-//                                fieldWithPath("todo").description("할 일")
-//
-//                        ),
-//                        responseFields(						// (5)
-//                                fieldWithPath("id").description("사용자 id"), //
-//                                fieldWithPath("todo").description("할 일")
-//                        ))
-                ));
-    }
-    @Test
-    void re() throws Exception {
+    @DisplayName("회원 가입 : /api/v1/join")
+    void joinTest() throws Exception {
         MemberRequestDto memberRequestDto = new MemberRequestDto("email","password","name","phone","postcode","address","detailAddress");
 
         doNothing().when(memberService).registerMember(any());
@@ -93,7 +74,7 @@ public class TestController {
                 .content(objectMapper.writeValueAsBytes(memberRequestDto))
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andDo((ResultHandler) prettyPrint())
+                .andDo(print())
                 .andDo(document("join",
                         requestFields(
                                 fieldWithPath("email").type(STRING).description("이메일 주소"),

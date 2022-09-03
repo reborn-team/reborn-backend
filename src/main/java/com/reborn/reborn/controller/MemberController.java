@@ -22,7 +22,7 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberRequestDto memberRequestDto){
         memberService.registerMember(memberRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(1L);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
