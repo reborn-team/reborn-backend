@@ -4,6 +4,7 @@ import com.reborn.reborn.dto.MemberRequestDto;
 import com.reborn.reborn.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberRequestDto memberRequestDto){
         memberService.registerMember(memberRequestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(1L);
     }
+
 }
