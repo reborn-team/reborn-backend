@@ -59,8 +59,7 @@ public class TestController {
     private ObjectMapper objectMapper;
     @MockBean
     private MemberService memberService;
-    @MockBean
-    private SecurityFilterChain filterChain;
+
 
 
     @Test
