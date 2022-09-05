@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -26,9 +24,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
                 .password(passwordEncoder.encode(memberRequestDto.getPassword()))
-                .phone(memberRequestDto.getPhoneNum())
+                .phone(memberRequestDto.getPhone())
                 .email(memberRequestDto.getEmail())
-                .address(new Address(memberRequestDto.getAddress(), memberRequestDto.getDetailAddress(), memberRequestDto.getPostcode()))
+                .address(new Address(memberRequestDto.getRoadName(), memberRequestDto.getDetailAddress(), memberRequestDto.getZipcode()))
                 .memberRole(MemberRole.USER)
                 .build();
         Member save = memberRepository.save(member);

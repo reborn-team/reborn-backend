@@ -11,9 +11,9 @@ public class MemberRequestDto {
     private String email;
     private String password;
     private String name;
-    private String phoneNum;
-    private String postcode;
-    private String address;
+    private String phone;
+    private String zipcode;
+    private String roadName;
     private String detailAddress;
 
 }
