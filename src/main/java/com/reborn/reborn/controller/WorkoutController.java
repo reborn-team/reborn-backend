@@ -1,11 +1,9 @@
 package com.reborn.reborn.controller;
 
-import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.dto.WorkoutDetailResponseDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.security.CurrentUser;
-import com.reborn.reborn.service.MemberService;
 import com.reborn.reborn.service.WorkoutService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +28,7 @@ public class WorkoutController {
 
     @GetMapping("/workout/{workoutId}")
     public ResponseEntity getWorkout(@PathVariable Long workoutId, @CurrentUser Member member){
-        WorkoutDetailResponseDto dto = workoutService.getMyWorkout(member, workoutId);
+        WorkoutResponseDto dto = workoutService.getMyWorkout(member, workoutId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);
     }

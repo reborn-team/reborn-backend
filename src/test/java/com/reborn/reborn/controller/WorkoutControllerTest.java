@@ -1,16 +1,15 @@
 package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reborn.reborn.config.SecurityConfig;
-import com.reborn.reborn.dto.WorkoutDetailResponseDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
+import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.security.jwt.AuthToken;
 import com.reborn.reborn.security.jwt.TokenProvider;
 import com.reborn.reborn.service.WorkoutService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,32 +17,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
 
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
-import java.util.Stack;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -55,7 +43,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
@@ -107,7 +94,7 @@ class WorkoutControllerTest {
         mockMvc.perform(post("/api/v1/workout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(workoutRequestDto))
-                        .header("Authorization", "Bearer "+token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L)))
+                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L)))
                 )
                 .andExpect(status().isCreated())
                 .andDo(document("workout-create",
@@ -126,11 +113,16 @@ class WorkoutControllerTest {
     void getMyWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        WorkoutDetailResponseDto workoutDetailResponseDto = new WorkoutDetailResponseDto();
-        given(workoutService.getMyWorkout(any(),any())).willReturn(workoutDetailResponseDto);
+        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
+                .workoutName("pull up")
+                .id(1L)
+                .workoutCategory(WorkoutCategory.BACK)
+                .content("등 운동입니다.")
+                .filePath("imagePath").build();
+        given(workoutService.getMyWorkout(any(), any())).willReturn(workoutResponseDto);
         //when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/workout/{workoutId}",1L)
-                        .header("Authorization", "Bearer "+token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L)))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/workout/{workoutId}", 1L)
+                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L)))
                 )
                 .andExpect(status().isOk())
                 .andDo(document("workout-getMyWorkout",

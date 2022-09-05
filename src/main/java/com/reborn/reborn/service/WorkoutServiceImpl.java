@@ -1,6 +1,6 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.WorkoutDetailResponseDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
@@ -37,12 +37,12 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public WorkoutDetailResponseDto getMyWorkout(Member member, Long workoutId) {
+    public WorkoutResponseDto getMyWorkout(Member member, Long workoutId) {
         Optional<Workout> workout = workoutRepository.findByIdAndMemberId(workoutId, member.getId());
         if(workout.isEmpty()){
             throw new NoSuchElementException("찾으시는 운동이 없습니다.");
         }
-        WorkoutDetailResponseDto workoutDetailResponseDto = new WorkoutDetailResponseDto();
-        return workoutDetailResponseDto.toDto(workout.get());
+        WorkoutResponseDto workoutResponseDto = new WorkoutResponseDto();
+        return workoutResponseDto.toDto(workout.get());
     }
 }

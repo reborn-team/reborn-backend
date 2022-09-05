@@ -3,14 +3,7 @@ package com.reborn.reborn.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.dto.WorkoutRequestDto;
-import com.reborn.reborn.entity.Member;
-import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.security.jwt.AuthToken;
-import com.reborn.reborn.security.jwt.TokenProvider;
 import com.reborn.reborn.service.MemberService;
-import com.reborn.reborn.service.WorkoutService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +11,8 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
-
-import static com.reborn.reborn.dto.MemberRequestDto.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
@@ -41,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc // -> webAppContextSetup(webApplicationContext)
 @AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
 @SpringBootTest
-public class TestController {
+public class MemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

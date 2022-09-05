@@ -1,7 +1,6 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.dto.WorkoutDetailResponseDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
@@ -15,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +56,7 @@ class WorkoutServiceTest {
         given(workoutRepository.findByIdAndMemberId(any(),any())).willReturn(Optional.of(workout));
 
         //when
-        WorkoutDetailResponseDto myWorkout = workoutService.getMyWorkout(member, workout.getId());
+        WorkoutResponseDto myWorkout = workoutService.getMyWorkout(member, workout.getId());
         //then
         verify(workoutRepository).findByIdAndMemberId(any(),any());
 

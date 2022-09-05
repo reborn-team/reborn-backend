@@ -39,3 +39,7 @@ operation::email-check[snippets='http-request,path-parameters,request-parameters
 [[Workout-운동-생성]]
 === Workout 운동 생성
 operation::workout-create[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
+
+[[Workout-운동-조회]]
+=== Workout 운동 조회
+operation::workout-getMyWorkout[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
