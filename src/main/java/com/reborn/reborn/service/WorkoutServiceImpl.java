@@ -1,5 +1,6 @@
 package com.reborn.reborn.service;
 
+import com.reborn.reborn.dto.WorkoutDetailResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
@@ -8,6 +9,9 @@ import com.reborn.reborn.repository.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,7 +22,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Transactional
     @Override
-    public void create(Member member,WorkoutRequestDto dto) {
+    public Long create(Member member,WorkoutRequestDto dto) {
 
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
@@ -28,6 +32,17 @@ public class WorkoutServiceImpl implements WorkoutService {
                 .filePath(dto.getFilePath())
                 .build();
 
-        workoutRepository.save(workout);
+        Workout saveWorkout = workoutRepository.save(workout);
+        return saveWorkout.getId();
+    }
+
+    @Override
+    public WorkoutDetailResponseDto getMyWorkout(Member member, Long workoutId) {
+        Optional<Workout> workout = workoutRepository.findByIdAndMemberId(workoutId, member.getId());
+        if(workout.isEmpty()){
+            throw new NoSuchElementException("찾으시는 운동이 없습니다.");
+        }
+        WorkoutDetailResponseDto workoutDetailResponseDto = new WorkoutDetailResponseDto();
+        return workoutDetailResponseDto.toDto(workout.get());
     }
 }
