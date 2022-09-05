@@ -57,9 +57,9 @@ public class TestController {
                                 fieldWithPath("email").type(STRING).description("이메일 주소"),
                                 fieldWithPath("password").type(STRING).description("비밀번호"),
                                 fieldWithPath("name").type(STRING).description("이름"),
-                                fieldWithPath("phoneNum").type(STRING).description("전화번호"),
-                                fieldWithPath("postcode").type(STRING).description("우편번호"),
-                                fieldWithPath("address").type(STRING).description("주소"),
+                                fieldWithPath("phone").type(STRING).description("전화번호"),
+                                fieldWithPath("zipcode").type(STRING).description("우편번호"),
+                                fieldWithPath("roadName").type(STRING).description("주소"),
                                 fieldWithPath("detailAddress").type(STRING).description("상세 주소")
                         )));
     }
