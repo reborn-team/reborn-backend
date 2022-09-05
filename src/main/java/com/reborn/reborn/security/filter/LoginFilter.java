@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class LocalMemberLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final String HTTP_POST = "POST";
     private static final String APPLICATION_JSON = "application/json";
@@ -25,7 +25,7 @@ public class LocalMemberLoginFilter extends AbstractAuthenticationProcessingFilt
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/api/v1/login", HTTP_POST);
     private final ObjectMapper objectMapper;
 
-    public LocalMemberLoginFilter(ObjectMapper objectMapper) {
+    public LoginFilter(ObjectMapper objectMapper) {
         super(DEFAULT_ANT_PATH_REQUEST_MATCHER);
         this.objectMapper = objectMapper;
     }

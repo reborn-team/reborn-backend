@@ -3,6 +3,7 @@ package com.reborn.reborn.entity;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -14,16 +15,21 @@ public class Workout extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String workoutName;
+
     private String content;
 
     //TODO 이미지 파일을 어떻게 처리해야할지 공부하고 수정할 예정
     private String filePath;
 
-    @JoinColumn(name = "category_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
     private WorkoutCategory workoutCategory;
 
-    public Workout(String content) {
+    @Builder
+    public Workout(String workoutName, String content, String filePath, WorkoutCategory workoutCategory) {
+        this.workoutName = workoutName;
         this.content = content;
+        this.filePath = filePath;
+        this.workoutCategory = workoutCategory;
     }
 }

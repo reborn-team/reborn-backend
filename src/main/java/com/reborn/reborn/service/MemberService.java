@@ -1,9 +1,12 @@
 package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.entity.Member;
 
 
 public interface MemberService {
 
-    void registerMember(MemberRequestDto memberRequestDto);
+    Long registerMember(MemberRequestDto memberRequestDto);
+
+    boolean emailDuplicateCheck(String name);
 }
