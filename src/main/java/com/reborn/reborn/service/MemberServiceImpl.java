@@ -21,14 +21,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public Long registerMember(MemberRequestDto memberRequestDto) {
-        Member member = Member.builder()
-                .name(memberRequestDto.getName())
-                .password(passwordEncoder.encode(memberRequestDto.getPassword()))
-                .phone(memberRequestDto.getPhone())
-                .email(memberRequestDto.getEmail())
-                .address(new Address(memberRequestDto.getRoadName(), memberRequestDto.getDetailAddress(), memberRequestDto.getZipcode()))
-                .memberRole(MemberRole.USER)
-                .build();
+        Member member = memberRequestDto.toEntity(memberRequestDto);
+        member.encodeSetPassword(passwordEncoder.encode(memberRequestDto.getPassword()));
         Member save = memberRepository.save(member);
         return save.getId();
     }

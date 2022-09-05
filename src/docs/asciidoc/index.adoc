@@ -33,4 +33,9 @@ operation::join[snippets='http-request,path-parameters,request-fields,http-respo
 === Email 중복 체크
 operation::email-check[snippets='http-request,path-parameters,request-parameters,http-response,response-fields']
 
+[[Workout-API]]
+== Workout API
 
+[[Workout-운동-생성]]
+=== Workout 운동 생성
+operation::workout-create[snippets='http-request,path-parameters,request-fields,http-response,response-fields']

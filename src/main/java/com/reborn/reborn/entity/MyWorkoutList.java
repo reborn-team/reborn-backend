@@ -10,9 +10,7 @@ public class MyWorkoutList {
     private Long id;
 
     private int weight;
-    @JoinColumn(name = "member_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+
     @JoinColumn(name = "workout_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Workout workout;
