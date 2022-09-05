@@ -1,16 +1,12 @@
 package com.reborn.reborn.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
-
 
     private String email;
     private String password;
@@ -19,7 +15,5 @@ public class MemberRequestDto {
     private String postcode;
     private String address;
     private String detailAddress;
-
-
 
 }

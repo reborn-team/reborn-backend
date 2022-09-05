@@ -28,6 +28,9 @@ reborn docs
 
 [[Member-회원-가입]]
 === Member 회원 가입
-operation::join[snippets='http-request,path-parameters,http-response,response-fields']
+operation::join[snippets='http-request,path-parameters,request-fields,http-response,response-fields']
+
+=== Email 중복 체크
+operation::email-check[snippets='http-request,path-parameters,request-parameters,http-response,response-fields']
 
 

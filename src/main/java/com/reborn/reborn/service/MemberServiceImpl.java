@@ -8,16 +8,21 @@ import com.reborn.reborn.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     @Override
-    public void registerMember(MemberRequestDto memberRequestDto) {
+    public Long registerMember(MemberRequestDto memberRequestDto) {
         Member member = Member.builder()
                 .name(memberRequestDto.getName())
                 .password(passwordEncoder.encode(memberRequestDto.getPassword()))
@@ -26,6 +31,13 @@ public class MemberServiceImpl implements MemberService {
                 .address(new Address(memberRequestDto.getAddress(), memberRequestDto.getDetailAddress(), memberRequestDto.getPostcode()))
                 .memberRole(MemberRole.USER)
                 .build();
-        memberRepository.save(member);
+        Member save = memberRepository.save(member);
+        return save.getId();
+    }
+        //TODO 테스트용 지워야
+    @Override
+    public boolean emailDuplicateCheck(String email) {
+        return  memberRepository.existsByEmail(email);
+
     }
 }
