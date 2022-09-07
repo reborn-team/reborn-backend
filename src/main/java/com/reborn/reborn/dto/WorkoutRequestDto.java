@@ -13,7 +13,7 @@ public class WorkoutRequestDto {
 
     private String workoutName;
     private String content;
-    private String filePath;
+    private String fileName;
     private String workoutCategory;
 
 }

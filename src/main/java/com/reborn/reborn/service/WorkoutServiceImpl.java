@@ -22,14 +22,13 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Transactional
     @Override
-    public Long create(Member member,WorkoutRequestDto dto) {
+    public Long create(Member member, WorkoutRequestDto dto) {
 
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
                 .content(dto.getContent())
                 .workoutCategory(WorkoutCategory.valueOf(dto.getWorkoutCategory()))
                 .member(member)
-                .filePath(dto.getFilePath())
                 .build();
 
         Workout saveWorkout = workoutRepository.save(workout);
@@ -39,7 +38,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     @Override
     public WorkoutResponseDto getMyWorkout(Member member, Long workoutId) {
         Optional<Workout> workout = workoutRepository.findByIdAndMemberId(workoutId, member.getId());
-        if(workout.isEmpty()){
+        if (workout.isEmpty()) {
             throw new NoSuchElementException("찾으시는 운동이 없습니다.");
         }
         WorkoutResponseDto workoutResponseDto = new WorkoutResponseDto();

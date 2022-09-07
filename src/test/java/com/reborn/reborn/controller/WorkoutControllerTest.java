@@ -62,11 +62,12 @@ class WorkoutControllerTest {
     private MemberRepository memberRepository;
     @Value("${spring.jwt.secret-key}")
     private String value;
-
+    private Date now = new Date() ;
     @BeforeEach
     void before() {
         tokenProvider = new TokenProvider(value);
         token = tokenProvider.createAuthToken("user", MemberRole.USER, new Date(100000000000L));
+
     }
 
     @PostConstruct
@@ -87,24 +88,25 @@ class WorkoutControllerTest {
         WorkoutRequestDto workoutRequestDto = WorkoutRequestDto.builder()
                 .workoutName("pull up")
                 .content("광배 운동")
-                .filePath("이미지 경로")
+                .fileName("이미지 경로")
                 .workoutCategory("BACK").build();
-
+        //TODO 테스트코드 다시 작성해야함
         //when
         mockMvc.perform(post("/api/v1/workout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(workoutRequestDto))
-                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L))))
+                        .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isCreated())
                 .andDo(document("workout-create",
                         requestFields(
                                 fieldWithPath("workoutName").type(STRING).description("운동 이름"),
                                 fieldWithPath("content").type(STRING).description("운동 설명"),
                                 fieldWithPath("workoutCategory").type(STRING).description("운동 부위"),
-                                fieldWithPath("filePath").type(STRING).description("이미지 경로")
+                                fieldWithPath("fileName").type(STRING).description("이미지 경로")
                         )
                 ));
     }
+
 
     @Test
     @WithUserDetails(value = "email@naver.com")
@@ -117,16 +119,22 @@ class WorkoutControllerTest {
                 .id(1L)
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
-                .filePath("imagePath").build();
+                //TODO 테스트코드 다시작성해야함
+//                .filePath("imagePath")
+                .build();
         given(workoutService.getMyWorkout(any(), any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/workout/{workoutId}", 1L)
-                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L))))
+                        .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getMyWorkout",
                         pathParameters(
                                 parameterWithName("workoutId").description("운동 정보 Id")
                         )
                 ));
+    }
+
+    private String getToken(Member member) {
+        return token.createToken(member.getEmail(), member.getMemberRole(), new Date());
     }
 }

@@ -21,8 +21,7 @@ public class Workout extends BaseTimeEntity{
 
     private String content;
 
-    //TODO 이미지 파일을 어떻게 처리해야할지 공부하고 수정할 예정
-    private String filePath;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -32,10 +31,9 @@ public class Workout extends BaseTimeEntity{
     private WorkoutCategory workoutCategory;
 
     @Builder
-    public Workout(String workoutName, String content, String filePath,Member member, WorkoutCategory workoutCategory) {
+    public Workout(String workoutName, String content, Member member, WorkoutCategory workoutCategory) {
         this.workoutName = workoutName;
         this.content = content;
-        this.filePath = filePath;
         this.workoutCategory = workoutCategory;
         this.member = member;
     }

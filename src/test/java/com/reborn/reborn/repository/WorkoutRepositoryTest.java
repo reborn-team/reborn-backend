@@ -36,7 +36,6 @@ class WorkoutRepositoryTest {
         Workout workout = Workout.builder()
                 .workoutName("pull up")
                 .content("등을 펼쳐서 당깁니다.")
-                .filePath("imagePath")
                 .member(member)
                 .workoutCategory(WorkoutCategory.BACK).build();
         memberRepository.save(member);
