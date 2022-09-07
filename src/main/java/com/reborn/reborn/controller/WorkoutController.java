@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/workout")
 @RequiredArgsConstructor
 public class WorkoutController {
 
     private final WorkoutService workoutService;
 
-    @PostMapping("/workout")
+    @PostMapping
     public ResponseEntity createWorkout(@CurrentUser Member member, @RequestBody WorkoutRequestDto workoutRequestDto){
         Long saveWorkoutId = workoutService.create(member, workoutRequestDto);
         log.info("save Workout");
         return ResponseEntity.status(HttpStatus.CREATED).body(saveWorkoutId);
     }
 
-    @GetMapping("/workout/{workoutId}")
-    public ResponseEntity getWorkout(@PathVariable Long workoutId, @CurrentUser Member member){
+    @GetMapping("/{workoutId}")
+    public ResponseEntity<WorkoutResponseDto> getWorkout(@PathVariable Long workoutId, @CurrentUser Member member){
         WorkoutResponseDto dto = workoutService.getMyWorkout(member, workoutId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);

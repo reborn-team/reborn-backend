@@ -55,13 +55,13 @@ class WorkoutControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    WorkoutService workoutService;
+    private WorkoutService workoutService;
     private TokenProvider tokenProvider;
     private AuthToken token;
     @Autowired
     private MemberRepository memberRepository;
     @Value("${spring.jwt.secret-key}")
-    String value;
+    private String value;
 
     @BeforeEach
     void before() {
@@ -94,8 +94,7 @@ class WorkoutControllerTest {
         mockMvc.perform(post("/api/v1/workout")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(workoutRequestDto))
-                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L)))
-                )
+                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L))))
                 .andExpect(status().isCreated())
                 .andDo(document("workout-create",
                         requestFields(
@@ -122,8 +121,7 @@ class WorkoutControllerTest {
         given(workoutService.getMyWorkout(any(), any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/workout/{workoutId}", 1L)
-                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L)))
-                )
+                        .header("Authorization", "Bearer " + token.createToken(member.getEmail(), member.getMemberRole(), new Date(100000000000L))))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getMyWorkout",
                         pathParameters(

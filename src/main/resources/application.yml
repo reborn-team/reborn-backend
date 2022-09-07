@@ -57,6 +57,5 @@ logging:
 
 app:
   auth:
-    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
     tokenExpireDate: 1800000
     refresh-token-expire-date: 604800000

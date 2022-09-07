@@ -18,9 +18,9 @@ public class MemberController {
 
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody MemberRequestDto memberRequestDto){
-        memberService.registerMember(memberRequestDto);
+        Long memberId = memberService.registerMember(memberRequestDto);
         log.info("aa");
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberId);
     }
 
     @GetMapping("/email-check")

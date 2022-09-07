@@ -26,7 +26,6 @@ public class MemberServiceImpl implements MemberService {
         Member save = memberRepository.save(member);
         return save.getId();
     }
-        //TODO 테스트용 지워야
     @Override
     public boolean emailDuplicateCheck(String email) {
         return  memberRepository.existsByEmail(email);
