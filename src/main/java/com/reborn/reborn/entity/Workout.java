@@ -21,8 +21,6 @@ public class Workout extends BaseTimeEntity{
 
     private String content;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

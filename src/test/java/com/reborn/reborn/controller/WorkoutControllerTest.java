@@ -1,23 +1,16 @@
 package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.reborn.reborn.ControllerConfig;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.entity.WorkoutCategory;
-import com.reborn.reborn.repository.MemberRepository;
-import com.reborn.reborn.security.jwt.AuthToken;
-import com.reborn.reborn.security.jwt.TokenProvider;
 import com.reborn.reborn.service.WorkoutService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -26,58 +19,27 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doReturn;
 
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.Date;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
-@AutoConfigureMockMvc // -> webAppContextSetup(webApplicationContext)
-@AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
-@SpringBootTest
-class WorkoutControllerTest {
+
+class WorkoutControllerTest extends ControllerConfig {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
     private WorkoutService workoutService;
-    private TokenProvider tokenProvider;
-    private AuthToken token;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Value("${spring.jwt.secret-key}")
-    private String value;
-    private Date now = new Date() ;
-    @BeforeEach
-    void before() {
-        tokenProvider = new TokenProvider(value);
-        token = tokenProvider.createAuthToken("user", MemberRole.USER, new Date(100000000000L));
-
-    }
-
-    @PostConstruct
-    void createWorkout() {
-        memberRepository.deleteAll();
-        Member member = Member.builder().email("email@naver.com")
-                .name("han").build();
-        memberRepository.save(member);
-
-    }
 
     @Test
     @WithUserDetails(value = "email@naver.com")
@@ -134,7 +96,5 @@ class WorkoutControllerTest {
                 ));
     }
 
-    private String getToken(Member member) {
-        return token.createToken(member.getEmail(), member.getMemberRole(), new Date());
-    }
+
 }

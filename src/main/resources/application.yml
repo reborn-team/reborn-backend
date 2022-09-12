@@ -7,11 +7,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: 'true'
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: 'true'
     database-platform: org.hibernate.dialect.H2Dialect
-  main:
-    allow-bean-definition-overriding: true
   datasource:
     driverClassName: org.h2.Driver
     password: '1'

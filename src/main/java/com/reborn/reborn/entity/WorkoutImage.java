@@ -3,7 +3,7 @@ package com.reborn.reborn.entity;
 import javax.persistence.*;
 
 @Entity
-public class WorkoutFile {
+public class WorkoutImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,9 @@
 package com.reborn.reborn.controller;
 
+import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.entity.Member;
+import com.reborn.reborn.security.CurrentUser;
 import com.reborn.reborn.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,17 +20,22 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public ResponseEntity join(@RequestBody MemberRequestDto memberRequestDto){
+    public ResponseEntity join(@RequestBody MemberRequestDto memberRequestDto) {
         Long memberId = memberService.registerMember(memberRequestDto);
         log.info("aa");
         return ResponseEntity.status(HttpStatus.CREATED).body(memberId);
     }
 
     @GetMapping("/email-check")
-    public ResponseEntity emailCheck(@RequestParam String email){
+    public ResponseEntity emailCheck(@RequestParam String email) {
         boolean check = memberService.emailDuplicateCheck(email);
 
         return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
+    @PatchMapping("/change-password")
+    public ResponseEntity changePassword(@CurrentUser Member member, @RequestBody ChangePasswordDto changePasswordDto){
+        memberService.updatePassword(member, changePasswordDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

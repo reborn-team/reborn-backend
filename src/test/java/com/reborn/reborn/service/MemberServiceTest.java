@@ -1,5 +1,6 @@
 package com.reborn.reborn.service;
 
+import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.repository.MemberRepository;
@@ -13,8 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -64,5 +65,33 @@ class MemberServiceTest {
 
     }
 
+    @Test
+    @DisplayName("요청된 비밀번호가 현재 비밀번호와 같으면 비밀번호를 변경한다.")
+    void changePasswordTest() {
+        Member member = Member.builder().password("1").build();
+        ChangePasswordDto changePasswordDto = new ChangePasswordDto("1", "a");
 
+        String rawPassword = member.getPassword();
+
+        given(passwordEncoder.matches(rawPassword, changePasswordDto.getRawPassword())).willReturn(true);
+
+
+        memberService.updatePassword(member, changePasswordDto);
+
+        assertThat(member.getPassword()).isNotEqualTo(rawPassword);
+    }
+
+    @Test
+    @DisplayName("요청된 비밀번호가 현재 비밀번호와 다르면 예외를 반환한다.")
+    void changePasswordExceptionTest() {
+        Member member = Member.builder().password("1").build();
+        ChangePasswordDto changePasswordDto = new ChangePasswordDto("1", "a");
+
+        String rawPassword = member.getPassword();
+
+        given(passwordEncoder.matches(rawPassword, changePasswordDto.getRawPassword())).willReturn(false);
+
+
+        assertThatThrownBy(()->memberService.updatePassword(member, changePasswordDto)).isInstanceOf(IllegalStateException.class);
+    }
 }

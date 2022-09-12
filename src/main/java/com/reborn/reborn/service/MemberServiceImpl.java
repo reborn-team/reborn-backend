@@ -1,9 +1,8 @@
 package com.reborn.reborn.service;
 
+import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.entity.Address;
 import com.reborn.reborn.entity.Member;
-import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Long registerMember(MemberRequestDto memberRequestDto) {
         Member member = memberRequestDto.toEntity(memberRequestDto);
-        member.encodeSetPassword(passwordEncoder.encode(memberRequestDto.getPassword()));
+        member.changePassword(passwordEncoder.encode(memberRequestDto.getPassword()));
         Member save = memberRepository.save(member);
         return save.getId();
     }
@@ -31,4 +30,14 @@ public class MemberServiceImpl implements MemberService {
         return  memberRepository.existsByEmail(email);
 
     }
+
+    @Override
+    public void updatePassword(Member member, ChangePasswordDto request) {
+        if (!passwordEncoder.matches(member.getPassword(), request.getRawPassword())) {
+            throw new IllegalStateException("Password가 맞지 않습니다.");
+        }
+        member.changePassword(passwordEncoder.encode(request.getChangePassword()));
+    }
+
+
 }

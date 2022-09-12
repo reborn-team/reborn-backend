@@ -33,6 +33,9 @@ operation::join[snippets='http-request,path-parameters,request-fields,http-respo
 === Email 중복 체크
 operation::email-check[snippets='http-request,path-parameters,request-parameters,http-response,response-fields']
 
+=== 비밀번호 변경
+operation::change-password[snippets='http-request,path-parameters,request-parameters,http-response,response-fields']
+
 [[Workout-API]]
 == Workout API
 
