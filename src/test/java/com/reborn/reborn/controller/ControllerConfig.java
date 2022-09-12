@@ -1,4 +1,4 @@
-package com.reborn.reborn;
+package com.reborn.reborn.controller;
 
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
@@ -21,13 +18,14 @@ import java.util.Date;
 @AutoConfigureRestDocs
 @SpringBootTest // -> apply(documentationConfiguration(restDocumentation))
 public class ControllerConfig {
+
     private TokenProvider tokenProvider;
     private AuthToken token;
     @Autowired
     private MemberRepository memberRepository;
     @Value("${spring.jwt.secret-key}")
     private String value;
-    private Date now = new Date() ;
+
     @BeforeEach
     void before() {
         tokenProvider = new TokenProvider(value);

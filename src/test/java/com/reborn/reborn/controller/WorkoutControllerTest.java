@@ -1,7 +1,6 @@
 package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reborn.reborn.ControllerConfig;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
