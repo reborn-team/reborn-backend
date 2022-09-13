@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<form action="/upload" method="post"  enctype="multipart/form-data">
+    <li>파일<input type="file" name="file" ></li>
+
+    <input type="submit"/>
+</form>
+<form action="/delete" method="post" >
+    <li>파일<input type="text" name="file" ></li>
+
+    <input type="submit"/>
+</form>
 hi
 </body>
 </html>
