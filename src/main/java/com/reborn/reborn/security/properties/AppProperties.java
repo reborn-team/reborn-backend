@@ -23,7 +23,6 @@ public class AppProperties {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Auth {
-        private String tokenSecret;
         private long tokenExpireDate;
         private long refreshTokenExpireDate;
     }

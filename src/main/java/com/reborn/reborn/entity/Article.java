@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Article extends BaseTimeEntity{
+public class Article extends BaseTimeEntity {
 
     @Id
     @Column(name = "article_id")
@@ -30,18 +30,14 @@ public class Article extends BaseTimeEntity{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    //TODO 이미지 파일을 어떻게 처리해야할지 공부하고 수정할 예정
-    private String filePath;
-
     private int viewCount;
 
     private int likeCount;
 
     @Builder
-    public Article(String title, String content, Member member, String filePath) {
+    public Article(String title, String content, Member member) {
         this.title = title;
         this.content = content;
         this.member = member;
-        this.filePath = filePath;
     }
 }

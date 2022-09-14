@@ -2,30 +2,21 @@ package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.security.jwt.AuthToken;
-import com.reborn.reborn.security.jwt.TokenProvider;
 import com.reborn.reborn.service.MemberService;
-import com.reborn.reborn.service.WorkoutService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
-
-import static com.reborn.reborn.dto.MemberRequestDto.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -33,15 +24,12 @@ import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc // -> webAppContextSetup(webApplicationContext)
-@AutoConfigureRestDocs // -> apply(documentationConfiguration(restDocumentation))
-@SpringBootTest
-public class TestController {
+
+public class MemberControllerTest extends ControllerConfig {
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,7 +40,7 @@ public class TestController {
 
 
     @Test
-    @DisplayName("회원 가입 : /api/v1/join")
+    @DisplayName("회원 가입 : POST /api/v1/join")
     void joinTest() throws Exception {
         MemberRequestDto memberRequestDto = new MemberRequestDto("email", "password", "name", "phone", "postcode", "address", "detailAddress");
 
@@ -76,7 +64,7 @@ public class TestController {
     }
 
     @Test
-    @DisplayName("이메일 중복 확인 : /api/v1/email-check")
+    @DisplayName("이메일 중복 확인 : GET /api/v1/email-check")
     void emailCheck() throws Exception {
 
         String email = "email";
@@ -94,5 +82,26 @@ public class TestController {
                         )));
     }
 
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("비밀번호 변경 : PATCH /api/v1/change-password")
+    void changePassword() throws Exception {
+        Member member = Member.builder().email("user").password("a").memberRole(MemberRole.USER).build();
+        ChangePasswordDto changePasswordDto = new ChangePasswordDto("a", "b");
+
+        willDoNothing().given(memberService).updatePassword(member,changePasswordDto);
+
+        mockMvc.perform(patch("/api/v1/change-password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(changePasswordDto))
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isOk())
+                .andDo(document("change-password",
+                        requestFields(
+                                fieldWithPath("rawPassword").type(STRING).description("현재 비밀번호"),
+                                fieldWithPath("changePassword").type(STRING).description("변경할 비밀번호")
+                        )
+                ));
+    }
 
 }

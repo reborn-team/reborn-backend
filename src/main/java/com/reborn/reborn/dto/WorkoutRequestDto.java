@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,7 +16,8 @@ public class WorkoutRequestDto {
 
     private String workoutName;
     private String content;
-    private String filePath;
     private String workoutCategory;
+    @Builder.Default
+    private List<FileDto> files = new ArrayList<>();
 
 }

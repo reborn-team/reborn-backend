@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
@@ -36,13 +37,12 @@ class WorkoutRepositoryTest {
         Workout workout = Workout.builder()
                 .workoutName("pull up")
                 .content("등을 펼쳐서 당깁니다.")
-                .filePath("imagePath")
                 .member(member)
                 .workoutCategory(WorkoutCategory.BACK).build();
         memberRepository.save(member);
         workoutRepository.save(workout);
         Optional<Workout> findWorkout = workoutRepository.findByIdAndMemberId(workout.getId(), member.getId());
-        Assertions.assertThat(workout.getWorkoutName()).isEqualTo(findWorkout.get().getWorkoutName());
+        assertThat(workout.getWorkoutName()).isEqualTo(findWorkout.get().getWorkoutName());
     }
 
 }

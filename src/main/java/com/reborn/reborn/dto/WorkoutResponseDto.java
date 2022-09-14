@@ -11,19 +11,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkoutDetailResponseDto {
+public class WorkoutResponseDto {
 
+    private Long id;
     private String workoutName;
     private String content;
     private String filePath;
     private WorkoutCategory workoutCategory;
 
-    public WorkoutDetailResponseDto toDto(Workout workout){
-        return WorkoutDetailResponseDto.builder()
+    //TODO 수정요망
+    public WorkoutResponseDto toDto(Workout workout){
+        return WorkoutResponseDto.builder()
+                .id(workout.getId())
                 .workoutCategory(workout.getWorkoutCategory())
                 .content(workout.getContent())
-                .filePath(workout.getFilePath())
                 .workoutName(workout.getWorkoutName()).build();
     }
+
 
 }

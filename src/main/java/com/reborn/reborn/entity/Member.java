@@ -2,10 +2,7 @@ package com.reborn.reborn.entity;
 
 import javax.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -41,7 +38,7 @@ public class Member extends BaseTimeEntity {
         this.memberRole = memberRole;
     }
 
-    public void encodeSetPassword(String password) {
+    public void changePassword(String password) {
         this.password = password;
     }
 }
