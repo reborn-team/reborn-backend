@@ -59,3 +59,6 @@ app:
   auth:
     tokenExpireDate: 1800000
     refresh-token-expire-date: 604800000
+file:
+  upload:
+    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'

@@ -7,14 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LocalUploadService implements UploadService {
+public class LocalFileService implements FileService {
 
     @Value("${file.upload.directory}")
     private String directory;
@@ -41,8 +38,8 @@ public class LocalUploadService implements UploadService {
         File file = new File(getFullPath(uploadFilename));
         file.delete();
     }
-
-    private String getFullPath(String uploadFileName) {
+    @Override
+    public String getFullPath(String uploadFileName) {
         return directory + uploadFileName;
     }
 }

@@ -22,7 +22,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Transactional
     @Override
-    public Long create(Member member, WorkoutRequestDto dto) {
+    public Workout create(Member member, WorkoutRequestDto dto) {
 
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
@@ -32,7 +32,7 @@ public class WorkoutServiceImpl implements WorkoutService {
                 .build();
 
         Workout saveWorkout = workoutRepository.save(workout);
-        return saveWorkout.getId();
+        return saveWorkout;
     }
 
     @Override

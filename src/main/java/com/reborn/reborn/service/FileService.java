@@ -8,10 +8,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.UUID;
 
-public interface UploadService {
+public interface FileService {
+
     List<FileDto> uploadFile(List<MultipartFile> multipartFile);
 
     void deleteFile(String fileName);
+
+    String getFullPath(String uploadFileName);
 
     default String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
