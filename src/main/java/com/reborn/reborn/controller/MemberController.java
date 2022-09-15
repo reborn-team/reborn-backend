@@ -3,7 +3,7 @@ package com.reborn.reborn.controller;
 import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
 import com.reborn.reborn.entity.Member;
-import com.reborn.reborn.security.CurrentUser;
+import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class MemberController {
     }
 
     @PatchMapping("/change-password")
-    public ResponseEntity changePassword(@CurrentUser Member member, @RequestBody ChangePasswordDto changePasswordDto){
+    public ResponseEntity changePassword(@LoginMember Member member, @RequestBody ChangePasswordDto changePasswordDto){
         memberService.updatePassword(member, changePasswordDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

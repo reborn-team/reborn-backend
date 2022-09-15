@@ -46,3 +46,10 @@ operation::workout-create[snippets='http-request,request-fields,http-response']
 [[Workout-운동-조회]]
 === Workout 운동 조회
 operation::workout-getMyWorkout[snippets='http-request,path-parameters,http-response']
+
+[[MyWorkoutList-API]]
+== MyWorkoutList API
+
+[[MyWorkoutList-내-운동-등록]]
+=== MyWorkoutList 내 운동 등록
+operation::workoutList-addMyWorkoutList[snippets='http-request,path-parameters,http-response']
