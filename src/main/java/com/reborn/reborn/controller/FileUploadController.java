@@ -23,10 +23,9 @@ public class FileUploadController {
 
 
     @PostMapping
-    public List<FileDto> saveFile(@RequestPart List<MultipartFile> files) {
-
-        log.info("multipartFile={}", files);
-        List<FileDto> fileDtos = fileService.uploadFile(files);
+    public List<FileDto> saveFile(@RequestPart List<MultipartFile> file) {
+        log.info("multipartFile={}", file);
+        List<FileDto> fileDtos = fileService.uploadFile(file);
         for (FileDto fileDto : fileDtos) {
             log.info("fileDto ={}", fileDto);
         }

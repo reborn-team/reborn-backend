@@ -53,3 +53,10 @@ operation::workout-getMyWorkout[snippets='http-request,path-parameters,http-resp
 [[MyWorkoutList-내-운동-등록]]
 === MyWorkoutList 내 운동 등록
 operation::workoutList-addMyWorkoutList[snippets='http-request,path-parameters,http-response']
+
+[[File-API]]
+== File API
+
+[[File-파일-업로드]]
+=== File 파일 업로드
+operation::upload-file[snippets='http-request,http-response,']
