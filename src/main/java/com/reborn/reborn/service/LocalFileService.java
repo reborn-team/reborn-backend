@@ -22,8 +22,9 @@ public class LocalFileService implements FileService {
         for (MultipartFile file : multipartFile) {
             String originFileName = file.getOriginalFilename();
             String uploadFileName = createFileName(originFileName);
+            String fullPath = getFullPath(uploadFileName);
             try {
-                file.transferTo(new File(getFullPath(uploadFileName)));
+                file.transferTo(new File(fullPath));
             } catch (IOException e) {
                 //TODO 예외처리 해야함
                 throw new RuntimeException(e);

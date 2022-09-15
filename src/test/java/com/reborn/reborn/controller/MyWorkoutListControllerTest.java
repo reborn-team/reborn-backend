@@ -31,7 +31,7 @@ class MyWorkoutListControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 생성 : POST /api/v1/workout-list")
+    @DisplayName("운동 생성 : POST /api/v1/workout-list/{workoutId}")
     void workoutCreate() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
