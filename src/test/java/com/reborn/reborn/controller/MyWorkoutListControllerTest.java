@@ -31,14 +31,14 @@ class MyWorkoutListControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 생성 : POST /api/v1/workout-list/{workoutId}")
+    @DisplayName("운동 생성 : POST /api/v1/my-workout/{workoutId}")
     void workoutCreate() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
         given(myWorkoutListService.addWorkout(any(), any())).willReturn(1L);
 
         //when
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/v1/workout-list/{workoutId}", 1L)
+        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/v1/my-workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isCreated())
                 .andDo(document("workoutList-addMyWorkoutList",
