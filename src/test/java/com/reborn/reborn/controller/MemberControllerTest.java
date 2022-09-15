@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;

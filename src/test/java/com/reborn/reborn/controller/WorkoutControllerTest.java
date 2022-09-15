@@ -2,7 +2,6 @@ package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.dto.FileDto;
-import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
@@ -50,15 +49,15 @@ class WorkoutControllerTest extends ControllerConfig {
     void workoutCreate() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        List<FileDto> fileDtos = new ArrayList<>();
-        fileDtos.add(new FileDto("원본 이름","저장된 파일 이름"));
+        List<FileDto> files = new ArrayList<>();
+        files.add(new FileDto("원본 이름","저장된 파일 이름"));
         WorkoutRequestDto workoutRequestDto = WorkoutRequestDto.builder()
                 .workoutName("pull up")
                 .content("광배 운동")
-                .files(fileDtos)
+                .files(files)
                 .workoutCategory("BACK").build();
 
-        given(workoutService.create(any(), any())).willReturn(1L);
+        given(workoutService.create(any())).willReturn(1L);
 
         //when
         mockMvc.perform(post("/api/v1/workout")
@@ -85,15 +84,14 @@ class WorkoutControllerTest extends ControllerConfig {
     void getMyWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
+        Workout workoutResponseDto = Workout.builder()
                 .workoutName("pull up")
-                .id(1L)
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
                 //TODO 테스트코드 다시작성해야함
 //                .filePath("imagePath")
                 .build();
-        given(workoutService.getMyWorkout(any(), any())).willReturn(workoutResponseDto);
+        given(workoutService.getWorkout(any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))

@@ -37,11 +37,10 @@ class WorkoutRepositoryTest {
         Workout workout = Workout.builder()
                 .workoutName("pull up")
                 .content("등을 펼쳐서 당깁니다.")
-                .member(member)
                 .workoutCategory(WorkoutCategory.BACK).build();
         memberRepository.save(member);
         workoutRepository.save(workout);
-        Optional<Workout> findWorkout = workoutRepository.findByIdAndMemberId(workout.getId(), member.getId());
+        Optional<Workout> findWorkout = workoutRepository.findById(workout.getId());
         assertThat(workout.getWorkoutName()).isEqualTo(findWorkout.get().getWorkoutName());
     }
 

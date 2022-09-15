@@ -1,8 +1,6 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
-import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.WorkoutRepository;
@@ -16,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +21,7 @@ import static org.mockito.Mockito.*;
 class WorkoutServiceTest {
 
     @InjectMocks
-    private WorkoutServiceImpl workoutService;
+    private WorkoutService workoutService;
     @Mock
     WorkoutRepository workoutRepository;
 
@@ -34,12 +31,11 @@ class WorkoutServiceTest {
         WorkoutRequestDto requestDto = WorkoutRequestDto.builder()
                 .workoutCategory("BACK").build();
         Workout workout = Workout.builder().build();
-        Member member = Member.builder().build();
 
         given(workoutRepository.save(any())).willReturn(workout);
 
         //when
-        Long saveWorkoutId = workoutService.create(member, requestDto);
+        Long saveWorkoutId = workoutService.create(requestDto);
         //then
         verify(workoutRepository).save(any());
 
@@ -48,19 +44,18 @@ class WorkoutServiceTest {
     }
 
     @Test
-    @DisplayName("내 운동 정보를 조회한다.")
+    @DisplayName("운동 정보를 조회한다.")
     void getMyWorkout() {
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).build();
-        Member member = Member.builder().build();
 
-        given(workoutRepository.findByIdAndMemberId(any(),any())).willReturn(Optional.of(workout));
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
         //when
-        WorkoutResponseDto myWorkout = workoutService.getMyWorkout(member, workout.getId());
+        Workout findWorkout = workoutService.getWorkout(workout.getId());
         //then
-        verify(workoutRepository).findByIdAndMemberId(any(),any());
+        verify(workoutRepository).findById(any());
 
-        Assertions.assertThat(workout.getWorkoutCategory()).isEqualTo(myWorkout.getWorkoutCategory());
+        Assertions.assertThat(workout.getWorkoutCategory()).isEqualTo(findWorkout.getWorkoutCategory());
 
     }
 

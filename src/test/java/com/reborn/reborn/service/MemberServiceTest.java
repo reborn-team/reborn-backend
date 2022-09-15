@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 class MemberServiceTest {
 
     @InjectMocks
-    private MemberServiceImpl memberService;
+    private MemberService memberService;
     @Mock
     MemberRepository memberRepository;
     @Mock

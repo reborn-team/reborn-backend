@@ -33,7 +33,7 @@ public class WorkoutResponseDto {
     }
 
     //TODO 수정요망
-    public WorkoutResponseDto toDto(Workout workout){
+    public static WorkoutResponseDto toDto(Workout workout){
         return WorkoutResponseDto.builder()
                 .id(workout.getId())
                 .workoutCategory(workout.getWorkoutCategory())
