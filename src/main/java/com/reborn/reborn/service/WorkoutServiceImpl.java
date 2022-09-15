@@ -22,7 +22,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Transactional
     @Override
-    public Workout create(Member member, WorkoutRequestDto dto) {
+    public Long create(Member member, WorkoutRequestDto dto) {
 
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
@@ -32,7 +32,7 @@ public class WorkoutServiceImpl implements WorkoutService {
                 .build();
 
         Workout saveWorkout = workoutRepository.save(workout);
-        return saveWorkout;
+        return saveWorkout.getId();
     }
 
     @Override
@@ -43,5 +43,10 @@ public class WorkoutServiceImpl implements WorkoutService {
         }
         WorkoutResponseDto workoutResponseDto = new WorkoutResponseDto();
         return workoutResponseDto.toDto(workout.get());
+    }
+
+    @Override
+    public Workout getWorkout(Long id) {
+        return workoutRepository.findById(id).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다."));
     }
 }

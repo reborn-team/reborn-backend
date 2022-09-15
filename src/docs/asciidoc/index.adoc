@@ -41,7 +41,7 @@ operation::change-password[snippets='http-request,request-fields,http-response']
 
 [[Workout-운동-생성]]
 === Workout 운동 생성
-operation::workout-create[snippets='http-request,request-fields,http-response,response-fields']
+operation::workout-create[snippets='http-request,request-fields,http-response']
 
 [[Workout-운동-조회]]
 === Workout 운동 조회

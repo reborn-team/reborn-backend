@@ -26,11 +26,12 @@ public class WorkoutController {
     private final WorkoutImageService workoutImageService;
 
     @PostMapping
-    public ResponseEntity createWorkout(@CurrentUser Member member, @RequestBody WorkoutRequestDto workoutRequestDto){
-        Workout workout = workoutService.create(member, workoutRequestDto);
+    public ResponseEntity<Long> createWorkout(@CurrentUser Member member, @RequestBody WorkoutRequestDto workoutRequestDto){
+        Long saveWorkoutId = workoutService.create(member, workoutRequestDto);
+        Workout workout = workoutService.getWorkout(saveWorkoutId);
         workoutRequestDto.getFiles().forEach(dto -> workoutImageService.create(dto,workout));
         log.info("save Workout");
-        return ResponseEntity.status(HttpStatus.CREATED).body(workout.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(saveWorkoutId);
     }
 
     @GetMapping("/{workoutId}")

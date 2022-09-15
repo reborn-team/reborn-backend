@@ -39,11 +39,11 @@ class WorkoutServiceTest {
         given(workoutRepository.save(any())).willReturn(workout);
 
         //when
-        Workout saveWorkout = workoutService.create(member, requestDto);
+        Long saveWorkoutId = workoutService.create(member, requestDto);
         //then
         verify(workoutRepository).save(any());
 
-        Assertions.assertThat(saveWorkout.getId()).isEqualTo(workout.getId());
+        Assertions.assertThat(saveWorkoutId).isEqualTo(workout.getId());
 
     }
 

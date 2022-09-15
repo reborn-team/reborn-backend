@@ -51,13 +51,14 @@ class WorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
         List<FileDto> fileDtos = new ArrayList<>();
+        fileDtos.add(new FileDto("원본 이름","저장된 파일 이름"));
         WorkoutRequestDto workoutRequestDto = WorkoutRequestDto.builder()
                 .workoutName("pull up")
                 .content("광배 운동")
                 .files(fileDtos)
                 .workoutCategory("BACK").build();
-        //TODO 테스트코드 다시 작성해야함
-        given(workoutService.create(any(), any())).willReturn(Workout.builder().build());
+
+        given(workoutService.create(any(), any())).willReturn(1L);
 
         //when
         mockMvc.perform(post("/api/v1/workout")
@@ -70,7 +71,9 @@ class WorkoutControllerTest extends ControllerConfig {
                                 fieldWithPath("workoutName").type(STRING).description("운동 이름"),
                                 fieldWithPath("content").type(STRING).description("운동 설명"),
                                 fieldWithPath("workoutCategory").type(STRING).description("운동 부위"),
-                                fieldWithPath("files").type(ARRAY).description("파일 정보")
+                                fieldWithPath("files").type(ARRAY).description("파일 정보"),
+                                fieldWithPath("files[].originFileName").type(STRING).description("원본 파일 이름"),
+                                fieldWithPath("files[].uploadFileName").type(STRING).description("저장된 파일 이름")
                         )
                 ));
     }

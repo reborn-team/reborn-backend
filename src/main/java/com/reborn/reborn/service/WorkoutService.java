@@ -8,7 +8,10 @@ import com.reborn.reborn.entity.Workout;
 
 public interface WorkoutService {
 
-    Workout create(Member member, WorkoutRequestDto dto);
+    Long create(Member member, WorkoutRequestDto dto);
+
 
     WorkoutResponseDto getMyWorkout(Member member, Long id);
+
+    Workout getWorkout(Long id);
 }

@@ -19,7 +19,6 @@ import java.util.Date;
 @SpringBootTest // -> apply(documentationConfiguration(restDocumentation))
 public class ControllerConfig {
 
-    private TokenProvider tokenProvider;
     private AuthToken token;
     @Autowired
     private MemberRepository memberRepository;
@@ -28,7 +27,7 @@ public class ControllerConfig {
 
     @BeforeEach
     void before() {
-        tokenProvider = new TokenProvider(value);
+        TokenProvider tokenProvider = new TokenProvider(value);
         token = tokenProvider.createAuthToken("user", MemberRole.USER, new Date(100000000000L));
 
     }
