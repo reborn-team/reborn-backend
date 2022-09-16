@@ -1,5 +1,6 @@
 package com.reborn.reborn.controller;
 
+import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutPageDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
@@ -26,14 +27,14 @@ public class WorkoutController {
 
     @GetMapping
     public ResponseEntity<WorkoutPageDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
-        List<WorkoutResponseDto> responseDto = workoutService.pagingWorkout(cond);
+        List<WorkoutListDto> responseDto = workoutService.pagingWorkout(cond);
         return ResponseEntity.ok().body(new WorkoutPageDto(responseDto));
     }
 
     @PostMapping
     public ResponseEntity<Long> createWorkout(@RequestBody WorkoutRequestDto workoutRequestDto){
         Long saveWorkoutId = workoutService.create(workoutRequestDto);
-        Workout workout = workoutService.getWorkout(saveWorkoutId);
+        Workout workout = workoutService.findWorkoutById(saveWorkoutId);
         workoutRequestDto.getFiles().forEach(dto -> workoutImageService.create(dto,workout));
         log.info("save Workout");
         return ResponseEntity.status(HttpStatus.CREATED).body(saveWorkoutId);
@@ -41,7 +42,7 @@ public class WorkoutController {
 
     @GetMapping("/{workoutId}")
     public ResponseEntity<WorkoutResponseDto> getWorkout(@PathVariable Long workoutId){
-        Workout workout = workoutService.getWorkout(workoutId);
+        Workout workout = workoutService.findWorkoutById(workoutId);
         WorkoutResponseDto dto = WorkoutResponseDto.toDto(workout);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);

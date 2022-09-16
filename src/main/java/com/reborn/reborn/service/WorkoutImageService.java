@@ -15,8 +15,8 @@ public class WorkoutImageService {
 
     public Long create(FileDto fileDto, Workout workout){
         WorkoutImage workoutImage = WorkoutImage.builder()
-                .fileName(fileDto.getOriginFileName())
-                .path(fileDto.getUploadFileName())
+                .originFileName(fileDto.getOriginFileName())
+                .uploadFileName(fileDto.getUploadFileName())
                 .workout(workout)
                 .build();
         workoutImageRepository.save(workoutImage);

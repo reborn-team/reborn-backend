@@ -12,10 +12,4 @@ public class WorkoutSearchCondition {
     Long id;
     String category;
 
-    public WorkoutCategory of(){
-        if(category == null){
-            return null;
-        }
-        return WorkoutCategory.valueOf(category.toUpperCase());
-    }
 }
