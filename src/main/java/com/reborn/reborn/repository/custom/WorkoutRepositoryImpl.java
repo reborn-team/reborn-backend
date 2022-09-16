@@ -42,7 +42,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                         ))
                 .groupBy(workout)
                 .where(
-                        ltWorkoutId(cond.getWorkoutId()),
+                        ltWorkoutId(cond.getId()),
                         equalsWorkoutCategory(cond.of())
                 )
                 .limit(10L)

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -36,7 +37,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 class WorkoutControllerTest extends ControllerConfig {
     @Autowired
     private MockMvc mockMvc;
@@ -52,7 +52,7 @@ class WorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
         List<FileDto> files = new ArrayList<>();
-        files.add(new FileDto("원본 이름","저장된 파일 이름"));
+        files.add(new FileDto("원본 이름", "저장된 파일 이름"));
         WorkoutRequestDto workoutRequestDto = WorkoutRequestDto.builder()
                 .workoutName("pull up")
                 .content("광배 운동")
@@ -112,27 +112,38 @@ class WorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
         List<WorkoutResponseDto> list = new ArrayList<>();
-        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder().workoutName("pull up").workoutName("pull up")
+        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder().id(1L).workoutName("pull up").workoutName("pull up")
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
                 .uploadFileName("uuid.png")
                 .originFileName("image.png")
                 .build();
         list.add(workoutResponseDto);
-        WorkoutSearchCondition cond = new WorkoutSearchCondition(1L, "BACK");
-
         given(workoutService.pagingWorkout(any())).willReturn(list);
+
         //when
         mockMvc.perform(get("/api/v1/workout")
-                        .queryParam("workoutId", "1").queryParam("workoutCategory","BACK")
+                        .queryParam("id", "1").queryParam("category", "BACK")
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getPagingList",
                         requestParameters(
-                                parameterWithName("workoutId").description("마지막으로 받은 운동 Id"),
-                                parameterWithName("workoutCategory").description("운동 카테고리")
-                        )
-                ));
+                                parameterWithName("id").description("마지막으로 받은 운동 Id"),
+                                parameterWithName("category").description("운동 카테고리")
+                        ),
+                        responseFields(
+                                //TODO 해야함
+                                fieldWithPath("page").type(ARRAY).description("페이지에 출력할 List"),
+                                fieldWithPath("hasNext").type(BOOLEAN).description("출력할 내용이 더 있는지")
+                        ).andWithPrefix("page[].",
+                                fieldWithPath("workoutName").type(STRING).description("운동 이름"),
+                                fieldWithPath("id").type(NUMBER).description("운동 ID"),
+                                fieldWithPath("content").type(STRING).description("운동 설명"),
+                                fieldWithPath("workoutCategory").type(STRING).description("운동 부위"),
+                                fieldWithPath("uploadFileName").type(STRING).description("업로드 파일 이름"),
+                                fieldWithPath("originFileName").type(STRING).description("원본 파일 이름"),
+                                fieldWithPath("workoutCategory").type(STRING).description("운동 카테고리")
+                        )));
     }
 
 

@@ -1,5 +1,6 @@
 package com.reborn.reborn.controller;
 
+import com.reborn.reborn.dto.WorkoutPageDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Workout;
@@ -24,9 +25,9 @@ public class WorkoutController {
     private final WorkoutImageService workoutImageService;
 
     @GetMapping
-    public ResponseEntity<List<WorkoutResponseDto>> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
+    public ResponseEntity<WorkoutPageDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
         List<WorkoutResponseDto> responseDto = workoutService.pagingWorkout(cond);
-        return ResponseEntity.ok().body(responseDto);
+        return ResponseEntity.ok().body(new WorkoutPageDto(responseDto));
     }
 
     @PostMapping

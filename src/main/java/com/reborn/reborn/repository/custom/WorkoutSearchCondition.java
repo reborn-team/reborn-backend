@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkoutSearchCondition {
-    Long workoutId;
-    String workoutCategory;
+    Long id;
+    String category;
 
     public WorkoutCategory of(){
-        if(workoutCategory == null){
+        if(category == null){
             return null;
         }
-        return WorkoutCategory.valueOf(workoutCategory.toUpperCase());
+        return WorkoutCategory.valueOf(category.toUpperCase());
     }
 }
