@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.entity.Workout;
@@ -83,14 +84,14 @@ class WorkoutControllerTest extends ControllerConfig {
     void getMyWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        Workout workoutResponseDto = Workout.builder()
+        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
                 .workoutName("pull up")
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
-                //TODO 테스트코드 다시작성해야함
-//                .filePath("imagePath")
+                .originFileName("원본.png")
+                .uploadFileName("uuid.png")
                 .build();
-        given(workoutService.findWorkoutById(any())).willReturn(workoutResponseDto);
+        given(workoutService.getWorkoutDto(any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
