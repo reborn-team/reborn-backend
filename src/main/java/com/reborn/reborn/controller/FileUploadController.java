@@ -21,23 +21,20 @@ public class FileUploadController {
 
     private final FileService fileService;
 
-
     @PostMapping
     public ResponseEntity<List<FileDto>> saveFile(@RequestBody List<MultipartFile> file) {
         return ResponseEntity.ok().body(fileService.uploadFile(file));
     }
 
     @DeleteMapping
-    public String delete(String uploadFileName) {
+    public ResponseEntity<Void> delete(String uploadFileName) {
         fileService.deleteFile(uploadFileName);
-        log.info("filename={}", uploadFileName);
-        return "index";
+        return ResponseEntity.ok().build();
     }
 
     @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-        //file:/Users/.../.../.../filename.png
+    @GetMapping("/images")
+    public Resource downloadImage(@RequestParam String filename) throws MalformedURLException {
         return new UrlResource("file:" + fileService.getFullPath(filename));
     }
 }
