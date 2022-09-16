@@ -3,10 +3,12 @@ package com.reborn.reborn.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.service.WorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,10 +27,10 @@ import static org.mockito.BDDMockito.given;
 
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
@@ -93,12 +95,42 @@ class WorkoutControllerTest extends ControllerConfig {
                 .build();
         given(workoutService.getWorkout(any())).willReturn(workoutResponseDto);
         //when
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/workout/{workoutId}", 1L)
+        mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getMyWorkout",
                         pathParameters(
                                 parameterWithName("workoutId").description("운동 정보 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workout")
+    void getPagingWorkout() throws Exception {
+        //given
+        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        List<WorkoutResponseDto> list = new ArrayList<>();
+        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder().workoutName("pull up").workoutName("pull up")
+                .workoutCategory(WorkoutCategory.BACK)
+                .content("등 운동입니다.")
+                .uploadFileName("uuid.png")
+                .originFileName("image.png")
+                .build();
+        list.add(workoutResponseDto);
+        WorkoutSearchCondition cond = new WorkoutSearchCondition(1L, "BACK");
+
+        given(workoutService.pagingWorkout(any())).willReturn(list);
+        //when
+        mockMvc.perform(get("/api/v1/workout")
+                        .queryParam("workoutId", "1").queryParam("workoutCategory","BACK")
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isOk())
+                .andDo(document("workout-getPagingList",
+                        requestParameters(
+                                parameterWithName("workoutId").description("마지막으로 받은 운동 Id"),
+                                parameterWithName("workoutCategory").description("운동 카테고리")
                         )
                 ));
     }
