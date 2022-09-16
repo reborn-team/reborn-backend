@@ -6,16 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/upload")
+@RequestMapping("/api/v1/file")
 @RequiredArgsConstructor
 public class FileUploadController {
 
@@ -23,20 +23,14 @@ public class FileUploadController {
 
 
     @PostMapping
-    public List<FileDto> saveFile(@RequestPart List<MultipartFile> files) {
-
-        log.info("multipartFile={}", files);
-        List<FileDto> fileDtos = fileService.uploadFile(files);
-        for (FileDto fileDto : fileDtos) {
-            log.info("fileDto ={}", fileDto);
-        }
-        return fileDtos;
+    public ResponseEntity<List<FileDto>> saveFile(@RequestBody List<MultipartFile> file) {
+        return ResponseEntity.ok().body(fileService.uploadFile(file));
     }
 
     @DeleteMapping
-    public String delete(String file) {
-        fileService.deleteFile(file);
-        log.info("filename={}", file);
+    public String delete(String uploadFileName) {
+        fileService.deleteFile(uploadFileName);
+        log.info("filename={}", uploadFileName);
         return "index";
     }
 

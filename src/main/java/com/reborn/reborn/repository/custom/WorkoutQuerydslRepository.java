@@ -2,7 +2,9 @@ package com.reborn.reborn.repository.custom;
 
 import com.reborn.reborn.dto.WorkoutResponseDto;
 
+import java.util.List;
+
 public interface WorkoutQuerydslRepository {
 
-    WorkoutResponseDto findByIdAndMemberId(Long id, Long memberId);
+    List<WorkoutResponseDto> paginationWorkoutList(WorkoutSearchCondition cond);
 }

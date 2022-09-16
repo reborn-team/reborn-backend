@@ -13,12 +13,12 @@ public class WorkoutListDto {
 
     private Long workoutId;
     private String workoutName;
-    private String fileFullPath;
+    private String uploadFileName;
 
     @QueryProjection
-    public WorkoutListDto(Long workoutId, String workoutName, String fileFullPath) {
+    public WorkoutListDto(Long workoutId, String workoutName, String uploadFileName) {
         this.workoutId = workoutId;
         this.workoutName = workoutName;
-        this.fileFullPath = fileFullPath;
+        this.uploadFileName = uploadFileName;
     }
 }

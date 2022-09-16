@@ -1,8 +1,10 @@
 package com.reborn.reborn.controller;
 
+import com.reborn.reborn.dto.WorkoutPageDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Workout;
+import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.service.WorkoutImageService;
 import com.reborn.reborn.service.WorkoutService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,6 +23,12 @@ public class WorkoutController {
 
     private final WorkoutService workoutService;
     private final WorkoutImageService workoutImageService;
+
+    @GetMapping
+    public ResponseEntity<WorkoutPageDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
+        List<WorkoutResponseDto> responseDto = workoutService.pagingWorkout(cond);
+        return ResponseEntity.ok().body(new WorkoutPageDto(responseDto));
+    }
 
     @PostMapping
     public ResponseEntity<Long> createWorkout(@RequestBody WorkoutRequestDto workoutRequestDto){
@@ -36,5 +46,6 @@ public class WorkoutController {
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);
     }
+
 
 }

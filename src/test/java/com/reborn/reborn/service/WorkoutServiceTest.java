@@ -1,9 +1,11 @@
 package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.WorkoutRequestDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.WorkoutRepository;
+import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -39,7 +44,7 @@ class WorkoutServiceTest {
         //then
         verify(workoutRepository).save(any());
 
-        Assertions.assertThat(saveWorkoutId).isEqualTo(workout.getId());
+        assertThat(saveWorkoutId).isEqualTo(workout.getId());
 
     }
 
@@ -55,8 +60,22 @@ class WorkoutServiceTest {
         //then
         verify(workoutRepository).findById(any());
 
-        Assertions.assertThat(workout.getWorkoutCategory()).isEqualTo(findWorkout.getWorkoutCategory());
+        assertThat(workout.getWorkoutCategory()).isEqualTo(findWorkout.getWorkoutCategory());
 
+    }
+
+    @Test
+    @DisplayName("운동 정보를 검색조건에 따라 10개씩 출력한다")
+    void pagingWorkout(){
+        List<WorkoutResponseDto> list = new ArrayList<>();
+        WorkoutSearchCondition cond = new WorkoutSearchCondition();
+        given(workoutRepository.paginationWorkoutList(cond))
+                .willReturn(list);
+
+        List<WorkoutResponseDto> findList = workoutService.pagingWorkout(cond);
+        verify(workoutRepository).paginationWorkoutList(any());
+
+        assertThat(list.size()).isEqualTo(findList.size());
     }
 
 

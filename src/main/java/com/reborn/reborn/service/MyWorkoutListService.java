@@ -7,6 +7,7 @@ import com.reborn.reborn.repository.MyWorkoutListRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -17,6 +18,7 @@ public class MyWorkoutListService {
     private final MyWorkoutListRepository myWorkoutListRepository;
     private final WorkoutRepository workoutRepository;
 
+    @Transactional
     public Long addWorkout(Member member, Long workoutId) {
         Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다"));
         MyWorkoutList myWorkoutList = new MyWorkoutList(workout, member);
