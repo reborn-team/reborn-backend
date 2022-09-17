@@ -26,10 +26,9 @@ public class MemberService {
         Member save = memberRepository.save(member);
         return save.getId();
     }
-
+ 
     public boolean emailDuplicateCheck(String email) {
         return memberRepository.existsByEmail(email);
-
     }
 
     @Transactional

@@ -21,7 +21,7 @@ public class LocalFileService implements FileService {
         List<FileDto> files = new ArrayList<>();
         for (MultipartFile file : multipartFile) {
             String originFileName = file.getOriginalFilename();
-            String uploadFileName = createFileName(originFileName);
+            String uploadFileName = createUploadFileName(originFileName);
             String fullPath = getFullPath(uploadFileName);
             try {
                 file.transferTo(new File(fullPath));

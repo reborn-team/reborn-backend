@@ -16,7 +16,7 @@ public interface FileService {
 
     String getFullPath(String uploadFileName);
 
-    default String createFileName(String fileName) {
+    default String createUploadFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 

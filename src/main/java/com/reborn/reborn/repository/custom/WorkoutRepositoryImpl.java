@@ -78,7 +78,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
     }
 
     private BooleanExpression equalsWorkoutCategory(String workoutCategory) {
-        return hasText(workoutCategory) ? workout.workoutCategory.eq(WorkoutCategory.valueOf(workoutCategory)) : null;
+        return hasText(workoutCategory) ? workout.workoutCategory.eq(WorkoutCategory.valueOf(workoutCategory.toUpperCase())) : null;
     }
 
     private BooleanExpression ltWorkoutId(Long workoutId) {

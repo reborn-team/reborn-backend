@@ -1,6 +1,5 @@
 package com.reborn.reborn.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +13,6 @@ public class WorkoutPageDto {
 
     public WorkoutPageDto(List<WorkoutListDto> page) {
         this.page = page;
-        hasNext = page.size()==10;
+        hasNext = page.size() == 10;
     }
 }
