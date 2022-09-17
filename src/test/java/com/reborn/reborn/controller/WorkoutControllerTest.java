@@ -7,7 +7,6 @@ import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.service.WorkoutService;
 import org.junit.jupiter.api.DisplayName;
@@ -104,11 +103,9 @@ class WorkoutControllerTest extends ControllerConfig {
     }
 
     @Test
-    @WithUserDetails(value = "email@naver.com")
     @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workout")
     void getPagingWorkout() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
         List<WorkoutListDto> list = new ArrayList<>();
         WorkoutListDto workoutResponseDto = WorkoutListDto.builder().workoutId(1L).workoutName("pull up")
                 .uploadFileName("uuid.png")
@@ -118,8 +115,7 @@ class WorkoutControllerTest extends ControllerConfig {
 
         //when
         mockMvc.perform(get("/api/v1/workout")
-                        .queryParam("id", "1").queryParam("category", "BACK")
-                        .header("Authorization", "Bearer " + getToken(member)))
+                        .queryParam("id", "1").queryParam("category", "BACK"))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getPagingList",
                         requestParameters(
