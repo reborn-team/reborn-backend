@@ -11,15 +11,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
-@AutoConfigureMockMvc // -> webAppContextSetup(webApplicationContext)
+@AutoConfigureMockMvc
 @AutoConfigureRestDocs
-@SpringBootTest // -> apply(documentationConfiguration(restDocumentation))
+@Import({RestDocsConfig.class})
+@SpringBootTest
 public class ControllerConfig {
 
-    private TokenProvider tokenProvider;
     private AuthToken token;
     @Autowired
     private MemberRepository memberRepository;
@@ -28,7 +31,7 @@ public class ControllerConfig {
 
     @BeforeEach
     void before() {
-        tokenProvider = new TokenProvider(value);
+        TokenProvider tokenProvider = new TokenProvider(value);
         token = tokenProvider.createAuthToken("user", MemberRole.USER, new Date(100000000000L));
 
     }

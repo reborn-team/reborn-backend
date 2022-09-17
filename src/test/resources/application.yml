@@ -62,3 +62,8 @@ app:
 file:
   upload:
     directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

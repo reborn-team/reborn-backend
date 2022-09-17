@@ -16,18 +16,18 @@ public class WorkoutImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
+    private String originFileName;
 
-    private String path;
+    private String uploadFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workout_id")
     private Workout workout;
 
     @Builder
-    public WorkoutImage(String fileName, String path, Workout workout) {
-        this.fileName = fileName;
-        this.path = path;
+    public WorkoutImage(String originFileName, String uploadFileName, Workout workout) {
+        this.originFileName = originFileName;
+        this.uploadFileName = uploadFileName;
         this.workout = workout;
     }
 }

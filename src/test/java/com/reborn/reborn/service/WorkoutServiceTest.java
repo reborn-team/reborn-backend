@@ -1,12 +1,11 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.WorkoutResponseDto;
+import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
-import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.WorkoutRepository;
-import org.assertj.core.api.Assertions;
+import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,9 +13,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 class WorkoutServiceTest {
 
     @InjectMocks
-    private WorkoutServiceImpl workoutService;
+    private WorkoutService workoutService;
     @Mock
     WorkoutRepository workoutRepository;
 
@@ -34,34 +35,46 @@ class WorkoutServiceTest {
         WorkoutRequestDto requestDto = WorkoutRequestDto.builder()
                 .workoutCategory("BACK").build();
         Workout workout = Workout.builder().build();
-        Member member = Member.builder().build();
 
         given(workoutRepository.save(any())).willReturn(workout);
 
         //when
-        Workout saveWorkout = workoutService.create(member, requestDto);
+        Long saveWorkoutId = workoutService.create(requestDto);
         //then
         verify(workoutRepository).save(any());
 
-        Assertions.assertThat(saveWorkout.getId()).isEqualTo(workout.getId());
+        assertThat(saveWorkoutId).isEqualTo(workout.getId());
 
     }
 
     @Test
-    @DisplayName("내 운동 정보를 조회한다.")
+    @DisplayName("운동 정보를 조회한다.")
     void getMyWorkout() {
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).build();
-        Member member = Member.builder().build();
 
-        given(workoutRepository.findByIdAndMemberId(any(),any())).willReturn(Optional.of(workout));
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
         //when
-        WorkoutResponseDto myWorkout = workoutService.getMyWorkout(member, workout.getId());
+        Workout findWorkout = workoutService.findWorkoutById(workout.getId());
         //then
-        verify(workoutRepository).findByIdAndMemberId(any(),any());
+        verify(workoutRepository).findById(any());
 
-        Assertions.assertThat(workout.getWorkoutCategory()).isEqualTo(myWorkout.getWorkoutCategory());
+        assertThat(workout.getWorkoutCategory()).isEqualTo(findWorkout.getWorkoutCategory());
 
+    }
+
+    @Test
+    @DisplayName("운동 정보를 검색조건에 따라 10개씩 출력한다")
+    void pagingWorkout(){
+        List<WorkoutListDto> list = new ArrayList<>();
+        WorkoutSearchCondition cond = new WorkoutSearchCondition();
+        given(workoutRepository.paginationWorkoutList(cond))
+                .willReturn(list);
+
+        List<WorkoutListDto> findList = workoutService.pagingWorkout(cond);
+        verify(workoutRepository).paginationWorkoutList(any());
+
+        assertThat(list.size()).isEqualTo(findList.size());
     }
 
 

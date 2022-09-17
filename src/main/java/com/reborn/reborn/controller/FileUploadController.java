@@ -3,27 +3,38 @@ package com.reborn.reborn.controller;
 import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.service.FileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
-@RestController("/api/v1/file")
+@Slf4j
+@RestController
+@RequestMapping("/api/v1/file")
 @RequiredArgsConstructor
 public class FileUploadController {
 
     private final FileService fileService;
 
-
-//    @GetMapping
-//    public String download(@RequestParam String filename){
-//
-//    }
     @PostMapping
-    public List<FileDto> upload(List<MultipartFile> files){
-        return fileService.uploadFile(files);
+    public ResponseEntity<List<FileDto>> saveFile(@RequestBody List<MultipartFile> file) {
+        return ResponseEntity.ok().body(fileService.uploadFile(file));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(String uploadFileName) {
+        fileService.deleteFile(uploadFileName);
+        return ResponseEntity.ok().build();
+    }
+
+    @ResponseBody
+    @GetMapping("/images")
+    public Resource downloadImage(@RequestParam String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileService.getFullPath(filename));
     }
 }
