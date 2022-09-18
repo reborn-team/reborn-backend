@@ -1,16 +1,19 @@
 package com.reborn.reborn.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -27,8 +30,8 @@ public class FileUploadController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Boolean> delete(@RequestBody FileDto fileDto) {
-        boolean isDelete = fileService.deleteFile(fileDto.getUploadFileName());
+    public ResponseEntity<Boolean> delete(@RequestParam String filename) {
+        boolean isDelete = fileService.deleteFile(filename);
         return ResponseEntity.ok().body(isDelete);
     }
 
