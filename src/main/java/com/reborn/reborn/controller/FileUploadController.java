@@ -27,12 +27,11 @@ public class FileUploadController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(String uploadFileName) {
-        fileService.deleteFile(uploadFileName);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Boolean> delete(@RequestBody FileDto fileDto) {
+        boolean isDelete = fileService.deleteFile(fileDto.getUploadFileName());
+        return ResponseEntity.ok().body(isDelete);
     }
 
-    @ResponseBody
     @GetMapping("/images")
     public Resource downloadImage(@RequestParam String filename) throws MalformedURLException {
         return new UrlResource("file:" + fileService.getFullPath(filename));
