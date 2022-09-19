@@ -12,11 +12,13 @@ public interface FileService {
 
     List<FileDto> uploadFile(List<MultipartFile> multipartFile);
 
-    void deleteFile(String fileName);
+    boolean deleteFile(String fileName);
 
     String getFullPath(String uploadFileName);
 
-    default String createFileName(String fileName) {
+
+
+    default String createUploadFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 

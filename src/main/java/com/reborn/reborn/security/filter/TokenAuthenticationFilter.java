@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,7 +24,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
     private final MemberDetailsService memberDetailsService;
-    private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String PREFIX = "Bearer ";
 
     @Override
@@ -50,8 +50,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getAccessToken(HttpServletRequest request) {
-        if (request.getHeader(HEADER_AUTHORIZATION) != null) {
-            String token = request.getHeader(HEADER_AUTHORIZATION).substring(PREFIX.length());
+        if (request.getHeader(AUTHORIZATION) != null) {
+            String token = request.getHeader(AUTHORIZATION).substring(PREFIX.length());
             return token;
         }
         return null;

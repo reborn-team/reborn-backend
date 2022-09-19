@@ -1,5 +1,6 @@
 package com.reborn.reborn.service;
 
+import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Workout;
@@ -33,11 +34,15 @@ public class WorkoutService {
         return saveWorkout.getId();
     }
 
-    public Workout getWorkout(Long id) {
-        return workoutRepository.findById(id).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다."));
+    public Workout findWorkoutById(Long workoutId) {
+        return workoutRepository.findById(workoutId).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다."));
     }
 
-    public List<WorkoutResponseDto> pagingWorkout(WorkoutSearchCondition cond){
+    public List<WorkoutListDto> pagingWorkout(WorkoutSearchCondition cond){
         return workoutRepository.paginationWorkoutList(cond);
+    }
+
+    public WorkoutResponseDto getWorkoutDto(Long workoutId){
+        return workoutRepository.getWorkoutDetail(workoutId);
     }
 }

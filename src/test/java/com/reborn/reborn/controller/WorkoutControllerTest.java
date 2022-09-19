@@ -2,21 +2,18 @@ package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.dto.FileDto;
+import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
-import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.service.WorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -86,14 +83,14 @@ class WorkoutControllerTest extends ControllerConfig {
     void getMyWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        Workout workoutResponseDto = Workout.builder()
+        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
                 .workoutName("pull up")
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
-                //TODO 테스트코드 다시작성해야함
-//                .filePath("imagePath")
+                .originFileName("원본.png")
+                .uploadFileName("uuid.png")
                 .build();
-        given(workoutService.getWorkout(any())).willReturn(workoutResponseDto);
+        given(workoutService.getWorkoutDto(any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -106,25 +103,19 @@ class WorkoutControllerTest extends ControllerConfig {
     }
 
     @Test
-    @WithUserDetails(value = "email@naver.com")
     @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workout")
     void getPagingWorkout() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        List<WorkoutResponseDto> list = new ArrayList<>();
-        WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder().id(1L).workoutName("pull up").workoutName("pull up")
-                .workoutCategory(WorkoutCategory.BACK)
-                .content("등 운동입니다.")
+        List<WorkoutListDto> list = new ArrayList<>();
+        WorkoutListDto workoutResponseDto = WorkoutListDto.builder().workoutId(1L).workoutName("pull up")
                 .uploadFileName("uuid.png")
-                .originFileName("image.png")
                 .build();
         list.add(workoutResponseDto);
         given(workoutService.pagingWorkout(any())).willReturn(list);
 
         //when
         mockMvc.perform(get("/api/v1/workout")
-                        .queryParam("id", "1").queryParam("category", "BACK")
-                        .header("Authorization", "Bearer " + getToken(member)))
+                        .queryParam("id", "1").queryParam("category", "BACK"))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getPagingList",
                         requestParameters(
@@ -137,12 +128,8 @@ class WorkoutControllerTest extends ControllerConfig {
                                 fieldWithPath("hasNext").type(BOOLEAN).description("출력할 내용이 더 있는지")
                         ).andWithPrefix("page[].",
                                 fieldWithPath("workoutName").type(STRING).description("운동 이름"),
-                                fieldWithPath("id").type(NUMBER).description("운동 ID"),
-                                fieldWithPath("content").type(STRING).description("운동 설명"),
-                                fieldWithPath("workoutCategory").type(STRING).description("운동 부위"),
-                                fieldWithPath("uploadFileName").type(STRING).description("업로드 파일 이름"),
-                                fieldWithPath("originFileName").type(STRING).description("원본 파일 이름"),
-                                fieldWithPath("workoutCategory").type(STRING).description("운동 카테고리")
+                                fieldWithPath("workoutId").type(NUMBER).description("운동 ID"),
+                                fieldWithPath("uploadFileName").type(STRING).description("업로드 파일 이름")
                         )));
     }
 

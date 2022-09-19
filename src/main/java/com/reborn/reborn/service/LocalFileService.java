@@ -1,6 +1,7 @@
 package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.FileDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class LocalFileService implements FileService {
 
     @Value("${file.upload.directory}")
@@ -21,7 +23,7 @@ public class LocalFileService implements FileService {
         List<FileDto> files = new ArrayList<>();
         for (MultipartFile file : multipartFile) {
             String originFileName = file.getOriginalFilename();
-            String uploadFileName = createFileName(originFileName);
+            String uploadFileName = createUploadFileName(originFileName);
             String fullPath = getFullPath(uploadFileName);
             try {
                 file.transferTo(new File(fullPath));
@@ -35,9 +37,9 @@ public class LocalFileService implements FileService {
     }
 
     @Override
-    public void deleteFile(String uploadFilename) {
+    public boolean deleteFile(String uploadFilename) {
         File file = new File(getFullPath(uploadFilename));
-        file.delete();
+        return file.delete();
     }
     @Override
     public String getFullPath(String uploadFileName) {
