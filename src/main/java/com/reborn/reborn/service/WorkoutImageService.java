@@ -16,16 +16,8 @@ public class WorkoutImageService {
 
     @Transactional
     public Long create(FileDto fileDto, Workout workout){
-<<<<<<< HEAD
-        WorkoutImage workoutImage = WorkoutImage.builder()
-                .originFileName(fileDto.getOriginFileName())
-                .uploadFileName(fileDto.getUploadFileName())
-                .workout(workout)
-                .build();
-=======
         WorkoutImage workoutImage = new WorkoutImage(fileDto.getOriginFileName(), fileDto.getUploadFileName());
         workoutImage.uploadToWorkout(workout);
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
         workoutImageRepository.save(workoutImage);
         return workoutImage.getId();
     }

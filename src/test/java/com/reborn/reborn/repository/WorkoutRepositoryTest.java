@@ -1,12 +1,7 @@
 package com.reborn.reborn.repository;
 
 import com.reborn.reborn.dto.WorkoutListDto;
-<<<<<<< HEAD
-import com.reborn.reborn.dto.WorkoutResponseDto;
-import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
-=======
 import com.reborn.reborn.dto.WorkoutSliceDto;
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
 import com.reborn.reborn.entity.*;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,28 +74,7 @@ class WorkoutRepositoryTest {
                 .password("A")
                 .name("han")
                 .build();
-<<<<<<< HEAD
-        for (int i = 0; i < 100; i++) {
-            Workout workout = Workout.builder()
-                    .workoutName("pull up"+i)
-                    .content("등을 펼쳐서 당깁니다.")
-                    .workoutCategory(WorkoutCategory.BACK).build();
-            WorkoutImage workoutImage = new WorkoutImage(i+"",i+"",workout);
-            workoutImageRepository.save(workoutImage);
-            workoutRepository.save(workout);
-        }
-        memberRepository.save(member);
-//        Optional<Workout> findWorkout = workoutRepository.findById(workout.getId());
-//        assertThat(workout.getWorkoutName()).isEqualTo(findWorkout.get().getWorkoutName());
-        List<WorkoutListDto> byIdAndMemberId = workoutRepository.paginationWorkoutList(new WorkoutSearchCondition(89L,"BACK"));
-        for (WorkoutListDto workoutResponseDto : byIdAndMemberId) {
-            System.out.println("workoutResponseDto = " + workoutResponseDto);
-        }
-        WorkoutResponseDto workoutDetail = workoutRepository.getWorkoutDetail(1L);
-        System.out.println("workoutDetail = " + workoutDetail);
-=======
         return member;
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
     }
 
     private Workout createWorkout(Member member,String text) {

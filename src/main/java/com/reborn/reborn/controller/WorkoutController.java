@@ -1,11 +1,7 @@
 package com.reborn.reborn.controller;
 
 import com.reborn.reborn.dto.WorkoutListDto;
-<<<<<<< HEAD
-import com.reborn.reborn.dto.WorkoutPageDto;
-=======
 import com.reborn.reborn.dto.WorkoutSliceDto;
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.entity.Member;
@@ -33,16 +29,6 @@ public class WorkoutController {
     private final WorkoutImageService workoutImageService;
 
     @GetMapping
-<<<<<<< HEAD
-    public ResponseEntity<WorkoutPageDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
-        List<WorkoutListDto> responseDto = workoutService.pagingWorkout(cond);
-        return ResponseEntity.ok().body(new WorkoutPageDto(responseDto));
-    }
-
-    @PostMapping
-    public ResponseEntity<Long> createWorkout(@RequestBody WorkoutRequestDto workoutRequestDto){
-        Long saveWorkoutId = workoutService.create(workoutRequestDto);
-=======
     public ResponseEntity<WorkoutSliceDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
         List<WorkoutListDto> responseDto = workoutService.pagingWorkout(cond);
         return ResponseEntity.ok().body(new WorkoutSliceDto(responseDto));
@@ -51,7 +37,6 @@ public class WorkoutController {
     @PostMapping
     public ResponseEntity<Long> createWorkout(@LoginMember Member member, @RequestBody WorkoutRequestDto workoutRequestDto){
         Long saveWorkoutId = workoutService.create(member, workoutRequestDto);
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
         Workout workout = workoutService.findWorkoutById(saveWorkoutId);
         workoutRequestDto.getFiles().forEach(dto -> workoutImageService.create(dto,workout));
         log.info("save Workout");
@@ -59,11 +44,7 @@ public class WorkoutController {
     }
 
     @GetMapping("/{workoutId}")
-<<<<<<< HEAD
-    public ResponseEntity<WorkoutResponseDto> getWorkout(@PathVariable Long workoutId){
-=======
     public ResponseEntity<WorkoutResponseDto> getWorkoutDetail(@PathVariable Long workoutId){
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
         WorkoutResponseDto dto =  workoutService.getWorkoutDto(workoutId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);

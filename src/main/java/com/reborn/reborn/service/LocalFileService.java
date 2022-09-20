@@ -41,10 +41,7 @@ public class LocalFileService implements FileService {
 
     @Override
     public boolean deleteFile(String uploadFilename) {
-<<<<<<< HEAD
-=======
         //TODO 해당 파일을 지우지 못했을 경우, 1. 해당 파일 이름 없음. 2. 그냥 시스템 상으로 실패,  
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
         File file = new File(getFullPath(uploadFilename));
         return file.delete();
     }

@@ -24,12 +24,6 @@ public class WorkoutImage {
     @JoinColumn(name = "workout_id")
     private Workout workout;
 
-<<<<<<< HEAD
-    @Builder
-    public WorkoutImage(String originFileName, String uploadFileName, Workout workout) {
-        this.originFileName = originFileName;
-        this.uploadFileName = uploadFileName;
-=======
     public WorkoutImage(String originFileName, String uploadFileName) {
         this.originFileName = originFileName;
         this.uploadFileName = uploadFileName;
@@ -40,7 +34,6 @@ public class WorkoutImage {
         if (this.workout != null) {
             this.workout.getWorkoutImages().remove(this);
         }
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
         this.workout = workout;
         workout.getWorkoutImages().add(this);
     }

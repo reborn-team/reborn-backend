@@ -8,10 +8,7 @@ import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.entity.WorkoutCategory;
-<<<<<<< HEAD
-=======
 import com.reborn.reborn.service.WorkoutImageService;
->>>>>>> 113f9386f9f64211c2345b78b02f41d117e6e735
 import com.reborn.reborn.service.WorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
