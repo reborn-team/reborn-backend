@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WorkoutSearchCondition {
     Long id;
-    String category;
+    WorkoutCategory category;
 
 }
