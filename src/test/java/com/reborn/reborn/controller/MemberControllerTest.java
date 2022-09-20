@@ -39,13 +39,13 @@ public class MemberControllerTest extends ControllerConfig {
 
 
     @Test
-    @DisplayName("회원 가입 : POST /api/v1/join")
+    @DisplayName("회원 가입 : POST /api/v1/members")
     void joinTest() throws Exception {
         MemberRequestDto memberRequestDto = new MemberRequestDto("email", "password", "name", "phone", "postcode", "address", "detailAddress");
 
         when(memberService.registerMember(memberRequestDto)).thenReturn(1L);
 
-        mockMvc.perform(post("/api/v1/join")
+        mockMvc.perform(post("/api/v1/members")
                         .content(objectMapper.writeValueAsBytes(memberRequestDto))
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -94,7 +94,7 @@ public class MemberControllerTest extends ControllerConfig {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(changePasswordDto))
                         .header("Authorization", "Bearer " + getToken(member)))
-                .andExpect(status().isOk())
+                .andExpect(status().isNoContent())
                 .andDo(document("change-password",
                         requestFields(
                                 fieldWithPath("rawPassword").type(STRING).description("현재 비밀번호"),
