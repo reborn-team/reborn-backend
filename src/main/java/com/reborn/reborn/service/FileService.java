@@ -1,6 +1,7 @@
 package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.FileDto;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +17,7 @@ public interface FileService {
 
     String getFullPath(String uploadFileName);
 
-
+    Resource downloadFile(String filename);
 
     default String createUploadFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
