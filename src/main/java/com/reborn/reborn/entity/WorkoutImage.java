@@ -24,10 +24,17 @@ public class WorkoutImage {
     @JoinColumn(name = "workout_id")
     private Workout workout;
 
-    @Builder
-    public WorkoutImage(String originFileName, String uploadFileName, Workout workout) {
+    public WorkoutImage(String originFileName, String uploadFileName) {
         this.originFileName = originFileName;
         this.uploadFileName = uploadFileName;
+
+    }
+
+    public void uploadToWorkout(Workout workout){
+        if (this.workout != null) {
+            this.workout.getWorkoutImages().remove(this);
+        }
         this.workout = workout;
+        workout.getWorkoutImages().add(this);
     }
 }
