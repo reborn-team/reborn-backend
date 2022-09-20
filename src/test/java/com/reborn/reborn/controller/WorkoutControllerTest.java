@@ -128,7 +128,6 @@ class WorkoutControllerTest extends ControllerConfig {
                                 parameterWithName("category").description("운동 카테고리")
                         ),
                         responseFields(
-                                //TODO 해야함
                                 fieldWithPath("page").type(ARRAY).description("페이지에 출력할 List"),
                                 fieldWithPath("hasNext").type(BOOLEAN).description("출력할 내용이 더 있는지")
                         ).andWithPrefix("page[].",
