@@ -21,6 +21,7 @@ public class MyWorkoutListController {
     public ResponseEntity addMyWorkoutList(@LoginMember Member member,@PathVariable Long workoutId) {
         //TODO 이미 등록된 운동이면 추가 못하게해야함
         Long myWorkoutId = myWorkoutListService.addWorkout(member, workoutId);
+        //TODO Location URI 추가 해야함
         return ResponseEntity.status(HttpStatus.CREATED).body(myWorkoutId);
     }
 

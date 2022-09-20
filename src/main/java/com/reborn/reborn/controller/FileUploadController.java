@@ -36,7 +36,7 @@ public class FileUploadController {
     }
 
     @GetMapping("/images")
-    public Resource downloadImage(@RequestParam String filename) throws MalformedURLException {
-        return new UrlResource("file:" + fileService.getFullPath(filename));
+    public Resource downloadImage(@RequestParam String filename) {
+        return fileService.downloadFile(filename);
     }
 }
