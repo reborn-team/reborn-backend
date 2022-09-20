@@ -457,13 +457,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#Workout-API">Workout API</a>
 <ul class="sectlevel2">
+<li><a href="#Workout-운동-리스트-조회">Workout 운동 리스트 조회</a></li>
 <li><a href="#Workout-운동-생성">Workout 운동 생성</a></li>
-<li><a href="#Workout-운동-조회">Workout 운동 조회</a></li>
+<li><a href="#Workout-운동-상세-조회">Workout 운동 상세 조회</a></li>
 </ul>
 </li>
 <li><a href="#MyWorkoutList-API">MyWorkoutList API</a>
 <ul class="sectlevel2">
 <li><a href="#MyWorkoutList-내-운동-등록">MyWorkoutList 내 운동 등록</a></li>
+</ul>
+</li>
+<li><a href="#File-API">File API</a>
+<ul class="sectlevel2">
+<li><a href="#File-파일-업로드">File 파일 업로드</a></li>
 </ul>
 </li>
 </ul>
@@ -515,66 +521,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/join HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 143
+Content-Length: 187
 Host: localhost:8080
 
-{"email":"email","password":"password","name":"name","phone":"phone","zipcode":"postcode","roadName":"address","detailAddress":"detailAddress"}</code></pre>
+{
+  "email" : "email",
+  "password" : "password",
+  "name" : "name",
+  "phone" : "phone",
+  "zipcode" : "postcode",
+  "roadName" : "address",
+  "detailAddress" : "detailAddress"
+}</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="Member-회원-가입_request_fields"><a class="link" href="#Member-회원-가입_request_fields">Request fields</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일 주소</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>phone</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">전화번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>zipcode</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">우편번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roadName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주소</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>detailAddress</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상세 주소</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
 <h4 id="Member-회원-가입_http_response"><a class="link" href="#Member-회원-가입_http_response">HTTP response</a></h4>
@@ -610,27 +570,6 @@ Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_email_중복_체크_request_parameters"><a class="link" href="#_email_중복_체크_request_parameters">Request parameters</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">중복 체크할 이메일</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
 <h4 id="_email_중복_체크_http_response"><a class="link" href="#_email_중복_체크_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
@@ -660,42 +599,16 @@ false</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /api/v1/change-password HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzI0NDMzOH0.nD-qIuGhxYMcAqQN6ZzPiZq7LEyrEq-WB22nHEeBOvY
-Content-Length: 40
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzYzNDYwOX0.md8GPBezcxOAfkm4nHzfGzuscm8W_T0rDHnv5LOpujE
+Content-Length: 54
 Host: localhost:8080
 
-{"rawPassword":"a","changePassword":"b"}</code></pre>
+{
+  "rawPassword" : "a",
+  "changePassword" : "b"
+}</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_비밀번호_변경_request_fields"><a class="link" href="#_비밀번호_변경_request_fields">Request fields</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rawPassword</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">현재 비밀번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>changePassword</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 비밀번호</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
 <h4 id="_비밀번호_변경_http_response"><a class="link" href="#_비밀번호_변경_http_response">HTTP response</a></h4>
@@ -721,6 +634,46 @@ X-Frame-Options: DENY</code></pre>
 <h2 id="Workout-API"><a class="link" href="#Workout-API">Workout API</a></h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="Workout-운동-리스트-조회"><a class="link" href="#Workout-운동-리스트-조회">Workout 운동 리스트 조회</a></h3>
+<div class="sect3">
+<h4 id="Workout-운동-리스트-조회_http_request"><a class="link" href="#Workout-운동-리스트-조회_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/workout?id=1&amp;category=BACK HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="Workout-운동-리스트-조회_http_response"><a class="link" href="#Workout-운동-리스트-조회_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 138
+
+{
+  "page" : [ {
+    "workoutId" : 1,
+    "workoutName" : "pull up",
+    "uploadFileName" : "uuid.png"
+  } ],
+  "hasNext" : false
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="Workout-운동-생성"><a class="link" href="#Workout-운동-생성">Workout 운동 생성</a></h3>
 <div class="sect3">
 <h4 id="Workout-운동-생성_http_request"><a class="link" href="#Workout-운동-생성_http_request">HTTP request</a></h4>
@@ -728,62 +681,21 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/workout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzI0NDM0MX0.n4WlhCGzxqRRILaJIfeaxOYL9tYMvcq45ia4APettLY
-Content-Length: 164
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzYzNDYxNH0.Q1cytRHd5jjdLEMBRgY2E61PordWR3xPaPqyxNsdPJg
+Content-Length: 212
 Host: localhost:8080
 
-{"workoutName":"pull up","content":"광배 운동","workoutCategory":"BACK","files":[{"originFileName":"원본 이름","uploadFileName":"저장된 파일 이름"}]}</code></pre>
+{
+  "workoutName" : "pull up",
+  "content" : "광배 운동",
+  "workoutCategory" : "BACK",
+  "files" : [ {
+    "originFileName" : "원본 이름",
+    "uploadFileName" : "저장된 파일 이름"
+  } ]
+}</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="Workout-운동-생성_request_fields"><a class="link" href="#Workout-운동-생성_request_fields">Request fields</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>workoutName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">운동 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">운동 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>workoutCategory</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">운동 부위</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>files</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">파일 정보</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>files[].originFileName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">원본 파일 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>files[].uploadFileName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">저장된 파일 이름</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
 <h4 id="Workout-운동-생성_http_response"><a class="link" href="#Workout-운동-생성_http_response">HTTP response</a></h4>
@@ -808,41 +720,19 @@ Content-Length: 1
 </div>
 </div>
 <div class="sect2">
-<h3 id="Workout-운동-조회"><a class="link" href="#Workout-운동-조회">Workout 운동 조회</a></h3>
+<h3 id="Workout-운동-상세-조회"><a class="link" href="#Workout-운동-상세-조회">Workout 운동 상세 조회</a></h3>
 <div class="sect3">
-<h4 id="Workout-운동-조회_http_request"><a class="link" href="#Workout-운동-조회_http_request">HTTP request</a></h4>
+<h4 id="Workout-운동-상세-조회_http_request"><a class="link" href="#Workout-운동-상세-조회_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/workout/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzI0NDM0MX0.n4WlhCGzxqRRILaJIfeaxOYL9tYMvcq45ia4APettLY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzYzNDYxNH0.Q1cytRHd5jjdLEMBRgY2E61PordWR3xPaPqyxNsdPJg
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="Workout-운동-조회_path_parameters"><a class="link" href="#Workout-운동-조회_path_parameters">Path parameters</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/v1/workout/{workoutId}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>workoutId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">운동 정보 Id</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="Workout-운동-조회_http_response"><a class="link" href="#Workout-운동-조회_http_response">HTTP response</a></h4>
+<h4 id="Workout-운동-상세-조회_http_response"><a class="link" href="#Workout-운동-상세-조회_http_response">HTTP response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -856,9 +746,16 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 104
+Content-Length: 189
 
-{"id":null,"workoutName":"pull up","content":"등 운동입니다.","files":[],"workoutCategory":"BACK"}</code></pre>
+{
+  "id" : null,
+  "workoutName" : "pull up",
+  "content" : "등 운동입니다.",
+  "uploadFileName" : "uuid.png",
+  "originFileName" : "원본.png",
+  "workoutCategory" : "BACK"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -875,32 +772,10 @@ Content-Length: 104
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/my-workout/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzI0NDM0MH0.KB49nUbHEudKF_iazqmrxHhEVLgfmGQ1NaZOs4rBx28
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY2MzYzNDYxMn0.6YlZoDe2LBjd0277eyVcjtBx5ke2e3CyVIVj3SJN1vI
 Host: localhost:8080</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="MyWorkoutList-내-운동-등록_path_parameters"><a class="link" href="#MyWorkoutList-내-운동-등록_path_parameters">Path parameters</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/v1/my-workout/{workoutId}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>workoutId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">운동 정보 Id</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
 <h4 id="MyWorkoutList-내-운동-등록_http_response"><a class="link" href="#MyWorkoutList-내-운동-등록_http_response">HTTP response</a></h4>
@@ -926,11 +801,56 @@ Content-Length: 1
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="File-API"><a class="link" href="#File-API">File API</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="File-파일-업로드"><a class="link" href="#File-파일-업로드">File 파일 업로드</a></h3>
+<div class="sect3">
+<h4 id="File-파일-업로드_http_request"><a class="link" href="#File-파일-업로드_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/file HTTP/1.1
+Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Host: localhost:8080
+
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
+Content-Disposition: form-data; name=file
+
+&lt;&lt;png data&gt;&gt;
+--6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm--</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="File-파일-업로드_http_response"><a class="link" href="#File-파일-업로드_http_response">HTTP response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 2
+
+[]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-09-15 21:16:59 +0900
+Last updated 2022-09-20 09:38:31 +0900
 </div>
 </div>
 </body>
