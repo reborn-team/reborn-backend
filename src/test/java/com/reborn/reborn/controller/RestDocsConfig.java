@@ -1,5 +1,6 @@
 package com.reborn.reborn.controller;
 
+import org.springframework.boot.test.autoconfigure.restdocs.RestDocsMockMvcConfigurationCustomizer;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
@@ -12,11 +13,9 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 public class RestDocsConfig {
 
     @Bean
-    public RestDocumentationResultHandler write(){
-        return MockMvcRestDocumentation.document(
-                "{class-name}/{method-name}",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())
-        );
+    public RestDocsMockMvcConfigurationCustomizer restDocsMockMvcConfigurationCustomizer() {
+        return configurer -> configurer.operationPreprocessors()
+                .withRequestDefaults(prettyPrint())
+                .withResponseDefaults(prettyPrint());
     }
 }

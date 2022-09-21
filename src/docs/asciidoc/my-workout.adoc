@@ -1,0 +1,33 @@
+= REST Docs
+reborn docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= My workout
+---
+
+== 운동 상세 조회
+
+`POST /api/v1/my-workout/{id}`
+
+=== Request
+
+include::{snippets}/workoutList-addMyWorkoutList/http-request.adoc[]
+include::{snippets}/workoutList-addMyWorkoutList/path-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/workoutList-addMyWorkoutList/http-response.adoc[]
+
+
+
+
+

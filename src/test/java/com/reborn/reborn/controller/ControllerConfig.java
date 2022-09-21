@@ -36,6 +36,7 @@ public class ControllerConfig {
 
     }
 
+
     @PostConstruct
     void createWorkout() {
         memberRepository.deleteAll();
