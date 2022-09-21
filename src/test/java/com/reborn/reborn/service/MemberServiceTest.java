@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.verify;
 
 
@@ -66,6 +65,20 @@ class MemberServiceTest {
 
         assertThat(value).isEqualTo(true);
 
+    }
+
+    @Test
+    @DisplayName("해당 닉네임이 존재하면 True를 반환한다.")
+    void nicknameCheckTest() {
+        Member member = Member.builder()
+                .nickname("han")
+                .password("a")
+                .email("reborn@naver.com").build();
+        given(memberRepository.existsByNickname(member.getNickname())).willReturn(true);
+
+        boolean value = memberService.nicknameDuplicateCheck("han");
+
+        assertThat(value).isEqualTo(true);
 
     }
 

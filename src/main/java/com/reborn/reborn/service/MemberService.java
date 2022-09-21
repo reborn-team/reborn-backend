@@ -31,6 +31,9 @@ public class MemberService {
     public boolean emailDuplicateCheck(String email) {
         return memberRepository.existsByEmail(email);
     }
+    public boolean nicknameDuplicateCheck(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
 
     @Transactional
     public void updatePassword(Long memberId, ChangePasswordDto request) {

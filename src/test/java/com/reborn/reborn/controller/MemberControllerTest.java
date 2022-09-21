@@ -83,6 +83,23 @@ public class MemberControllerTest extends ControllerConfig {
     }
 
     @Test
+    @DisplayName("닉네임 중복 확인 : GET /api/v1/nickname-check")
+    void nicknameCheck() throws Exception {
+
+        String nickname = "nickname";
+
+        when(memberService.emailDuplicateCheck(nickname)).thenReturn(false);
+
+        mockMvc.perform(get("/api/v1/nickname-check")
+                        .queryParam("nickname", nickname))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("nickname-check",
+                        requestParameters(
+                                parameterWithName("nickname").description("중복 체크할 닉네임")
+                        )));
+    }
+    @Test
     @WithUserDetails(value = "email@naver.com")
     @DisplayName("비밀번호 변경 : PATCH /api/v1/change-password")
     void changePassword() throws Exception {

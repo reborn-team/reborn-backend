@@ -33,10 +33,14 @@ public class MemberController {
     }
 
     @GetMapping("/email-check")
-    public ResponseEntity<EmailCheckResponse> emailCheck(@RequestParam String email) {
+    public ResponseEntity<DuplicateCheckResponse> emailCheck(@RequestParam String email) {
         boolean check = memberService.emailDuplicateCheck(email);
-
-        return ResponseEntity.status(HttpStatus.OK).body(new EmailCheckResponse(check));
+        return ResponseEntity.status(HttpStatus.OK).body(new DuplicateCheckResponse(check));
+    }
+    @GetMapping("/nickname-check")
+    public ResponseEntity<DuplicateCheckResponse> nicknameCheck(@RequestParam String nickname) {
+        boolean check = memberService.nicknameDuplicateCheck(nickname);
+        return ResponseEntity.status(HttpStatus.OK).body(new DuplicateCheckResponse(check));
     }
 
     @PatchMapping("/change-password")
