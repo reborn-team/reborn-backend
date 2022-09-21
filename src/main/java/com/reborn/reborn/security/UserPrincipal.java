@@ -39,7 +39,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
+        return Collections.singletonList(new SimpleGrantedAuthority(MemberRole.USER.getKey()));
     }
 
     @Override

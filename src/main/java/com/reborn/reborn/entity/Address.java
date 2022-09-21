@@ -10,7 +10,6 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class Address {
 
-    //TODO 도로명 주소 변수명 변경해야함.
     private String roadName;
 
     private String detailAddress;

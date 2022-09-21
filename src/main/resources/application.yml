@@ -10,25 +10,15 @@ spring:
       ddl-auto: update
     show-sql: 'true'
     database-platform: org.hibernate.dialect.H2Dialect
-
   datasource:
     driverClassName: org.h2.Driver
     password: '1'
     username: sa
     url: jdbc:h2:tcp://localhost/~/reborn
-
-#  datasource:
-#    url: jdbc:mysql://testdb.cmltf5ipyjrf.ap-northeast-2.rds.amazonaws.com:3306/mytestdb
-#    username: admin
-#    password: gksdntjr
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-
-#  datasource:
-#    driverClassName: org.mariadb.jdbc.Driver
-#    password: '1234'
-#    username: bootuser
-#    url: jdbc:mariadb://localhost:3306/bootex
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
   thymeleaf:
     cache: 'false'
 
@@ -53,3 +43,12 @@ logging:
       springframework:
         security:
           web: trace
+
+app:
+  auth:
+    tokenExpireDate: 1800000
+    refresh-token-expire-date: 604800000
+
+file:
+  upload:
+    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'

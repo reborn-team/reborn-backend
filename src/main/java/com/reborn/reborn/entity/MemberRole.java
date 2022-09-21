@@ -7,9 +7,9 @@ public enum MemberRole {
     USER("ROLE_USER"),
     ADMIN("ROLE_ADMIN");
 
-    private String value;
+    private String key;
 
-    public String getValue() {
-        return value;
+    public String getKey() {
+        return key;
     }
 }
