@@ -26,10 +26,15 @@ public class MemberController {
         return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new JoinResponseDto(memberId));
     }
 
-    @PatchMapping("/members")
+    @PatchMapping("/members/me")
     public ResponseEntity<Void> modify(@LoginMember Long memberId, @RequestBody MemberUpdateRequest request) {
         memberService.updateMember(memberId, request);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/members/me")
+    public ResponseEntity<MemberResponse> getOne(@LoginMember Long memberId){
+        return ResponseEntity.ok(memberService.getOne(memberId));
     }
 
     @GetMapping("/email-check")

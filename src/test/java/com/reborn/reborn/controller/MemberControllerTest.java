@@ -2,11 +2,10 @@ package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.reborn.reborn.dto.ChangePasswordDto;
-import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.dto.MemberUpdateRequest;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
+import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,14 +15,19 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -122,13 +126,13 @@ public class MemberControllerTest extends ControllerConfig {
     }
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("회원정보 수정 : PATCH /api/v1/members")
+    @DisplayName("회원정보 수정 : PATCH /api/v1/members/me")
     void modifyMember() throws Exception {
         Member member = Member.builder().email("user").password("a").memberRole(MemberRole.USER).build();
         MemberUpdateRequest request = new MemberUpdateRequest("nickname", "010-1234-1234", "zipcode", "roadName", "detail");
         willDoNothing().given(memberService).updateMember(member.getId(),request);
 
-        mockMvc.perform(patch("/api/v1/members")
+        mockMvc.perform(patch("/api/v1/members/me")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(request))
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -144,4 +148,18 @@ public class MemberControllerTest extends ControllerConfig {
                 ));
     }
 
+
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("회원 정보 조회 : Get /api/v1/members/me")
+    void getOne() throws Exception {
+        //given
+        MemberResponse response = new MemberResponse(1L, "nickname", "010-0000-0000", "zip", "road", "detail");
+        given(memberService.getOne(any())).willReturn(response);
+
+        //when
+        mockMvc.perform(get("/api/v1/members/me"))
+                .andExpect(status().isOk())
+                .andDo(document("members-getOne"));
+    }
 }

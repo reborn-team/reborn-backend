@@ -2,7 +2,9 @@ package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.dto.MemberResponse;
 import com.reborn.reborn.dto.MemberUpdateRequest;
+import com.reborn.reborn.entity.Address;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
@@ -124,5 +126,17 @@ class MemberServiceTest {
         memberService.updateMember(member.getId(), request);
 
         assertThat(member.getNickname()).isEqualTo(request.getNickname());
+    }
+
+    @Test
+    @DisplayName("회원 정보를 조회하여 Dto로 반환한다.")
+    void getOne() {
+        Member member = Member.builder().nickname("nick").phone("2").password("1").address(new Address("road","detail","zip")).build();
+        given(memberRepository.findById(any())).willReturn(Optional.of(member));
+
+        MemberResponse response = memberService.getOne(member.getId());
+
+        assertThat(member.getNickname()).isEqualTo(response.getNickname());
+
     }
 }

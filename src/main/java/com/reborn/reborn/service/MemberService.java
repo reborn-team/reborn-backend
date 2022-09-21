@@ -2,6 +2,7 @@ package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.dto.MemberResponse;
 import com.reborn.reborn.dto.MemberUpdateRequest;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.repository.MemberRepository;
@@ -57,4 +58,10 @@ public class MemberService {
     }
 
 
+    public MemberResponse getOne(Long memberId) {
+        //TODO Exception
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        return MemberResponse.of(member);
+
+    }
 }

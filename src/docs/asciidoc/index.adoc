@@ -39,6 +39,9 @@ operation::member-controller-test/nickname-check[snippets='http-request,http-res
 === 비밀번호 변경
 operation::member-controller-test/change-password[snippets='http-request,http-response']
 
+=== 회원정보 조회
+operation::member-controller-test/get-one[snippets='http-request,http-response']
+
 === 회원정보 수정
 operation::member-controller-test/modify-member[snippets='http-request,http-response']
 
