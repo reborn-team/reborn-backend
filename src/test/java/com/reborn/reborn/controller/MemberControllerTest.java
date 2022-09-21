@@ -140,7 +140,7 @@ public class MemberControllerTest extends ControllerConfig {
                 .andDo(document("modify-member",
                         requestFields(
                                 fieldWithPath("nickname").type(STRING).description("닉네임"),
-                                fieldWithPath("mobile").type(STRING).description("전화번호"),
+                                fieldWithPath("phone").type(STRING).description("전화번호"),
                                 fieldWithPath("zipcode").type(STRING).description("우편번호"),
                                 fieldWithPath("roadName").type(STRING).description("도로명 주소"),
                                 fieldWithPath("detailAddress").type(STRING).description("상세 주소")

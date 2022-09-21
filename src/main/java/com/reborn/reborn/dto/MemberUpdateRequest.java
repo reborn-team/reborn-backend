@@ -13,16 +13,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberUpdateRequest {
     private String nickname;
-    private String mobile;
+    private String phone;
     private String zipcode;
     private String roadName;
     private String detailAddress;
 
     public Member toEntity(MemberUpdateRequest request) {
         return Member.builder()
-                .nickname(request.nickname)
-                .phone(request.mobile)
-                .address(new Address(request.roadName, request.detailAddress, request.zipcode))
+                .nickname(request.getNickname())
+                .phone(request.getPhone())
+                .address(new Address(request.getRoadName(), request.getDetailAddress(), request.getZipcode()))
                 .build();
     }
 }
