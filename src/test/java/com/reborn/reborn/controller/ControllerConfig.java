@@ -40,7 +40,7 @@ public class ControllerConfig {
     void createWorkout() {
         memberRepository.deleteAll();
         Member member = Member.builder().email("email@naver.com")
-                .name("han").build();
+                .nickname("han").build();
         memberRepository.save(member);
 
     }
