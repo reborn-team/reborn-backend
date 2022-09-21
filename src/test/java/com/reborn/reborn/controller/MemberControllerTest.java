@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.dto.MemberUpdateRequest;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.service.MemberService;
@@ -99,6 +100,29 @@ public class MemberControllerTest extends ControllerConfig {
                         requestFields(
                                 fieldWithPath("rawPassword").type(STRING).description("현재 비밀번호"),
                                 fieldWithPath("changePassword").type(STRING).description("변경할 비밀번호")
+                        )
+                ));
+    }
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("회원정보 수정 : PATCH /api/v1/members")
+    void modifyMember() throws Exception {
+        Member member = Member.builder().email("user").password("a").memberRole(MemberRole.USER).build();
+        MemberUpdateRequest request = new MemberUpdateRequest("nickname", "010-1234-1234", "zipcode", "roadName", "detail");
+        willDoNothing().given(memberService).updateMember(member.getId(),request);
+
+        mockMvc.perform(patch("/api/v1/members")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("modify-member",
+                        requestFields(
+                                fieldWithPath("nickname").type(STRING).description("닉네임"),
+                                fieldWithPath("mobile").type(STRING).description("전화번호"),
+                                fieldWithPath("zipcode").type(STRING).description("우편번호"),
+                                fieldWithPath("roadName").type(STRING).description("도로명 주소"),
+                                fieldWithPath("detailAddress").type(STRING).description("상세 주소")
                         )
                 ));
     }

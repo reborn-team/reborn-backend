@@ -2,6 +2,7 @@ package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.dto.MemberUpdateRequest;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,12 @@ public class MemberService {
         }
         member.changePassword(passwordEncoder.encode(request.getChangePassword()));
 
+    }
+    @Transactional
+    public void updateMember(Long memberId, MemberUpdateRequest request) {
+        Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
+        Member data = request.toEntity(request);
+        member.modifyInfo(data);
     }
 
     private boolean isNotMatchRawPassword(Member member, ChangePasswordDto request) {

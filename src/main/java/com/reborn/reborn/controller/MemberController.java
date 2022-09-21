@@ -1,10 +1,6 @@
 package com.reborn.reborn.controller;
 
-import com.reborn.reborn.dto.ChangePasswordDto;
-import com.reborn.reborn.dto.EmailCheckResponse;
-import com.reborn.reborn.dto.JoinResponseDto;
-import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.entity.Member;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +24,12 @@ public class MemberController {
         Long memberId = memberService.registerMember(memberRequestDto);
         log.info("aa");
         return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new JoinResponseDto(memberId));
+    }
+
+    @PatchMapping("/members")
+    public ResponseEntity<Void> modify(@LoginMember Long memberId, @RequestBody MemberUpdateRequest request) {
+        memberService.updateMember(memberId, request);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/email-check")

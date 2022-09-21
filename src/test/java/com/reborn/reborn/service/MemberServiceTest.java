@@ -2,6 +2,7 @@ package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.ChangePasswordDto;
 import com.reborn.reborn.dto.MemberRequestDto;
+import com.reborn.reborn.dto.MemberUpdateRequest;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.verify;
 
 
@@ -96,5 +98,18 @@ class MemberServiceTest {
 
 
         assertThatThrownBy(()->memberService.updatePassword(member.getId(), changePasswordDto)).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("요청된 정보로 회원을 수정한다")
+    void modifyMember(){
+        Member member = Member.builder().nickname("nick").phone("2").password("1").build();
+        MemberUpdateRequest request = new MemberUpdateRequest("name", "1", "zipcode", "road", "detail");
+
+        given(memberRepository.findById(any())).willReturn(Optional.of(member));
+
+        memberService.updateMember(member.getId(), request);
+
+        assertThat(member.getNickname()).isEqualTo(request.getNickname());
     }
 }
