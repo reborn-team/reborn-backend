@@ -13,7 +13,7 @@ public class MemberRequestDto {
 
     private String email;
     private String password;
-    private String name;
+    private String nickname;
     private String phone;
     private String zipcode;
     private String roadName;
@@ -22,7 +22,7 @@ public class MemberRequestDto {
 
     public Member toEntity(MemberRequestDto memberRequestDto){
         Member member = Member.builder()
-                .name(memberRequestDto.getName())
+                .nickname((memberRequestDto.getNickname()))
                 .phone(memberRequestDto.getPhone())
                 .email(memberRequestDto.getEmail())
                 .address(new Address(memberRequestDto.getRoadName(), memberRequestDto.getDetailAddress(), memberRequestDto.getZipcode()))

@@ -32,12 +32,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void updatePassword(Member member, ChangePasswordDto request) {
+    public void updatePassword(Long memberId, ChangePasswordDto request) {
+        //TODO Exception
+        Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
         if (isNotMatchRawPassword(member, request)) {
             throw new IllegalStateException("Password가 맞지 않습니다.");
         }
         member.changePassword(passwordEncoder.encode(request.getChangePassword()));
-        memberRepository.save(member);
+
     }
 
     private boolean isNotMatchRawPassword(Member member, ChangePasswordDto request) {

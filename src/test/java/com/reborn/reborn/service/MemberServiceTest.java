@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,7 +55,7 @@ class MemberServiceTest {
     @DisplayName("해당 이메일이 존재하면 True를 반환한다.")
     void emailCheckTest() {
         Member member = Member.builder()
-                .name("han")
+                .nickname("han")
                 .password("a")
                 .email("reborn@naver.com").build();
         given(memberRepository.existsByEmail(member.getEmail())).willReturn(true);
@@ -74,9 +76,9 @@ class MemberServiceTest {
         String rawPassword = member.getPassword();
 
         given(passwordEncoder.matches(rawPassword, changePasswordDto.getRawPassword())).willReturn(true);
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
 
-
-        memberService.updatePassword(member, changePasswordDto);
+        memberService.updatePassword(member.getId(), changePasswordDto);
 
         assertThat(member.getPassword()).isNotEqualTo(rawPassword);
     }
@@ -90,8 +92,9 @@ class MemberServiceTest {
         String rawPassword = member.getPassword();
 
         given(passwordEncoder.matches(rawPassword, changePasswordDto.getRawPassword())).willReturn(false);
+        given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
 
 
-        assertThatThrownBy(()->memberService.updatePassword(member, changePasswordDto)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(()->memberService.updatePassword(member.getId(), changePasswordDto)).isInstanceOf(IllegalStateException.class);
     }
 }

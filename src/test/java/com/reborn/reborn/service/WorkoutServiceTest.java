@@ -6,6 +6,7 @@ import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,8 @@ class WorkoutServiceTest {
     private WorkoutService workoutService;
     @Mock
     WorkoutRepository workoutRepository;
+    @Mock
+    MemberRepository memberRepository;
 
     @Test
     @DisplayName("운동 정보를 생성하고 Id 를 리턴한다.")
@@ -40,9 +43,10 @@ class WorkoutServiceTest {
         Member member = Member.builder().build();
 
         given(workoutRepository.save(any())).willReturn(workout);
+        given(memberRepository.findById(any())).willReturn(Optional.of(member));
 
         //when
-        Long saveWorkoutId = workoutService.create(member,requestDto);
+        Long saveWorkoutId = workoutService.create(member.getId(),requestDto);
         //then
         verify(workoutRepository).save(any());
 
