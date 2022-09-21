@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberResponse {
 
-    private Long id;
+    private String email;
     private String nickname;
     private String phone;
     private String zipcode;
@@ -19,7 +19,7 @@ public class MemberResponse {
 
     public static MemberResponse of(Member member) {
         return MemberResponse.builder()
-                .id(member.getId())
+                .email(member.getEmail())
                 .nickname(member.getNickname())
                 .phone(member.getPhone())
                 .zipcode(member.getAddress().getZipcode())

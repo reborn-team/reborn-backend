@@ -154,7 +154,7 @@ public class MemberControllerTest extends ControllerConfig {
     @DisplayName("회원 정보 조회 : Get /api/v1/members/me")
     void getOne() throws Exception {
         //given
-        MemberResponse response = new MemberResponse(1L, "nickname", "010-0000-0000", "zip", "road", "detail");
+        MemberResponse response = new MemberResponse("email@naver.com", "nickname", "010-0000-0000", "zip", "road", "detail");
         given(memberService.getOne(any())).willReturn(response);
 
         //when
