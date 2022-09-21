@@ -41,7 +41,7 @@ public class MemberControllerTest extends ControllerConfig {
     @Test
     @DisplayName("회원 가입 : POST /api/v1/members")
     void joinTest() throws Exception {
-        MemberRequestDto memberRequestDto = new MemberRequestDto("email", "password", "name", "phone", "postcode", "address", "detailAddress");
+        MemberRequestDto memberRequestDto = new MemberRequestDto("email", "password", "nickname", "phone", "postcode", "address", "detailAddress");
 
         when(memberService.registerMember(memberRequestDto)).thenReturn(1L);
 
@@ -54,7 +54,7 @@ public class MemberControllerTest extends ControllerConfig {
                         requestFields(
                                 fieldWithPath("email").type(STRING).description("이메일 주소"),
                                 fieldWithPath("password").type(STRING).description("비밀번호"),
-                                fieldWithPath("name").type(STRING).description("이름"),
+                                fieldWithPath("nickname").type(STRING).description("이름"),
                                 fieldWithPath("phone").type(STRING).description("전화번호"),
                                 fieldWithPath("zipcode").type(STRING).description("우편번호"),
                                 fieldWithPath("roadName").type(STRING).description("주소"),
@@ -88,7 +88,7 @@ public class MemberControllerTest extends ControllerConfig {
         Member member = Member.builder().email("user").password("a").memberRole(MemberRole.USER).build();
         ChangePasswordDto changePasswordDto = new ChangePasswordDto("a", "b");
 
-        willDoNothing().given(memberService).updatePassword(member,changePasswordDto);
+        willDoNothing().given(memberService).updatePassword(member.getId(),changePasswordDto);
 
         mockMvc.perform(patch("/api/v1/change-password")
                         .contentType(MediaType.APPLICATION_JSON)

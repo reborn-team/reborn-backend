@@ -87,14 +87,17 @@ class WorkoutControllerTest extends ControllerConfig {
     @DisplayName("운동 조회 : Get /api/v1/workout/{workoutId}")
     void getMyWorkout() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
         WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
                 .workoutName("pull up")
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
                 .originFileName("원본.png")
                 .uploadFileName("uuid.png")
+                .memberId(member.getId())
+                .memberNickname(member.getNickname())
                 .build();
+
         given(workoutService.getWorkoutDto(any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)

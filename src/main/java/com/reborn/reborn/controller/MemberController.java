@@ -38,8 +38,8 @@ public class MemberController {
     }
 
     @PatchMapping("/change-password")
-    public ResponseEntity changePassword(@LoginMember Member member, @RequestBody ChangePasswordDto changePasswordDto) {
-        memberService.updatePassword(member, changePasswordDto);
+    public ResponseEntity<Void> changePassword(@LoginMember Long memberId, @RequestBody ChangePasswordDto changePasswordDto) {
+        memberService.updatePassword(memberId, changePasswordDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
