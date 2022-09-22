@@ -51,4 +51,4 @@ app:
 
 file:
   upload:
-    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+    directory: 'D:\upload\'

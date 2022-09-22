@@ -10,12 +10,14 @@ import com.reborn.reborn.entity.QWorkoutImage;
 import com.reborn.reborn.entity.WorkoutCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 import static com.reborn.reborn.entity.QMember.member;
 import static com.reborn.reborn.entity.QWorkout.*;
 import static com.reborn.reborn.entity.QWorkoutImage.*;
+import static org.springframework.util.StringUtils.*;
 
 @Repository
 @RequiredArgsConstructor

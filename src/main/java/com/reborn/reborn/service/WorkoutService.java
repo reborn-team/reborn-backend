@@ -59,6 +59,7 @@ public class WorkoutService {
         return workoutRepository.getWorkoutDetail(workoutId);
     }
 
+    @Transactional
     public void deleteWorkout(Long authorId, Long workoutId) {
         //TODO Exception
         Workout workout = workoutRepository.findById(workoutId).orElseThrow();
