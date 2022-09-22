@@ -39,4 +39,9 @@ public class Workout extends BaseTimeEntity {
         this.member = member;
         this.workoutCategory = workoutCategory;
     }
+
+    public void modifyWorkout(String workoutName, String content) {
+        this.workoutName = workoutName;
+        this.content = content;
+    }
 }

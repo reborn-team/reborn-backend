@@ -7,8 +7,8 @@ import com.reborn.reborn.dto.WorkoutRequestDto;
 import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
+import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
-import com.reborn.reborn.service.WorkoutImageService;
 import com.reborn.reborn.service.WorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,8 +43,6 @@ class WorkoutControllerTest extends ControllerConfig {
     private ObjectMapper objectMapper;
     @MockBean
     private WorkoutService workoutService;
-    @MockBean
-    private WorkoutImageService workoutImageService;
 
 
     @Test
@@ -61,8 +59,8 @@ class WorkoutControllerTest extends ControllerConfig {
                 .files(files)
                 .workoutCategory("BACK").build();
 
-        given(workoutImageService.create(any(), any())).willReturn(1L);
-        given(workoutService.create(any(),any())).willReturn(1L);
+        given(workoutService.createImage(any(), any())).willReturn(1L);
+        given(workoutService.create(any(),any())).willReturn(Workout.builder().build());
 
         //when
         mockMvc.perform(post("/api/v1/workout")

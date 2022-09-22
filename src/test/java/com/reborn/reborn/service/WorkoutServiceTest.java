@@ -1,12 +1,12 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.WorkoutListDto;
-import com.reborn.reborn.dto.WorkoutRequestDto;
-import com.reborn.reborn.dto.WorkoutSliceDto;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.entity.WorkoutImage;
 import com.reborn.reborn.repository.MemberRepository;
+import com.reborn.reborn.repository.WorkoutImageRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +34,9 @@ class WorkoutServiceTest {
     @Mock
     MemberRepository memberRepository;
 
+    @Mock
+    WorkoutImageRepository workoutImageRepository;
+
     @Test
     @DisplayName("운동 정보를 생성하고 Id 를 리턴한다.")
     void create() {
@@ -46,11 +49,11 @@ class WorkoutServiceTest {
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
 
         //when
-        Long saveWorkoutId = workoutService.create(member.getId(), requestDto);
+        Workout saveWorkout = workoutService.create(member.getId(), requestDto);
         //then
         verify(workoutRepository).save(any());
 
-        assertThat(saveWorkoutId).isEqualTo(workout.getId());
+        assertThat(saveWorkout.getId()).isEqualTo(workout.getId());
 
     }
 
@@ -137,5 +140,65 @@ class WorkoutServiceTest {
         assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(RuntimeException.class);
 
         verify(workoutRepository).findById(any());
+    }
+
+    @Test
+    @DisplayName("운동을 수정한다")
+    void modifyWorkout() {
+        Member author = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(author).workoutCategory(WorkoutCategory.BACK).workoutName("풀업").content("내용").build();
+        WorkoutEditForm form = WorkoutEditForm.builder().workoutName("바벨 로우").content("내용").build();
+
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
+
+        Workout updateWorkout = workoutService.updateWorkout(author.getId(), workout.getId(), form);
+
+
+        verify(workoutRepository).findById(any());
+        assertThat(form.getWorkoutName()).isEqualTo(updateWorkout.getWorkoutName());
+    }
+
+
+    @Test
+    @DisplayName("등록 이미지를 저장한다.")
+    void createImage() {
+        FileDto fileDto = new FileDto("origin", "upload");
+        Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
+        WorkoutImage workoutImage = new WorkoutImage(fileDto.getOriginFileName(), fileDto.getUploadFileName());
+
+        given(workoutImageRepository.save(any())).willReturn(workoutImage);
+
+        Long saveImageId = workoutService.createImage(fileDto, workout);
+
+        verify(workoutImageRepository).save(any());
+
+        assertThat(saveImageId).isEqualTo(workoutImage.getId());
+    }
+
+    @Test
+    @DisplayName("파일을 전체 삭제하고 추가한다")
+    void deleteAndUpdateImage() {
+        List<FileDto> fileDtoList = new ArrayList<>();
+        fileDtoList.add(new FileDto());
+
+        Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
+
+        workoutService.deleteAndUpdate(fileDtoList, workout);
+
+        verify(workoutImageRepository).deleteAllByWorkoutId(workout.getId());
+        verify(workoutImageRepository).save(any());
+    }
+
+    @Test
+    @DisplayName("파일이 없으면 삭제하지 않는다")
+    void deleteAndUpdateImageNoFile() {
+        List<FileDto> fileDtoList = new ArrayList<>();
+
+        Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
+
+        workoutService.deleteAndUpdate(fileDtoList, workout);
+
+        verify(workoutImageRepository, never()).deleteAllByWorkoutId(workout.getId());
+        verify(workoutImageRepository, never()).save(any());
     }
 }
