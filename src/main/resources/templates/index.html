@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/upload" method="post"  enctype="multipart/form-data">
+    <li>파일<input type="file" name="file" multiple></li>
+
+    <input type="submit"/>
+</form>
+<form action="/delete" method="post" >
+    <li>파일<input type="text" name="file" ></li>
+
+    <input type="submit"/>
+</form>
+hi
+<img th:src="|/images/cb0019b4-0f9a-41b5-8625-316c8bedfc6d.png|"></img>
+</body>
+</html>

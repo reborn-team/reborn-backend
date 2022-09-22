@@ -1,0 +1,35 @@
+= REST Docs
+reborn docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Upload
+---
+
+== 파일 업로드
+
+`POST /api/v1/file`
+
+=== Request
+
+include::{snippets}/upload-file/http-request.adoc[]
+include::{snippets}/upload-file/request-parts.adoc[]
+
+
+=== Response
+
+include::{snippets}/upload-file/http-response.adoc[]
+
+
+
+
+
+
+

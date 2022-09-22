@@ -1,29 +1,47 @@
 package com.reborn.reborn.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
 @Entity
+@ToString(exclude = "workoutImages")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Workout extends BaseTimeEntity{
+public class Workout extends BaseTimeEntity {
 
     @Id
     @Column(name = "workout_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String workoutName;
+
     private String content;
 
-    //TODO 이미지 파일을 어떻게 처리해야할지 공부하고 수정할 예정
-    private String filePath;
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
-    public Workout(String content) {
+    @Enumerated(EnumType.STRING)
+    private WorkoutCategory workoutCategory;
+
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkoutImage> workoutImages = new ArrayList<>();
+
+    @Builder
+    public Workout(String workoutName, String content, WorkoutCategory workoutCategory, Member member) {
+        this.workoutName = workoutName;
+        this.content = content;
+        this.member = member;
+        this.workoutCategory = workoutCategory;
+    }
+
+    public void modifyWorkout(String workoutName, String content) {
+        this.workoutName = workoutName;
         this.content = content;
     }
 }
