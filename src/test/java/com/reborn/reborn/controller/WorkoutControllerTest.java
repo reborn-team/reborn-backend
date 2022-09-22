@@ -25,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -154,5 +155,22 @@ class WorkoutControllerTest extends ControllerConfig {
                         )));
     }
 
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("운동 삭제 : Delete /api/v1/workout/{workoutId}")
+    void deleteWorkout() throws Exception {
+        //given
+        Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
 
+        doNothing().when(workoutService).deleteWorkout(any(),any());
+        //when
+        mockMvc.perform(delete("/api/v1/workout/{workoutId}", 1L)
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("workout-delete",
+                        pathParameters(
+                                parameterWithName("workoutId").description("운동 정보 Id")
+                        )
+                ));
+    }
 }

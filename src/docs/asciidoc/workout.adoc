@@ -57,6 +57,20 @@ include::{snippets}/workout-getMyWorkout/path-parameters.adoc[]
 include::{snippets}/workout-getMyWorkout/http-response.adoc[]
 include::{snippets}/workout-getMyWorkout/response-fields.adoc[]
 
+== 운동 삭제
+
+`DELETE /api/v1/workout/{id}`
+
+=== Request
+
+include::{snippets}/workout-delete/http-request.adoc[]
+include::{snippets}/workout-delete/path-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/workout-delete/http-response.adoc[]
+
 
 
 

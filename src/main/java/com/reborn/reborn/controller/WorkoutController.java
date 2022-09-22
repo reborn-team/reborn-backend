@@ -47,10 +47,14 @@ public class WorkoutController {
 
         WorkoutResponseDto dto = workoutService.getWorkoutDto(workoutId);
         dto.isAuthor(memberId);
-        log.info("memberId={}",memberId);
+        log.info("memberId={}", memberId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);
     }
 
-
+    @DeleteMapping("/{workoutId}")
+    public ResponseEntity<Void> deleteWorkout(@LoginMember Long memberId, @PathVariable Long workoutId) {
+        workoutService.deleteWorkout(memberId, workoutId);
+        return ResponseEntity.noContent().build();
+    }
 }

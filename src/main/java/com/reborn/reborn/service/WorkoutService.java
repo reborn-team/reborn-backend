@@ -49,7 +49,15 @@ public class WorkoutService {
 
     public WorkoutResponseDto getWorkoutDto(Long workoutId){
         WorkoutResponseDto workoutDetail = workoutRepository.getWorkoutDetail(workoutId);
-
         return workoutDetail;
+    }
+
+    public void deleteWorkout(Long authorId, Long workoutId) {
+        //TODO Exception
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+        if (workout.getMember().getId() != authorId) {
+            throw new RuntimeException("권한이 없음");
+        }
+        workoutRepository.delete(workout);
     }
 }
