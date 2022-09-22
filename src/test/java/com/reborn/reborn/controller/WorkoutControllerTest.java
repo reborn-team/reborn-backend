@@ -1,10 +1,7 @@
 package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reborn.reborn.dto.FileDto;
-import com.reborn.reborn.dto.WorkoutListDto;
-import com.reborn.reborn.dto.WorkoutRequestDto;
-import com.reborn.reborn.dto.WorkoutResponseDto;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import com.reborn.reborn.entity.Workout;
@@ -21,11 +18,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -60,7 +58,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .workoutCategory("BACK").build();
 
         given(workoutService.createImage(any(), any())).willReturn(1L);
-        given(workoutService.create(any(),any())).willReturn(Workout.builder().build());
+        given(workoutService.create(any(), any())).willReturn(Workout.builder().build());
 
         //when
         mockMvc.perform(post("/api/v1/workout")
@@ -160,7 +158,7 @@ class WorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
 
-        doNothing().when(workoutService).deleteWorkout(any(),any());
+        doNothing().when(workoutService).deleteWorkout(any(), any());
         //when
         mockMvc.perform(delete("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -168,6 +166,39 @@ class WorkoutControllerTest extends ControllerConfig {
                 .andDo(document("workout-delete",
                         pathParameters(
                                 parameterWithName("workoutId").description("운동 정보 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("운동 수정 : PATCH  /api/v1/workout/{workoutId}")
+    void editWorkout() throws Exception {
+        //given
+        Member member = Member.builder().id(1L).email("user").nickname("nickname").memberRole(MemberRole.USER).build();
+        List<FileDto> list = new ArrayList<>();
+        FileDto file = new FileDto("upload","uuid");
+        list.add(file);
+        WorkoutEditForm form = new WorkoutEditForm("수정된 이름", "내용", list);
+        Workout workout= Workout.builder().member(member).build();
+
+        when(workoutService.updateWorkout(member.getId(), 1L, form)).thenReturn(workout);
+        //when
+        mockMvc.perform(patch("/api/v1/workout/{workoutId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(form))
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("workout-update",
+                        pathParameters(
+                                parameterWithName("workoutId").description("운동 정보 Id")
+                        ),
+                        requestFields(
+                                fieldWithPath("workoutName").type(STRING).description("수정할 이름"),
+                                fieldWithPath("content").type(STRING).description("수정할 설명"),
+                                fieldWithPath("files").type(ARRAY).description("파일 정보"),
+                                fieldWithPath("files[].originFileName").type(STRING).description("원본 파일 이름"),
+                                fieldWithPath("files[].uploadFileName").type(STRING).description("저장된 파일 이름")
                         )
                 ));
     }

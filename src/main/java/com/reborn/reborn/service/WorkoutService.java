@@ -71,6 +71,8 @@ public class WorkoutService {
         Workout workout = workoutRepository.findById(workoutId).orElseThrow();
         validIsAuthor(authorId, workout);
         workout.modifyWorkout(form.getWorkoutName(), form.getContent());
+
+        deleteAndUpdateImage(form.getFiles(), workout);
         return workout;
     }
 
@@ -83,7 +85,7 @@ public class WorkoutService {
     }
 
 
-    public void deleteAndUpdate(List<FileDto> files, Workout workout) {
+    public void deleteAndUpdateImage(List<FileDto> files, Workout workout) {
         if (files.size() == 0) {
             return;
         }

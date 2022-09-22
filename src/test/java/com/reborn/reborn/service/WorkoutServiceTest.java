@@ -183,7 +183,7 @@ class WorkoutServiceTest {
 
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
 
-        workoutService.deleteAndUpdate(fileDtoList, workout);
+        workoutService.deleteAndUpdateImage(fileDtoList, workout);
 
         verify(workoutImageRepository).deleteAllByWorkoutId(workout.getId());
         verify(workoutImageRepository).save(any());
@@ -196,7 +196,7 @@ class WorkoutServiceTest {
 
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
 
-        workoutService.deleteAndUpdate(fileDtoList, workout);
+        workoutService.deleteAndUpdateImage(fileDtoList, workout);
 
         verify(workoutImageRepository, never()).deleteAllByWorkoutId(workout.getId());
         verify(workoutImageRepository, never()).save(any());
