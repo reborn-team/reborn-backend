@@ -1,6 +1,5 @@
 package com.reborn.reborn.controller;
 
-import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.MyWorkoutListService;
 import lombok.RequiredArgsConstructor;

@@ -73,4 +73,19 @@ include::{snippets}/workout-delete/http-response.adoc[]
 
 
 
+== 운동 수정
+
+`PATCH /api/v1/workout/{id}`
+
+=== Request
+
+include::{snippets}/workout-update/http-request.adoc[]
+include::{snippets}/workout-update/path-parameters.adoc[]
+include::{snippets}/workout-update/request-fields.adoc[]
+
+
+=== Response
+
+include::{snippets}/workout-delete/http-response.adoc[]
+
 
