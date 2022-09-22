@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.reborn.reborn.entity.QMember.member;
 import static com.reborn.reborn.entity.QWorkout.*;
 import static com.reborn.reborn.entity.QWorkoutImage.*;
 
@@ -60,9 +61,12 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                                 workout.content,
                                 workoutImage.uploadFileName.coalesce("empty"),
                                 workoutImage.originFileName.coalesce("empty"),
-                                workout.workoutCategory
+                                workout.workoutCategory,
+                                workout.member.id,
+                                workout.member.nickname
                         ))
                 .from(workout)
+                .innerJoin(workout.member, member)
                 .leftJoin(workoutImage).on(workoutImage.workout.eq(workout),
                         workoutImage.id.eq(
                                 jpaQueryFactory

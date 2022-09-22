@@ -1,6 +1,7 @@
 package com.reborn.reborn.repository;
 
 import com.reborn.reborn.dto.WorkoutListDto;
+import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.*;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -25,6 +27,8 @@ class WorkoutRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     WorkoutImageRepository workoutImageRepository;
+    @Autowired
+    EntityManager em;
 
     @BeforeEach
     void before(){
@@ -51,6 +55,27 @@ class WorkoutRepositoryTest {
 
     }
 
+    @Test
+    @DisplayName("운동 정보를 상세 조회한다.")
+    void detailView(){
+        Member member = createMember();
+        Workout workout = createWorkout(member, "");
+        WorkoutImage workoutImage = new WorkoutImage("", "");
+        workoutImage.uploadToWorkout(workout);
+        memberRepository.save(member);
+        workoutImageRepository.save(workoutImage);
+        workoutRepository.save(workout);
+
+        em.flush();
+        em.clear();
+
+        WorkoutResponseDto workoutDetail = workoutRepository.getWorkoutDetail(workout.getId());
+
+        assertThat(workoutDetail.getMemberId()).isEqualTo(member.getId());
+        assertThat(workoutDetail.getOriginFileName()).isEqualTo(workoutImage.getOriginFileName());
+
+    }
+
 
     @Test
     @DisplayName("운동 목록을 Dto에 맞게 조회하고 10개를 반환한다.")
@@ -72,7 +97,7 @@ class WorkoutRepositoryTest {
                 .email("email")
                 .memberRole(MemberRole.USER)
                 .password("A")
-                .name("han")
+                .nickname("han")
                 .build();
         return member;
     }

@@ -54,9 +54,9 @@ public class LocalFileService implements FileService {
     public Resource downloadFile(String filename) {
         try {
             return new UrlResource("file:" + getFullPath(filename));
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             //TODO 예외처리
-            throw new RuntimeException(e);
+            throw new RuntimeException("aa");
         }
     }
 }

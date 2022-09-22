@@ -1,10 +1,6 @@
 package com.reborn.reborn.controller;
 
-import com.reborn.reborn.dto.ChangePasswordDto;
-import com.reborn.reborn.dto.EmailCheckResponse;
-import com.reborn.reborn.dto.JoinResponseDto;
-import com.reborn.reborn.dto.MemberRequestDto;
-import com.reborn.reborn.entity.Member;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +26,31 @@ public class MemberController {
         return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new JoinResponseDto(memberId));
     }
 
-    @GetMapping("/email-check")
-    public ResponseEntity<EmailCheckResponse> emailCheck(@RequestParam String email) {
-        boolean check = memberService.emailDuplicateCheck(email);
+    @PatchMapping("/members/me")
+    public ResponseEntity<Void> modify(@LoginMember Long memberId, @RequestBody MemberUpdateRequest request) {
+        memberService.updateMember(memberId, request);
+        return ResponseEntity.noContent().build();
+    }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new EmailCheckResponse(check));
+    @GetMapping("/members/me")
+    public ResponseEntity<MemberResponse> getOne(@LoginMember Long memberId){
+        return ResponseEntity.ok(memberService.getOne(memberId));
+    }
+
+    @GetMapping("/email-check")
+    public ResponseEntity<DuplicateCheckResponse> emailCheck(@RequestParam String email) {
+        boolean check = memberService.emailDuplicateCheck(email);
+        return ResponseEntity.status(HttpStatus.OK).body(new DuplicateCheckResponse(check));
+    }
+    @GetMapping("/nickname-check")
+    public ResponseEntity<DuplicateCheckResponse> nicknameCheck(@RequestParam String nickname) {
+        boolean check = memberService.nicknameDuplicateCheck(nickname);
+        return ResponseEntity.status(HttpStatus.OK).body(new DuplicateCheckResponse(check));
     }
 
     @PatchMapping("/change-password")
-    public ResponseEntity changePassword(@LoginMember Member member, @RequestBody ChangePasswordDto changePasswordDto) {
-        memberService.updatePassword(member, changePasswordDto);
+    public ResponseEntity<Void> changePassword(@LoginMember Long memberId, @RequestBody ChangePasswordDto changePasswordDto) {
+        memberService.updatePassword(memberId, changePasswordDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

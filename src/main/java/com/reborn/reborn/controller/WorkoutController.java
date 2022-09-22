@@ -1,18 +1,12 @@
 package com.reborn.reborn.controller;
 
-import com.reborn.reborn.dto.WorkoutListDto;
-import com.reborn.reborn.dto.WorkoutSliceDto;
-import com.reborn.reborn.dto.WorkoutResponseDto;
-import com.reborn.reborn.dto.WorkoutRequestDto;
-import com.reborn.reborn.entity.Member;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.security.LoginMember;
-import com.reborn.reborn.service.WorkoutImageService;
 import com.reborn.reborn.service.WorkoutService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +20,6 @@ import java.util.List;
 public class WorkoutController {
 
     private final WorkoutService workoutService;
-    private final WorkoutImageService workoutImageService;
 
     @GetMapping
     public ResponseEntity<WorkoutSliceDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
@@ -35,20 +28,31 @@ public class WorkoutController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createWorkout(@LoginMember Member member, @RequestBody WorkoutRequestDto workoutRequestDto){
-        Long saveWorkoutId = workoutService.create(member, workoutRequestDto);
-        Workout workout = workoutService.findWorkoutById(saveWorkoutId);
-        workoutRequestDto.getFiles().forEach(dto -> workoutImageService.create(dto,workout));
+    public ResponseEntity<Long> createWorkout(@LoginMember Long memberId, @RequestBody WorkoutRequestDto dto) {
+        Workout workout = workoutService.create(memberId, dto);
         log.info("save Workout");
-        return ResponseEntity.created(URI.create("/api/v1/workout"+saveWorkoutId)).body(saveWorkoutId);
+        return ResponseEntity.created(URI.create("/api/v1/workout/" + workout.getId())).body(workout.getId());
     }
 
     @GetMapping("/{workoutId}")
-    public ResponseEntity<WorkoutResponseDto> getWorkoutDetail(@PathVariable Long workoutId){
-        WorkoutResponseDto dto =  workoutService.getWorkoutDto(workoutId);
+    public ResponseEntity<WorkoutResponseDto> getWorkoutDetail(@LoginMember Long memberId, @PathVariable Long workoutId) {
+
+        WorkoutResponseDto dto = workoutService.getWorkoutDto(workoutId);
+        dto.isAuthor(memberId);
+        log.info("memberId={}", memberId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);
     }
 
+    @DeleteMapping("/{workoutId}")
+    public ResponseEntity<Void> deleteWorkout(@LoginMember Long memberId, @PathVariable Long workoutId) {
+        workoutService.deleteWorkout(memberId, workoutId);
+        return ResponseEntity.noContent().build();
+    }
 
+    @PatchMapping("/{workoutId}")
+    public ResponseEntity<Void> editWorkout(@LoginMember Long memberId, @PathVariable Long workoutId, @RequestBody WorkoutEditForm form) {
+        workoutService.updateWorkout(memberId, workoutId, form);
+        return ResponseEntity.noContent().build();
+    }
 }

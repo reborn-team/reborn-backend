@@ -1,19 +1,14 @@
 package com.reborn.reborn.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -36,7 +31,8 @@ public class FileUploadController {
     }
 
     @GetMapping("/images")
-    public Resource downloadImage(@RequestParam String filename) {
-        return fileService.downloadFile(filename);
+    public ResponseEntity<Resource> downloadImage(@RequestParam String filename) {
+        Resource resource = fileService.downloadFile(filename);
+        return ResponseEntity.ok().body(resource);
     }
 }

@@ -1,66 +1,7 @@
-= REST Docs
-reborn docs
-:doctype: book
-:icons: font
-:source-highlighter: highlightjs // 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
-:toc: left // toc (Table Of Contents)를 문서의 좌측에 두기
-:toclevels: 2
-:sectlinks:
+== Reborn API
 
-|===
-| Method | Content
+- link:/docs/member.html[회원 관련 API]
+- link:/docs/workout.html[운동 관련 API]
+- link:/docs/my-workout.html[내 운동 관련 API]
+- link:/docs/upload.html[파일 관련 API]
 
-| `GET`
-| 읽기
-
-| `POST`
-| 추가
-
-| `PATCH`
-| 수정
-
-| `DELETE`
-| 삭제
-|===
-
-[[Member-API]]
-== Member API
-
-[[Member-회원-가입]]
-=== Member 회원 가입
-operation::member-controller-test/join-test[snippets='http-request,http-response']
-
-=== Email 중복 체크
-operation::member-controller-test/email-check[snippets='http-request,http-response']
-
-=== 비밀번호 변경
-operation::member-controller-test/change-password[snippets='http-request,http-response']
-
-[[Workout-API]]
-== Workout API
-
-[[Workout-운동-리스트-조회]]
-=== Workout 운동 리스트 조회
-operation::workout-controller-test/get-paging-workout[snippets='http-request,http-response']
-
-[[Workout-운동-생성]]
-=== Workout 운동 생성
-operation::workout-controller-test/workout-create[snippets='http-request,http-response']
-
-[[Workout-운동-상세-조회]]
-=== Workout 운동 상세 조회
-operation::workout-controller-test/get-my-workout[snippets='http-request,http-response']
-
-[[MyWorkoutList-API]]
-== MyWorkoutList API
-
-[[MyWorkoutList-내-운동-등록]]
-=== MyWorkoutList 내 운동 등록
-operation::my-workout-list-controller-test/workout-create[snippets='http-request,http-response']
-
-[[File-API]]
-== File API
-
-[[File-파일-업로드]]
-=== File 파일 업로드
-operation::upload-file[snippets='http-request,http-response,']
