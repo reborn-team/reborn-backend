@@ -1,0 +1,86 @@
+= REST Docs
+reborn docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Member
+---
+
+== 회원 가입
+
+`POST /api/v1/members`
+
+=== Request
+
+include::{snippets}/join/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/join/http-response.adoc[]
+
+== 이메일 중복 확인
+
+`GET /api/v1/email-check?email=`
+
+=== Request
+
+include::{snippets}/email-check/http-request.adoc[]
+include::{snippets}/email-check/request-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/email-check/http-response.adoc[]
+
+
+== Nickname 중복 체크
+
+`GET /api/v1/nickname-check?nickname=`
+
+=== Request
+
+include::{snippets}/nickname-check/http-request.adoc[]
+include::{snippets}/nickname-check/request-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/nickname-check/http-response.adoc[]
+
+
+== 비밀번호 변경
+
+`PATCH /api/v1/change-password`
+
+=== Request
+
+include::{snippets}/change-password/http-request.adoc[]
+
+
+=== Response
+
+include::{snippets}/change-password/http-response.adoc[]
+
+
+== 회원정보 수정
+
+`PATCH /api/v1/members/me`
+
+=== Request
+
+include::{snippets}/modify-member/http-request.adoc[]
+include::{snippets}/modify-member/request-fields.adoc[]
+
+
+=== Response
+
+include::{snippets}/modify-member/http-response.adoc[]
+
+

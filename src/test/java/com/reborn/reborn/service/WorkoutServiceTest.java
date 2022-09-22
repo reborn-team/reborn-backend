@@ -6,6 +6,7 @@ import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,8 @@ class WorkoutServiceTest {
     private WorkoutService workoutService;
     @Mock
     WorkoutRepository workoutRepository;
+    @Mock
+    MemberRepository memberRepository;
 
     @Test
     @DisplayName("운동 정보를 생성하고 Id 를 리턴한다.")
@@ -40,9 +43,10 @@ class WorkoutServiceTest {
         Member member = Member.builder().build();
 
         given(workoutRepository.save(any())).willReturn(workout);
+        given(memberRepository.findById(any())).willReturn(Optional.of(member));
 
         //when
-        Long saveWorkoutId = workoutService.create(member,requestDto);
+        Long saveWorkoutId = workoutService.create(member.getId(), requestDto);
         //then
         verify(workoutRepository).save(any());
 
@@ -68,10 +72,10 @@ class WorkoutServiceTest {
 
     @Test
     @DisplayName("운동 정보를 검색조건에 따라 결과가 10개면 true를 출력한다")
-    void sliceResultTenWorkout(){
+    void sliceResultTenWorkout() {
         List<WorkoutListDto> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            list.add(new WorkoutListDto((long)i,"name",""));
+            list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
         given(workoutRepository.paginationWorkoutList(cond))
@@ -85,12 +89,13 @@ class WorkoutServiceTest {
         assertThat(list.size()).isEqualTo(findList.size());
         assertThat(workoutSliceDto.hasNext()).isTrue();
     }
+
     @Test
     @DisplayName("운동 정보를 검색조건에 따라 결과가 10개 미만이면 false를 출력한다")
-    void sliceResultNotTenWorkout(){
+    void sliceResultNotTenWorkout() {
         List<WorkoutListDto> list = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            list.add(new WorkoutListDto((long)i,"name",""));
+            list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
         given(workoutRepository.paginationWorkoutList(cond))
@@ -105,6 +110,32 @@ class WorkoutServiceTest {
         assertThat(workoutSliceDto.hasNext()).isFalse();
     }
 
+    @Test
+    @DisplayName("작성자만 운동정보를 삭제할 수 있다.")
+    void deleteWorkoutByAuthor() {
+        Member member = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(member).build();
+
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
+
+        workoutService.deleteWorkout(member.getId(), workout.getId());
+        verify(workoutRepository).findById(any());
+        verify(workoutRepository).delete(workout);
+
+    }
+
+    @Test
+    @DisplayName("작성자가 아니면 삭제요청 시 예외가 발생한다")
+    void deleteWorkoutByNotAuthor() {
+        Member author = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(author).build();
+        Member reader = Member.builder().id(2L).build();
+
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
 
+        assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(RuntimeException.class);
+
+        verify(workoutRepository).findById(any());
+    }
 }

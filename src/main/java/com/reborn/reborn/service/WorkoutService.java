@@ -6,6 +6,7 @@ import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,12 @@ import java.util.NoSuchElementException;
 public class WorkoutService {
 
     private final WorkoutRepository workoutRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public Long create(Member member, WorkoutRequestDto dto) {
-
+    public Long create(Long memberId, WorkoutRequestDto dto) {
+        //TODO Exception
+        Member member = memberRepository.findById(memberId).orElseThrow();
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
                 .content(dto.getContent())
@@ -45,6 +48,16 @@ public class WorkoutService {
     }
 
     public WorkoutResponseDto getWorkoutDto(Long workoutId){
-        return workoutRepository.getWorkoutDetail(workoutId);
+        WorkoutResponseDto workoutDetail = workoutRepository.getWorkoutDetail(workoutId);
+        return workoutDetail;
+    }
+
+    public void deleteWorkout(Long authorId, Long workoutId) {
+        //TODO Exception
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+        if (workout.getMember().getId() != authorId) {
+            throw new RuntimeException("권한이 없음");
+        }
+        workoutRepository.delete(workout);
     }
 }

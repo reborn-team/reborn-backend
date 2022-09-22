@@ -25,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -87,14 +88,18 @@ class WorkoutControllerTest extends ControllerConfig {
     @DisplayName("운동 조회 : Get /api/v1/workout/{workoutId}")
     void getMyWorkout() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
         WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
+                .id(1L)
                 .workoutName("pull up")
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
                 .originFileName("원본.png")
                 .uploadFileName("uuid.png")
+                .memberId(1L)
+                .memberNickname(member.getNickname())
                 .build();
+
         given(workoutService.getWorkoutDto(any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
@@ -103,7 +108,20 @@ class WorkoutControllerTest extends ControllerConfig {
                 .andDo(document("workout-getMyWorkout",
                         pathParameters(
                                 parameterWithName("workoutId").description("운동 정보 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(NUMBER).description("운동 id"),
+                                fieldWithPath("workoutName").type(STRING).description("운동 이름"),
+                                fieldWithPath("content").type(STRING).description("운동 설명"),
+                                fieldWithPath("uploadFileName").type(STRING).description("업로드 한 파일 이름"),
+                                fieldWithPath("originFileName").type(STRING).description("원본 파일 이름"),
+                                fieldWithPath("workoutCategory").type(STRING).description("운동 카테고리"),
+                                fieldWithPath("memberId").type(NUMBER).description("작성자 Id"),
+                                fieldWithPath("memberNickname").type(STRING).description("작성자 닉네임"),
+                                fieldWithPath("author").type(BOOLEAN).description("작성자가 맞는지"),
+                                fieldWithPath("isAuthor").type(BOOLEAN).description("작성자가 맞는지")
                         )
+
                 ));
     }
 
@@ -137,5 +155,22 @@ class WorkoutControllerTest extends ControllerConfig {
                         )));
     }
 
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("운동 삭제 : Delete /api/v1/workout/{workoutId}")
+    void deleteWorkout() throws Exception {
+        //given
+        Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
 
+        doNothing().when(workoutService).deleteWorkout(any(),any());
+        //when
+        mockMvc.perform(delete("/api/v1/workout/{workoutId}", 1L)
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("workout-delete",
+                        pathParameters(
+                                parameterWithName("workoutId").description("운동 정보 Id")
+                        )
+                ));
+    }
 }
