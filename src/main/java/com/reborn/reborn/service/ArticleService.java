@@ -33,4 +33,8 @@ public class ArticleService {
     public Article findArticleById(Long articleId) {
         return articleRepository.findById(articleId).orElseThrow();
     }
+
+    @Transactional
+    public ArticleRequestDto getArticleDto(Long articleId) { return articleRepository.getArticle)
+    }
 }

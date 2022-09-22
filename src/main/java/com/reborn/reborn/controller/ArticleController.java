@@ -28,4 +28,11 @@ public class ArticleController {
         return ResponseEntity.created(URI.create("/api/v1/articles/" + saveArticleId)).body(saveArticleId);
     }
 
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ArticleRequestDto> getArticleContent(@LoginMember Long member, @PathVariable Long articleId){
+
+        ArticleRequestDto dto = articleService.getArticleDto(articleId);
+
+    }
+
 }
