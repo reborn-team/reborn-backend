@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -54,10 +55,6 @@ public class WorkoutService {
         return workoutRepository.paginationWorkoutList(cond);
     }
 
-    @Transactional(readOnly = true)
-    public WorkoutResponseDto getWorkoutDto(Long workoutId) {
-        return workoutRepository.getWorkoutDetail(workoutId);
-    }
 
     @Transactional
     public void deleteWorkout(Long authorId, Long workoutId) {
@@ -94,9 +91,20 @@ public class WorkoutService {
         files.forEach(file -> createImage(file, workout));
     }
 
+    @Transactional(readOnly = true)
+    public WorkoutResponseDto getWorkoutDto(Long memberId, Long workoutId) {
+        //TODO Exception
+        Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId).orElseThrow();
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        dto.isAuthor(memberId);
+        return dto;
+
+    }
+
     private void validIsAuthor(Long authorId, Workout workout) {
         if (workout.getMember().getId() != authorId) {
             throw new RuntimeException("권한이 없음");
         }
     }
+
 }

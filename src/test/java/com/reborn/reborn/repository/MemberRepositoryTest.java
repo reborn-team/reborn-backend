@@ -48,7 +48,7 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @DisplayName("변경 감지를 통해 회원정보를 수정한다")
+    @DisplayName("회원정보를 수정한다")
     void modifyMember(){
         Member member = createMember();
         memberRepository.save(member);
