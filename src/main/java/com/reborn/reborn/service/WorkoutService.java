@@ -55,10 +55,7 @@ public class WorkoutService {
         return workoutRepository.paginationWorkoutList(cond);
     }
 
-    @Transactional(readOnly = true)
-    public WorkoutResponseDto getWorkoutDto(Long workoutId) {
-        return workoutRepository.getWorkoutDetail(workoutId);
-    }
+
 
     public void deleteWorkout(Long authorId, Long workoutId) {
         //TODO Exception
@@ -67,7 +64,7 @@ public class WorkoutService {
         workoutRepository.delete(workout);
     }
 
-    public Workout updateWorkout(Long authorId, Long workoutId, WorkoutRequestEditForm form) {
+    public Workout updateWorkout(Long authorId, Long workoutId, WorkoutEditForm form) {
         //TODO EXCEPTION
         Workout workout = workoutRepository.findById(workoutId).orElseThrow();
         validIsAuthor(authorId, workout);
@@ -95,10 +92,11 @@ public class WorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public WorkoutResponseEditForm getEditForm(Long workoutId) {
-        //TODO EXCEPTION
-        Workout workout = workoutRepository.findByIdWithImages(workoutId).orElseThrow();
-        return WorkoutResponseEditForm.ofResponse(workout.getWorkoutName(), workout.getContent(), workout.getWorkoutImages(), workout.getWorkoutCategory());
+    public WorkoutResponseDto getWorkoutDto(Long workoutId) {
+        //TODO Exception
+        Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId).orElseThrow();
+        return WorkoutResponseDto.of(workout);
+
     }
 
     private void validIsAuthor(Long authorId, Workout workout) {

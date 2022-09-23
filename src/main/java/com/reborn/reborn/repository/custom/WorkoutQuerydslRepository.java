@@ -9,5 +9,4 @@ public interface WorkoutQuerydslRepository {
 
     List<WorkoutListDto> paginationWorkoutList(WorkoutSearchCondition cond);
 
-    WorkoutResponseDto getWorkoutDetail(Long workoutId);
 }

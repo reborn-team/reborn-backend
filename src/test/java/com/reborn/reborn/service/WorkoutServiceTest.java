@@ -136,7 +136,6 @@ class WorkoutServiceTest {
 
         given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
-
         assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(RuntimeException.class);
 
         verify(workoutRepository).findById(any());
@@ -147,7 +146,7 @@ class WorkoutServiceTest {
     void modifyWorkout() {
         Member author = Member.builder().id(1L).build();
         Workout workout = Workout.builder().member(author).workoutCategory(WorkoutCategory.BACK).workoutName("풀업").content("내용").build();
-        WorkoutRequestEditForm form = WorkoutRequestEditForm.builder().workoutName("바벨 로우").content("내용").build();
+        WorkoutEditForm form = WorkoutEditForm.builder().workoutName("바벨 로우").content("내용").build();
 
         given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
@@ -192,6 +191,22 @@ class WorkoutServiceTest {
     @Test
     @DisplayName("파일이 없으면 삭제하지 않는다")
     void deleteAndUpdateImageNoFile() {
+        Member author = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(author).workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
+        WorkoutImage workoutImage = new WorkoutImage("a", "b");
+        workoutImage.uploadToWorkout(workout);
+
+        given(workoutRepository.findByIdWithImagesAndMember(any())).willReturn(Optional.of(workout));
+
+        WorkoutResponseDto workoutDto = workoutService.getWorkoutDto(workout.getId());
+
+        assertThat(workoutDto.getWorkoutName()).isEqualTo(workout.getWorkoutName());
+        assertThat(workoutDto.getFiles()).containsExactly(new FileDto("a", "b"));
+    }
+
+    @Test
+    @DisplayName("파일이 없으면 삭제하지 않는다")
+    void getWorkoutDto() {
         List<FileDto> fileDtoList = new ArrayList<>();
 
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();

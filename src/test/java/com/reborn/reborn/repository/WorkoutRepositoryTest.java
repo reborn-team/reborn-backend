@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -70,10 +69,10 @@ class WorkoutRepositoryTest {
         em.flush();
         em.clear();
 
-        WorkoutResponseDto workoutDetail = workoutRepository.getWorkoutDetail(workout.getId());
+        Workout findWorkout = workoutRepository.findByIdWithImagesAndMember(workout.getId()).get();
 
-        assertThat(workoutDetail.getMemberId()).isEqualTo(member.getId());
-        assertThat(workoutDetail.getOriginFileName()).isEqualTo(workoutImage.getOriginFileName());
+        assertThat(findWorkout.getMember().getId()).isEqualTo(member.getId());
+//        assertThat(workoutDetail.getOriginFileName()).isEqualTo(workoutImage.getOriginFileName());
 
     }
 
@@ -108,7 +107,7 @@ class WorkoutRepositoryTest {
         em.flush();
         em.clear();
 
-        Workout findWorkout = workoutRepository.findByIdWithImages(workout.getId()).get();
+        Workout findWorkout = workoutRepository.findByIdWithImagesAndMember(workout.getId()).get();
         List<WorkoutImage> workoutImages = findWorkout.getWorkoutImages();
 
         assertThat(workoutImages.size()).isEqualTo(10);
@@ -124,10 +123,29 @@ class WorkoutRepositoryTest {
         em.flush();
         em.clear();
 
-        Workout findWorkout = workoutRepository.findByIdWithImages(workout.getId()).get();
+        Workout findWorkout = workoutRepository.findByIdWithImagesAndMember(workout.getId()).get();
         List<WorkoutImage> workoutImages = findWorkout.getWorkoutImages();
 
         assertThat(workoutImages.size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("운동 정보를 조회할 때 Member 데이터도 반환한다.")
+    void findWorkoutAndMember() {
+        Member member = createMember();
+        Member member2 = Member.builder().build();
+        memberRepository.save(member);
+        memberRepository.save(member2);
+        Workout workout = createWorkout(member, "a");
+        workoutRepository.save(workout);
+        em.flush();
+        em.clear();
+
+        Workout findWorkout = workoutRepository.findByIdWithImagesAndMember(workout.getId()).get();
+        String nickname = findWorkout.getMember().getNickname();
+
+        assertThat(nickname).isEqualTo(member.getNickname());
+
     }
 
     public static Member createMember() {
