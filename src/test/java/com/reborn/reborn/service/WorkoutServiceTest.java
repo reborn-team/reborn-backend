@@ -147,7 +147,7 @@ class WorkoutServiceTest {
     void modifyWorkout() {
         Member author = Member.builder().id(1L).build();
         Workout workout = Workout.builder().member(author).workoutCategory(WorkoutCategory.BACK).workoutName("풀업").content("내용").build();
-        WorkoutEditForm form = WorkoutEditForm.builder().workoutName("바벨 로우").content("내용").build();
+        WorkoutRequestEditForm form = WorkoutRequestEditForm.builder().workoutName("바벨 로우").content("내용").build();
 
         given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 

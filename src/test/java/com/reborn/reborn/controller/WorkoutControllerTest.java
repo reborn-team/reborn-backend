@@ -179,7 +179,7 @@ class WorkoutControllerTest extends ControllerConfig {
         List<FileDto> list = new ArrayList<>();
         FileDto file = new FileDto("upload","uuid");
         list.add(file);
-        WorkoutEditForm form = new WorkoutEditForm("수정된 이름", "내용", list);
+        WorkoutRequestEditForm form = new WorkoutRequestEditForm("수정된 이름", "내용", list);
         Workout workout= Workout.builder().member(member).build();
 
         when(workoutService.updateWorkout(member.getId(), 1L, form)).thenReturn(workout);

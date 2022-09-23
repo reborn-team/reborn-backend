@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -90,6 +91,43 @@ class WorkoutRepositoryTest {
         List<WorkoutListDto> result = workoutRepository.paginationWorkoutList(new WorkoutSearchCondition(null, null));
         WorkoutSliceDto page = new WorkoutSliceDto(result);
         assertThat(page.hasNext()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("운동 정보에 이미지를 같이 반환한다")
+    void findWorkoutAndImage() {
+        Member member = createMember();
+        memberRepository.save(member);
+        Workout workout = createWorkout(member, "a");
+        workoutRepository.save(workout);
+        for (int i = 0; i < 10; i++) {
+            WorkoutImage workoutImage = new WorkoutImage("a" + i, "b" + i);
+            workoutImage.uploadToWorkout(workout);
+            workoutImageRepository.save(workoutImage);
+        }
+        em.flush();
+        em.clear();
+
+        Workout findWorkout = workoutRepository.findByIdWithImages(workout.getId()).get();
+        List<WorkoutImage> workoutImages = findWorkout.getWorkoutImages();
+
+        assertThat(workoutImages.size()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("운동 정보에 이미지가 없으면 list size를 0 반환한다.")
+    void findWorkoutAndNoImage() {
+        Member member = createMember();
+        memberRepository.save(member);
+        Workout workout = createWorkout(member, "a");
+        workoutRepository.save(workout);
+        em.flush();
+        em.clear();
+
+        Workout findWorkout = workoutRepository.findByIdWithImages(workout.getId()).get();
+        List<WorkoutImage> workoutImages = findWorkout.getWorkoutImages();
+
+        assertThat(workoutImages.size()).isEqualTo(0);
     }
 
     public static Member createMember() {

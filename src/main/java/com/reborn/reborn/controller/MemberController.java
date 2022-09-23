@@ -42,6 +42,7 @@ public class MemberController {
         boolean check = memberService.emailDuplicateCheck(email);
         return ResponseEntity.status(HttpStatus.OK).body(new DuplicateCheckResponse(check));
     }
+
     @GetMapping("/nickname-check")
     public ResponseEntity<DuplicateCheckResponse> nicknameCheck(@RequestParam String nickname) {
         boolean check = memberService.nicknameDuplicateCheck(nickname);

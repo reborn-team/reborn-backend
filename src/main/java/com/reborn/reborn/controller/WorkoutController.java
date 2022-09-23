@@ -51,7 +51,7 @@ public class WorkoutController {
     }
 
     @PatchMapping("/{workoutId}")
-    public ResponseEntity<Void> editWorkout(@LoginMember Long memberId, @PathVariable Long workoutId, @RequestBody WorkoutEditForm form) {
+    public ResponseEntity<Void> editWorkout(@LoginMember Long memberId, @PathVariable Long workoutId, @RequestBody WorkoutRequestEditForm form) {
         workoutService.updateWorkout(memberId, workoutId, form);
         return ResponseEntity.noContent().build();
     }

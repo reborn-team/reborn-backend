@@ -1,5 +1,7 @@
 package com.reborn.reborn.dto;
 
+import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.entity.WorkoutImage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutEditForm {
+public class WorkoutRequestEditForm {
 
     private String workoutName;
     private String content;
