@@ -2,8 +2,6 @@ package com.reborn.reborn.repository;
 
 import com.reborn.reborn.dto.MemberUpdateRequest;
 import com.reborn.reborn.entity.Member;
-import com.reborn.reborn.entity.Workout;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import javax.persistence.EntityManager;
 
 import static com.reborn.reborn.repository.WorkoutRepositoryTest.createMember;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -49,7 +46,7 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("회원정보를 수정한다")
-    void modifyMember(){
+    void modifyMember() {
         Member member = createMember();
         memberRepository.save(member);
         em.flush();

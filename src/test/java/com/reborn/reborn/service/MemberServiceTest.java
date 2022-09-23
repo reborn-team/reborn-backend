@@ -95,7 +95,7 @@ class MemberServiceTest {
         given(passwordEncoder.matches(rawPassword, changePasswordDto.getRawPassword())).willReturn(true);
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
 
-        memberService.updatePassword(member.getId(), changePasswordDto);
+        memberService.changePassword(member.getId(), changePasswordDto);
 
         assertThat(member.getPassword()).isNotEqualTo(rawPassword);
     }
@@ -112,12 +112,12 @@ class MemberServiceTest {
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
 
 
-        assertThatThrownBy(()->memberService.updatePassword(member.getId(), changePasswordDto)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> memberService.changePassword(member.getId(), changePasswordDto)).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
     @DisplayName("요청된 정보로 회원을 수정한다")
-    void modifyMember(){
+    void modifyMember() {
         Member member = Member.builder().nickname("nick").phone("2").password("1").build();
         MemberUpdateRequest request = new MemberUpdateRequest("name", "1", "zipcode", "road", "detail");
 
@@ -131,7 +131,7 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 정보를 조회하여 Dto로 반환한다.")
     void getOne() {
-        Member member = Member.builder().nickname("nick").phone("2").password("1").address(new Address("road","detail","zip")).build();
+        Member member = Member.builder().nickname("nick").phone("2").password("1").address(new Address("road", "detail", "zip")).build();
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
 
         MemberResponse response = memberService.getOne(member.getId());

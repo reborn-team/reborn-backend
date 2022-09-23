@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig  {
+public class SecurityConfig {
 
     private final MemberDetailsService memberDetailsService;
     private final ObjectMapper objectMapper;
@@ -33,7 +33,7 @@ public class SecurityConfig  {
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .formLogin().disable();
         http.authorizeRequests().antMatchers(
@@ -53,6 +53,7 @@ public class SecurityConfig  {
     AuthenticationManager authenticationManager() throws Exception {
         return configuration.getAuthenticationManager();
     }
+
     @Bean
     public LoginFilter localMemberLoginFilter() throws Exception {
         LoginFilter filter = new LoginFilter(objectMapper);
@@ -62,13 +63,13 @@ public class SecurityConfig  {
     }
 
     @Bean
-    public TokenAuthenticationFilter tokenAuthenticationFilter(){
-        return new TokenAuthenticationFilter(tokenProvider,memberDetailsService);
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter(tokenProvider, memberDetailsService);
     }
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

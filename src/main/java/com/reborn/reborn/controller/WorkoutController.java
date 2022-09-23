@@ -23,7 +23,7 @@ public class WorkoutController {
 
     @GetMapping
     public ResponseEntity<WorkoutSliceDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
-        List<WorkoutListDto> responseDto = workoutService.pagingWorkout(cond);
+        List<WorkoutListDto> responseDto = workoutService.pagingWorkoutWithSearchCondition(cond);
         return ResponseEntity.ok().body(new WorkoutSliceDto(responseDto));
     }
 
@@ -37,7 +37,7 @@ public class WorkoutController {
     @GetMapping("/{workoutId}")
     public ResponseEntity<WorkoutResponseDto> getWorkoutDetail(@LoginMember Long memberId, @PathVariable Long workoutId) {
 
-        WorkoutResponseDto dto = workoutService.getWorkoutDto(memberId, workoutId);
+        WorkoutResponseDto dto = workoutService.getWorkoutDetailDto(memberId, workoutId);
         log.info("memberId={}", memberId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);

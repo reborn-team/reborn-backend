@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class LocalFileService implements FileService {
     @Override
     public List<FileDto> uploadFile(List<MultipartFile> multipartFile) {
         List<FileDto> files = new ArrayList<>();
-        for (MultipartFile file : multipartFile) {
+        multipartFile.forEach(file -> {
             String originFileName = file.getOriginalFilename();
             String uploadFileName = createUploadFileName(originFileName);
             String fullPath = getFullPath(uploadFileName);
@@ -35,7 +34,7 @@ public class LocalFileService implements FileService {
                 throw new RuntimeException(e);
             }
             files.add(new FileDto(originFileName, uploadFileName));
-        }
+        });
         return files;
     }
 
@@ -45,6 +44,7 @@ public class LocalFileService implements FileService {
         File file = new File(getFullPath(uploadFilename));
         return file.delete();
     }
+
     @Override
     public String getFullPath(String uploadFileName) {
         return directory + uploadFileName;

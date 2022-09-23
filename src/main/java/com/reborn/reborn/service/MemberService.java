@@ -38,7 +38,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updatePassword(Long memberId, ChangePasswordDto request) {
+    public void changePassword(Long memberId, ChangePasswordDto request) {
         //TODO Exception
         Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
         if (isNotMatchRawPassword(member, request)) {

@@ -18,14 +18,12 @@ public class MyWorkoutListController {
     private final MyWorkoutListService myWorkoutListService;
 
     @PostMapping("/{workoutId}")
-    public ResponseEntity addMyWorkoutList(@LoginMember Long memberId,@PathVariable Long workoutId) {
+    public ResponseEntity addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
         //TODO 이미 등록된 운동이면 추가 못하게해야함
         Long myWorkoutId = myWorkoutListService.addWorkout(memberId, workoutId);
         //TODO Location URI 추가 해야함
         return ResponseEntity.created(URI.create("/api/v1/members/" + myWorkoutId)).body(myWorkoutId);
     }
-
-
 
 
 }

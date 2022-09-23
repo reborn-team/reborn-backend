@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@ToString(exclude = {"workoutImages","member"})
+@ToString(exclude = {"workoutImages", "member"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Workout extends BaseTimeEntity {
 
