@@ -56,7 +56,6 @@ public class WorkoutService {
     }
 
 
-
     public void deleteWorkout(Long authorId, Long workoutId) {
         //TODO Exception
         Workout workout = workoutRepository.findById(workoutId).orElseThrow();
@@ -92,10 +91,12 @@ public class WorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public WorkoutResponseDto getWorkoutDto(Long workoutId) {
+    public WorkoutResponseDto getWorkoutDto(Long memberId, Long workoutId) {
         //TODO Exception
         Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId).orElseThrow();
-        return WorkoutResponseDto.of(workout);
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        dto.isAuthor(memberId);
+        return dto;
 
     }
 

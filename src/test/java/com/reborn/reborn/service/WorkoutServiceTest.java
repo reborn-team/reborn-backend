@@ -114,6 +114,31 @@ class WorkoutServiceTest {
     }
 
     @Test
+    @DisplayName("로그인한 회원이 작성자면 true를 반환한다.")
+    void isAuthor() {
+        Member author = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(author).build();
+
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        dto.isAuthor(author.getId());
+
+        assertThat(dto.isAuthor()).isTrue();
+    }
+
+    @Test
+    @DisplayName("로그인한 회원이 작성자가 아니면 false를 반환한다.")
+    void isNotAuthor() {
+        Member author = Member.builder().id(1L).build();
+        Member reader = Member.builder().id(2L).build();
+        Workout workout = Workout.builder().member(author).build();
+
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        dto.isAuthor(reader.getId());
+
+        assertThat(dto.isAuthor()).isFalse();
+    }
+
+    @Test
     @DisplayName("작성자만 운동정보를 삭제할 수 있다.")
     void deleteWorkoutByAuthor() {
         Member member = Member.builder().id(1L).build();
@@ -189,7 +214,7 @@ class WorkoutServiceTest {
     }
 
     @Test
-    @DisplayName("파일이 없으면 삭제하지 않는다")
+    @DisplayName("조회한 운동 정보를 DTO로 반환한다.")
     void deleteAndUpdateImageNoFile() {
         Member author = Member.builder().id(1L).build();
         Workout workout = Workout.builder().member(author).workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
@@ -198,7 +223,7 @@ class WorkoutServiceTest {
 
         given(workoutRepository.findByIdWithImagesAndMember(any())).willReturn(Optional.of(workout));
 
-        WorkoutResponseDto workoutDto = workoutService.getWorkoutDto(workout.getId());
+        WorkoutResponseDto workoutDto = workoutService.getWorkoutDto(author.getId(),workout.getId());
 
         assertThat(workoutDto.getWorkoutName()).isEqualTo(workout.getWorkoutName());
         assertThat(workoutDto.getFiles()).containsExactly(new FileDto("a", "b"));

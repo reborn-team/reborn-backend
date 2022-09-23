@@ -97,7 +97,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .memberNickname(member.getNickname())
                 .build();
 
-        given(workoutService.getWorkoutDto(any())).willReturn(workoutResponseDto);
+        given(workoutService.getWorkoutDto(any(),any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))

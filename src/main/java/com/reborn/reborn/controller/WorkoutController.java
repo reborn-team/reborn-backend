@@ -37,8 +37,7 @@ public class WorkoutController {
     @GetMapping("/{workoutId}")
     public ResponseEntity<WorkoutResponseDto> getWorkoutDetail(@LoginMember Long memberId, @PathVariable Long workoutId) {
 
-        WorkoutResponseDto dto = workoutService.getWorkoutDto(workoutId);
-        dto.isAuthor(memberId);
+        WorkoutResponseDto dto = workoutService.getWorkoutDto(memberId, workoutId);
         log.info("memberId={}", memberId);
         log.info("get myWorkout");
         return ResponseEntity.ok().body(dto);
