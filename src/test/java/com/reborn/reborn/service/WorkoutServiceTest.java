@@ -81,11 +81,11 @@ class WorkoutServiceTest {
             list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
-        given(workoutRepository.paginationWorkoutList(cond))
+        given(workoutRepository.pagingWorkWithSearchCondition(cond))
                 .willReturn(list);
 
-        List<WorkoutListDto> findList = workoutService.pagingWorkout(cond);
-        verify(workoutRepository).paginationWorkoutList(any());
+        List<WorkoutListDto> findList = workoutService.pagingWorkoutWithSearchCondition(cond);
+        verify(workoutRepository).pagingWorkWithSearchCondition(any());
 
         WorkoutSliceDto workoutSliceDto = new WorkoutSliceDto(findList);
 
@@ -101,11 +101,11 @@ class WorkoutServiceTest {
             list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
-        given(workoutRepository.paginationWorkoutList(cond))
+        given(workoutRepository.pagingWorkWithSearchCondition(cond))
                 .willReturn(list);
 
-        List<WorkoutListDto> findList = workoutService.pagingWorkout(cond);
-        verify(workoutRepository).paginationWorkoutList(any());
+        List<WorkoutListDto> findList = workoutService.pagingWorkoutWithSearchCondition(cond);
+        verify(workoutRepository).pagingWorkWithSearchCondition(any());
 
         WorkoutSliceDto workoutSliceDto = new WorkoutSliceDto(findList);
 
@@ -223,7 +223,7 @@ class WorkoutServiceTest {
 
         given(workoutRepository.findByIdWithImagesAndMember(any())).willReturn(Optional.of(workout));
 
-        WorkoutResponseDto workoutDto = workoutService.getWorkoutDto(author.getId(),workout.getId());
+        WorkoutResponseDto workoutDto = workoutService.getWorkoutDetailDto(author.getId(), workout.getId());
 
         assertThat(workoutDto.getWorkoutName()).isEqualTo(workout.getWorkoutName());
         assertThat(workoutDto.getFiles()).containsExactly(new FileDto("a", "b"));

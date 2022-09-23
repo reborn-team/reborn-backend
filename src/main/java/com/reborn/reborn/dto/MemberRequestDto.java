@@ -5,7 +5,7 @@ import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import lombok.*;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

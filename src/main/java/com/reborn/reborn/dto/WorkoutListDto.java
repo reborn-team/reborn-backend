@@ -3,10 +3,10 @@ package com.reborn.reborn.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 public class WorkoutListDto {

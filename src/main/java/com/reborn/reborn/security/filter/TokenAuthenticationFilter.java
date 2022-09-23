@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Optional;
 
 @Slf4j
@@ -58,11 +57,4 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     }
 
-    private String getAccessToken(HttpServletRequest request) {
-        if (request.getHeader(AUTHORIZATION) != null) {
-            String token = request.getHeader(AUTHORIZATION).substring(PREFIX.length());
-            return token;
-        }
-        return null;
-    }
 }

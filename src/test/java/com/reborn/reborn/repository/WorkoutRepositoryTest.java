@@ -1,7 +1,6 @@
 package com.reborn.reborn.repository;
 
 import com.reborn.reborn.dto.WorkoutListDto;
-import com.reborn.reborn.dto.WorkoutResponseDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.*;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
@@ -31,7 +30,7 @@ class WorkoutRepositoryTest {
     EntityManager em;
 
     @BeforeEach
-    void before(){
+    void before() {
         Member member = createMember();
         memberRepository.save(member);
         for (int i = 0; i < 11; i++) {
@@ -57,7 +56,7 @@ class WorkoutRepositoryTest {
 
     @Test
     @DisplayName("운동 정보를 상세 조회한다.")
-    void detailView(){
+    void detailView() {
         Member member = createMember();
         Workout workout = createWorkout(member, "");
         WorkoutImage workoutImage = new WorkoutImage("", "");
@@ -72,22 +71,22 @@ class WorkoutRepositoryTest {
         Workout findWorkout = workoutRepository.findByIdWithImagesAndMember(workout.getId()).get();
 
         assertThat(findWorkout.getMember().getId()).isEqualTo(member.getId());
-//        assertThat(workoutDetail.getOriginFileName()).isEqualTo(workoutImage.getOriginFileName());
+        assertThat(findWorkout.getWorkoutName()).isEqualTo(workout.getWorkoutName());
 
     }
 
 
     @Test
     @DisplayName("운동 목록을 Dto에 맞게 조회하고 10개를 반환한다.")
-    void sliceTest(){
-        List<WorkoutListDto> result = workoutRepository.paginationWorkoutList(new WorkoutSearchCondition(null, null));
+    void sliceTest() {
+        List<WorkoutListDto> result = workoutRepository.pagingWorkWithSearchCondition(new WorkoutSearchCondition(null, null));
         assertThat(result.size()).isEqualTo(10);
     }
 
     @Test
     @DisplayName("운동 목록을 조회하고 값이 10개면 true를 반환한다.")
-    void pageTest(){
-        List<WorkoutListDto> result = workoutRepository.paginationWorkoutList(new WorkoutSearchCondition(null, null));
+    void pageTest() {
+        List<WorkoutListDto> result = workoutRepository.pagingWorkWithSearchCondition(new WorkoutSearchCondition(null, null));
         WorkoutSliceDto page = new WorkoutSliceDto(result);
         assertThat(page.hasNext()).isEqualTo(true);
     }
@@ -158,7 +157,7 @@ class WorkoutRepositoryTest {
         return member;
     }
 
-    private Workout createWorkout(Member member,String text) {
+    private Workout createWorkout(Member member, String text) {
         Workout workout = Workout.builder()
                 .workoutName("pull up" + text)
                 .member(member)

@@ -97,7 +97,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .memberNickname(member.getNickname())
                 .build();
 
-        given(workoutService.getWorkoutDto(any(),any())).willReturn(workoutResponseDto);
+        given(workoutService.getWorkoutDetailDto(any(), any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -132,7 +132,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .uploadFileName("uuid.png")
                 .build();
         list.add(workoutResponseDto);
-        given(workoutService.pagingWorkout(any())).willReturn(list);
+        given(workoutService.pagingWorkoutWithSearchCondition(any())).willReturn(list);
 
         //when
         mockMvc.perform(get("/api/v1/workout")
@@ -179,10 +179,10 @@ class WorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().id(1L).email("user").nickname("nickname").memberRole(MemberRole.USER).build();
         List<FileDto> list = new ArrayList<>();
-        FileDto file = new FileDto("upload","uuid");
+        FileDto file = new FileDto("upload", "uuid");
         list.add(file);
         WorkoutEditForm form = new WorkoutEditForm("수정된 이름", "내용", list);
-        Workout workout= Workout.builder().member(member).build();
+        Workout workout = Workout.builder().member(member).build();
 
         when(workoutService.updateWorkout(member.getId(), 1L, form)).thenReturn(workout);
         //when

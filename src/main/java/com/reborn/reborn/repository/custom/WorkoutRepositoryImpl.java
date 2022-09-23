@@ -21,7 +21,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<WorkoutListDto> paginationWorkoutList(WorkoutSearchCondition cond) {
+    public List<WorkoutListDto> pagingWorkWithSearchCondition(WorkoutSearchCondition cond) {
 
         QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
 

@@ -51,8 +51,8 @@ public class WorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public List<WorkoutListDto> pagingWorkout(WorkoutSearchCondition cond) {
-        return workoutRepository.paginationWorkoutList(cond);
+    public List<WorkoutListDto> pagingWorkoutWithSearchCondition(WorkoutSearchCondition cond) {
+        return workoutRepository.pagingWorkWithSearchCondition(cond);
     }
 
 
@@ -91,7 +91,7 @@ public class WorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public WorkoutResponseDto getWorkoutDto(Long memberId, Long workoutId) {
+    public WorkoutResponseDto getWorkoutDetailDto(Long memberId, Long workoutId) {
         //TODO Exception
         Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId).orElseThrow();
         WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
