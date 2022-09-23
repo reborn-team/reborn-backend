@@ -34,7 +34,7 @@ public class ArticleService {
         return articleRepository.findById(articleId).orElseThrow();
     }
 
-    @Transactional
-    public ArticleRequestDto getArticleDto(Long articleId) { return articleRepository.getArticle)
-    }
+//    @Transactional
+//    public ArticleRequestDto getArticleDto(Long articleId) { return articleRepository);
+//    }
 }

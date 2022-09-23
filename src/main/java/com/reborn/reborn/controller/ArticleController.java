@@ -1,7 +1,6 @@
 package com.reborn.reborn.controller;
 
 import com.reborn.reborn.dto.ArticleRequestDto;
-import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.entity.Article;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.ArticleImageService;
@@ -28,11 +27,8 @@ public class ArticleController {
         return ResponseEntity.created(URI.create("/api/v1/articles/" + saveArticleId)).body(saveArticleId);
     }
 
-    @GetMapping("/{articleId}")
-    public ResponseEntity<ArticleRequestDto> getArticleContent(@LoginMember Long member, @PathVariable Long articleId){
-
-        ArticleRequestDto dto = articleService.getArticleDto(articleId);
-
-    }
-
+//    @GetMapping("/{articleId}")
+//    public ResponseEntity<ArticleRequestDto> getArticleContent(@LoginMember Long member, @PathVariable Long articleId){
+//        ArticleRequestDto dto = articleService.getArticleDto(articleId);
+//    }
 }
