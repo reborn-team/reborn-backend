@@ -1,7 +1,6 @@
 package com.reborn.reborn.entity;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +29,7 @@ public class WorkoutImage {
 
     }
 
-    public void uploadToWorkout(Workout workout){
+    public void uploadToWorkout(Workout workout) {
         if (this.workout != null) {
             this.workout.getWorkoutImages().remove(this);
         }

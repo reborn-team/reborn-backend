@@ -52,7 +52,7 @@ class FileUploadControllerTest {
         when(fileService.uploadFile(files)).thenReturn(fileDtos);
 
         //when
-        mockMvc.perform(multipart("/api/v1/file").file("file",file.getBytes()))
+        mockMvc.perform(multipart("/api/v1/file").file("file", file.getBytes()))
                 .andExpect(status().isOk())
                 .andDo(document("upload-file",
                         requestParts(

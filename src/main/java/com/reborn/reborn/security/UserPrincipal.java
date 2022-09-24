@@ -18,6 +18,7 @@ public class UserPrincipal implements UserDetails {
     public UserPrincipal(Member member) {
         this.member = member;
     }
+
     public static UserPrincipal create(Member member) {
         return new UserPrincipal(member);
     }
@@ -28,11 +29,12 @@ public class UserPrincipal implements UserDetails {
 
         return userPrincipal;
     }
-    public Member getMember(){
+
+    public Member getMember() {
         return member;
     }
 
-    public void setAttr(Map<String, Object> attributes){
+    public void setAttr(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 

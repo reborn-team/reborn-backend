@@ -81,11 +81,11 @@ class WorkoutServiceTest {
             list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
-        given(workoutRepository.paginationWorkoutList(cond))
+        given(workoutRepository.pagingWorkWithSearchCondition(cond))
                 .willReturn(list);
 
-        List<WorkoutListDto> findList = workoutService.pagingWorkout(cond);
-        verify(workoutRepository).paginationWorkoutList(any());
+        List<WorkoutListDto> findList = workoutService.pagingWorkoutWithSearchCondition(cond);
+        verify(workoutRepository).pagingWorkWithSearchCondition(any());
 
         WorkoutSliceDto workoutSliceDto = new WorkoutSliceDto(findList);
 
@@ -101,16 +101,41 @@ class WorkoutServiceTest {
             list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
-        given(workoutRepository.paginationWorkoutList(cond))
+        given(workoutRepository.pagingWorkWithSearchCondition(cond))
                 .willReturn(list);
 
-        List<WorkoutListDto> findList = workoutService.pagingWorkout(cond);
-        verify(workoutRepository).paginationWorkoutList(any());
+        List<WorkoutListDto> findList = workoutService.pagingWorkoutWithSearchCondition(cond);
+        verify(workoutRepository).pagingWorkWithSearchCondition(any());
 
         WorkoutSliceDto workoutSliceDto = new WorkoutSliceDto(findList);
 
         assertThat(list.size()).isEqualTo(findList.size());
         assertThat(workoutSliceDto.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("로그인한 회원이 작성자면 true를 반환한다.")
+    void isAuthor() {
+        Member author = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(author).build();
+
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        dto.isAuthor(author.getId());
+
+        assertThat(dto.isAuthor()).isTrue();
+    }
+
+    @Test
+    @DisplayName("로그인한 회원이 작성자가 아니면 false를 반환한다.")
+    void isNotAuthor() {
+        Member author = Member.builder().id(1L).build();
+        Member reader = Member.builder().id(2L).build();
+        Workout workout = Workout.builder().member(author).build();
+
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        dto.isAuthor(reader.getId());
+
+        assertThat(dto.isAuthor()).isFalse();
     }
 
     @Test
@@ -135,7 +160,6 @@ class WorkoutServiceTest {
         Member reader = Member.builder().id(2L).build();
 
         given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
-
 
         assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(RuntimeException.class);
 
@@ -190,8 +214,24 @@ class WorkoutServiceTest {
     }
 
     @Test
-    @DisplayName("파일이 없으면 삭제하지 않는다")
+    @DisplayName("조회한 운동 정보를 DTO로 반환한다.")
     void deleteAndUpdateImageNoFile() {
+        Member author = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(author).workoutCategory(WorkoutCategory.BACK).workoutName("등").build();
+        WorkoutImage workoutImage = new WorkoutImage("a", "b");
+        workoutImage.uploadToWorkout(workout);
+
+        given(workoutRepository.findByIdWithImagesAndMember(any())).willReturn(Optional.of(workout));
+
+        WorkoutResponseDto workoutDto = workoutService.getWorkoutDetailDto(author.getId(), workout.getId());
+
+        assertThat(workoutDto.getWorkoutName()).isEqualTo(workout.getWorkoutName());
+        assertThat(workoutDto.getFiles()).containsExactly(new FileDto("a", "b"));
+    }
+
+    @Test
+    @DisplayName("파일이 없으면 삭제하지 않는다")
+    void getWorkoutDto() {
         List<FileDto> fileDtoList = new ArrayList<>();
 
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).workoutName("등").build();

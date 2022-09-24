@@ -23,7 +23,7 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> findMember = memberRepository.findByEmail(username);
         log.info("MemberDetailsService");
-        if(findMember.isEmpty()){
+        if (findMember.isEmpty()) {
             log.info("aaaaa");
             throw new UsernameNotFoundException("email 확인하세요");
         }
