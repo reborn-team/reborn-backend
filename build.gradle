@@ -47,7 +47,8 @@ dependencies {
 
     //TODO 테스트용 라이브러리
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
-
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 ext {
     snippetsDir = file('build/generated-snippets')
