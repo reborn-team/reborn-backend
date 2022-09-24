@@ -1,18 +1,18 @@
 package com.reborn.reborn.dto;
 
+import com.reborn.reborn.entity.Article;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
-@EqualsAndHashCode
+@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileDto {
-
+public class ArticleRequestDto {
+    private String title;
+    private String content;
     private String originFileName;
     private String uploadFileName;
-
-
 }

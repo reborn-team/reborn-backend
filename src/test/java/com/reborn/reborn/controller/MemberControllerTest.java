@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,9 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -110,7 +106,7 @@ public class MemberControllerTest extends ControllerConfig {
         Member member = Member.builder().email("user").password("a").memberRole(MemberRole.USER).build();
         ChangePasswordDto changePasswordDto = new ChangePasswordDto("a", "b");
 
-        willDoNothing().given(memberService).updatePassword(member.getId(),changePasswordDto);
+        willDoNothing().given(memberService).changePassword(member.getId(),changePasswordDto);
 
         mockMvc.perform(patch("/api/v1/change-password")
                         .contentType(MediaType.APPLICATION_JSON)

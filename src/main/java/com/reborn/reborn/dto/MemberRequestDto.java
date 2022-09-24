@@ -5,7 +5,7 @@ import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
 import lombok.*;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,13 +21,12 @@ public class MemberRequestDto {
 
 
     public Member toEntity(MemberRequestDto memberRequestDto){
-        Member member = Member.builder()
+        return Member.builder()
                 .nickname((memberRequestDto.getNickname()))
                 .phone(memberRequestDto.getPhone())
                 .email(memberRequestDto.getEmail())
                 .address(new Address(memberRequestDto.getRoadName(), memberRequestDto.getDetailAddress(), memberRequestDto.getZipcode()))
                 .memberRole(MemberRole.USER)
                 .build();
-        return member;
     }
 }

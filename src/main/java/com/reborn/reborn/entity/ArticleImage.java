@@ -9,31 +9,30 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class WorkoutImage {
+public class ArticleImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String originFileName;
-
     private String uploadFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "workout_id")
-    private Workout workout;
+    @JoinColumn(name = "article_id")
+    private Article article;
 
-    public WorkoutImage(String originFileName, String uploadFileName) {
+    public ArticleImage(String originFileName, String uploadFileName,Article article){
         this.originFileName = originFileName;
         this.uploadFileName = uploadFileName;
-
+        this.article =article;
     }
 
-    public void uploadToWorkout(Workout workout) {
-        if (this.workout != null) {
-            this.workout.getWorkoutImages().remove(this);
-        }
-        this.workout = workout;
-        workout.getWorkoutImages().add(this);
-    }
+//    public void uploadToArticle(Article article){
+//        if(this.article != null){
+//            this.article.getArticleImages().remove(this);
+//        }
+//        this.article = article;
+//        article.getArticleImages().add(this);
+//    }
+
 }

@@ -85,18 +85,19 @@ class WorkoutControllerTest extends ControllerConfig {
     void getMyWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
+        List<FileDto> files = new ArrayList<>();
+        files.add(new FileDto("원본 이름", "저장된 파일 이름"));
         WorkoutResponseDto workoutResponseDto = WorkoutResponseDto.builder()
                 .id(1L)
                 .workoutName("pull up")
                 .workoutCategory(WorkoutCategory.BACK)
                 .content("등 운동입니다.")
-                .originFileName("원본.png")
-                .uploadFileName("uuid.png")
+                .files(files)
                 .memberId(1L)
                 .memberNickname(member.getNickname())
                 .build();
 
-        given(workoutService.getWorkoutDto(any())).willReturn(workoutResponseDto);
+        given(workoutService.getWorkoutDetailDto(any(), any())).willReturn(workoutResponseDto);
         //when
         mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -109,8 +110,9 @@ class WorkoutControllerTest extends ControllerConfig {
                                 fieldWithPath("id").type(NUMBER).description("운동 id"),
                                 fieldWithPath("workoutName").type(STRING).description("운동 이름"),
                                 fieldWithPath("content").type(STRING).description("운동 설명"),
-                                fieldWithPath("uploadFileName").type(STRING).description("업로드 한 파일 이름"),
-                                fieldWithPath("originFileName").type(STRING).description("원본 파일 이름"),
+                                fieldWithPath("files").type(ARRAY).description("파일 정보"),
+                                fieldWithPath("files[].originFileName").type(STRING).description("원본 파일 이름"),
+                                fieldWithPath("files[].uploadFileName").type(STRING).description("저장된 파일 이름"),
                                 fieldWithPath("workoutCategory").type(STRING).description("운동 카테고리"),
                                 fieldWithPath("memberId").type(NUMBER).description("작성자 Id"),
                                 fieldWithPath("memberNickname").type(STRING).description("작성자 닉네임"),
@@ -130,7 +132,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .uploadFileName("uuid.png")
                 .build();
         list.add(workoutResponseDto);
-        given(workoutService.pagingWorkout(any())).willReturn(list);
+        given(workoutService.pagingWorkoutWithSearchCondition(any())).willReturn(list);
 
         //when
         mockMvc.perform(get("/api/v1/workout")
@@ -177,10 +179,10 @@ class WorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().id(1L).email("user").nickname("nickname").memberRole(MemberRole.USER).build();
         List<FileDto> list = new ArrayList<>();
-        FileDto file = new FileDto("upload","uuid");
+        FileDto file = new FileDto("upload", "uuid");
         list.add(file);
         WorkoutEditForm form = new WorkoutEditForm("수정된 이름", "내용", list);
-        Workout workout= Workout.builder().member(member).build();
+        Workout workout = Workout.builder().member(member).build();
 
         when(workoutService.updateWorkout(member.getId(), 1L, form)).thenReturn(workout);
         //when

@@ -28,24 +28,25 @@ public class MemberService {
         Member save = memberRepository.save(member);
         return save.getId();
     }
- 
+
     public boolean emailDuplicateCheck(String email) {
         return memberRepository.existsByEmail(email);
     }
+
     public boolean nicknameDuplicateCheck(String nickname) {
         return memberRepository.existsByNickname(nickname);
     }
 
     @Transactional
-    public void updatePassword(Long memberId, ChangePasswordDto request) {
+    public void changePassword(Long memberId, ChangePasswordDto request) {
         //TODO Exception
         Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
         if (isNotMatchRawPassword(member, request)) {
             throw new IllegalStateException("Password가 맞지 않습니다.");
         }
         member.changePassword(passwordEncoder.encode(request.getChangePassword()));
-
     }
+
     @Transactional
     public void updateMember(Long memberId, MemberUpdateRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
@@ -53,15 +54,13 @@ public class MemberService {
         member.modifyInfo(data);
     }
 
-    private boolean isNotMatchRawPassword(Member member, ChangePasswordDto request) {
-        return !passwordEncoder.matches(request.getRawPassword(), member.getPassword());
-    }
-
-
     public MemberResponse getOne(Long memberId) {
         //TODO Exception
         Member member = memberRepository.findById(memberId).orElseThrow();
         return MemberResponse.of(member);
+    }
 
+    private boolean isNotMatchRawPassword(Member member, ChangePasswordDto request) {
+        return !passwordEncoder.matches(request.getRawPassword(), member.getPassword());
     }
 }

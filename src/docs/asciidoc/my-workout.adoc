@@ -13,7 +13,7 @@ endif::[]
 = My workout
 ---
 
-== 운동 상세 조회
+== 내 운동 추가
 
 `POST /api/v1/my-workout/{id}`
 

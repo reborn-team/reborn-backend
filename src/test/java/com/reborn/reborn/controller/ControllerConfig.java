@@ -12,11 +12,10 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @Import({RestDocsConfig.class})
@@ -45,6 +44,7 @@ public class ControllerConfig {
         memberRepository.save(member);
 
     }
+
     public String getToken(Member member) {
         return token.createToken(member.getEmail(), member.getMemberRole(), new Date());
     }
