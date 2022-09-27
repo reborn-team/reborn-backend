@@ -1,6 +1,9 @@
 package com.reborn.reborn.controller;
 
+import com.reborn.reborn.dto.MyProgramList;
+import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
+import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.MyWorkoutService;
@@ -10,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -36,6 +40,12 @@ public class MyWorkoutController {
     public ResponseEntity<Void> deleteWorkout(@LoginMember Long memberId, @PathVariable Long workoutId) {
         myWorkoutService.deleteMyWorkout(memberId, workoutId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/program")
+    public ResponseEntity<MyProgramList> getMyProgram(@LoginMember Long memberId, @RequestParam("category") WorkoutCategory workoutCategory) {
+        MyProgramList myProgram = myWorkoutService.getMyProgram(memberId, workoutCategory);
+        return ResponseEntity.ok(myProgram);
     }
 
 }

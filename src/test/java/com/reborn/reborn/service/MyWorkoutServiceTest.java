@@ -1,10 +1,13 @@
 package com.reborn.reborn.service;
 
+import com.reborn.reborn.dto.MyProgramList;
+import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Workout;
+import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
@@ -145,5 +148,17 @@ class MyWorkoutServiceTest {
 
         assertThat(list.size()).isEqualTo(slice.getPage().size());
         assertThat(slice.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("내 프로그램 목록을 반환한다.")
+    void getMyProgram() {
+        List<MyWorkoutDto> list = new ArrayList<>();
+
+        given(workoutQuerydslRepository.getMyWorkoutDto(anyLong(), any())).willReturn(list);
+
+        MyProgramList myProgram = myWorkoutService.getMyProgram(1L, WorkoutCategory.BACK);
+
+        assertThat(myProgram.getList()).isEqualTo(list);
     }
 }
