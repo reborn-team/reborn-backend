@@ -11,6 +11,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import javax.servlet.ServletException;
@@ -43,7 +44,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 principal.getMember().getMemberRole(),
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpireDate())
         );
-        response.setHeader(AUTHORIZATION, TOKEN_PREFIX+accessToken.getToken());
+        response.setHeader(AUTHORIZATION, TOKEN_PREFIX + accessToken.getToken());
 
     }
 

@@ -52,7 +52,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         try {
             LoginRequestDto emailAndPassword = objectMapper
                     .readValue(StreamUtils.copyToString(
-                            request.getInputStream(), StandardCharset.UTF_8), LoginRequestDto.class);;
+                            request.getInputStream(), StandardCharset.UTF_8), LoginRequestDto.class);
+            ;
             return emailAndPassword;
         } catch (IOException e) {
             throw new AuthenticationServiceException("아이디, 혹은 패스워드를 입력하세요");
@@ -62,7 +63,6 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     private boolean isPostAndJson(HttpServletRequest request) {
         return request.getMethod().equals(HTTP_POST) || request.getContentType().equals(APPLICATION_JSON);
     }
-
 
 
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkoutSearchCondition {
-    Long id;
-    WorkoutCategory category;
+    private Long id;
+    private WorkoutCategory category;
 
 }
