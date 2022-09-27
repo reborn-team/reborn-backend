@@ -8,13 +8,13 @@ import com.reborn.reborn.entity.WorkoutImage;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.WorkoutImageRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
+import com.reborn.reborn.repository.custom.WorkoutQuerydslRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Service
@@ -25,6 +25,7 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final MemberRepository memberRepository;
     private final WorkoutImageRepository workoutImageRepository;
+    private final WorkoutQuerydslRepository workoutQuerydslRepository;
 
 
     public Workout create(Long memberId, WorkoutRequestDto dto) {
@@ -47,26 +48,25 @@ public class WorkoutService {
 
     @Transactional(readOnly = true)
     public Workout findWorkoutById(Long workoutId) {
-        return workoutRepository.findById(workoutId).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다."));
+        return getWorkout(workoutId);
     }
 
     @Transactional(readOnly = true)
-    public List<WorkoutListDto> pagingWorkoutWithSearchCondition(WorkoutSearchCondition cond) {
-        return workoutRepository.pagingWorkWithSearchCondition(cond);
+    public WorkoutSliceDto getPagingWorkout(WorkoutSearchCondition cond) {
+        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond);
+        return new WorkoutSliceDto(result);
     }
 
-
-    @Transactional
     public void deleteWorkout(Long authorId, Long workoutId) {
         //TODO Exception
-        Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+        Workout workout = getWorkout(workoutId);
         validIsAuthor(authorId, workout);
         workoutRepository.delete(workout);
     }
 
     public Workout updateWorkout(Long authorId, Long workoutId, WorkoutEditForm form) {
         //TODO EXCEPTION
-        Workout workout = workoutRepository.findById(workoutId).orElseThrow();
+        Workout workout = getWorkout(workoutId);
         validIsAuthor(authorId, workout);
         workout.modifyWorkout(form.getWorkoutName(), form.getContent());
 
@@ -102,9 +102,14 @@ public class WorkoutService {
     }
 
     private void validIsAuthor(Long authorId, Workout workout) {
+        //TODO Exception
         if (workout.getMember().getId() != authorId) {
             throw new RuntimeException("권한이 없음");
         }
+    }
+
+    private Workout getWorkout(Long workoutId) {
+        return workoutRepository.findById(workoutId).orElseThrow();
     }
 
 }

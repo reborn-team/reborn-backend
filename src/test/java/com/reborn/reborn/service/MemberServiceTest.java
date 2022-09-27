@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,7 +50,7 @@ class MemberServiceTest {
         Long memberId = memberService.registerMember(requestDto);
 
         verify(memberRepository).save(any());
-        Assertions.assertThat(memberId).isEqualTo(member.getId());
+        assertThat(memberId).isEqualTo(member.getId());
 
 
     }

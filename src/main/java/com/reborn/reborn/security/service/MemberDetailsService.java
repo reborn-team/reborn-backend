@@ -24,7 +24,6 @@ public class MemberDetailsService implements UserDetailsService {
         Optional<Member> findMember = memberRepository.findByEmail(username);
         log.info("MemberDetailsService");
         if (findMember.isEmpty()) {
-            log.info("aaaaa");
             throw new UsernameNotFoundException("email 확인하세요");
         }
 

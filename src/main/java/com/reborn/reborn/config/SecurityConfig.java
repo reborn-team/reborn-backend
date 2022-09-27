@@ -73,25 +73,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-    //    @Bean
-//    public AuthenticationManager authManager(HttpSecurity http, UserDetailsService userDetailsService)
-//            throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder())
-//                .and()
-//                .build();
-//    }
-
-    //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                .formLogin().disable();
-//        http.userDetailsService(memberDetailsService);
-//        http.addFilterBefore(localMemberLoginFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
-//        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//    }
 }

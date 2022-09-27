@@ -1,5 +1,7 @@
 package com.reborn.reborn.controller;
 
+import com.reborn.reborn.dto.WorkoutSliceDto;
+import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.MyWorkoutService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +19,22 @@ public class MyWorkoutController {
 
     private final MyWorkoutService myWorkoutService;
 
+    @GetMapping
+    public ResponseEntity<WorkoutSliceDto> getList(@LoginMember Long memberId, @ModelAttribute WorkoutSearchCondition cond) {
+        return ResponseEntity.ok(myWorkoutService.getMyWorkoutList(cond, memberId));
+    }
     @PostMapping("/{workoutId}")
     public ResponseEntity addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
-        //TODO 이미 등록된 운동이면 추가 못하게해야함
-        Long myWorkoutId = myWorkoutService.addWorkout(memberId, workoutId);
+        Long myWorkoutId = myWorkoutService.addMyWorkout(memberId, workoutId);
         //TODO Location URI 추가 해야함
         return ResponseEntity.created(URI.create("/api/v1/members/" + myWorkoutId)).body(myWorkoutId);
     }
 
+
+    @DeleteMapping("/{workoutId}")
+    public ResponseEntity<Void> deleteWorkout(@LoginMember Long memberId, @PathVariable Long workoutId) {
+        myWorkoutService.deleteMyWorkout(memberId, workoutId);
+        return ResponseEntity.noContent().build();
+    }
 
 }
