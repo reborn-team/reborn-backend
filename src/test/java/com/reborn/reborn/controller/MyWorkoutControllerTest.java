@@ -3,7 +3,7 @@ package com.reborn.reborn.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.service.MyWorkoutListService;
+import com.reborn.reborn.service.MyWorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +21,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-class MyWorkoutListControllerTest extends ControllerConfig {
+class MyWorkoutControllerTest extends ControllerConfig {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private MyWorkoutListService myWorkoutListService;
+    private MyWorkoutService myWorkoutService;
 
     @Test
     @WithUserDetails(value = "email@naver.com")
@@ -35,7 +35,7 @@ class MyWorkoutListControllerTest extends ControllerConfig {
     void workoutCreate() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        given(myWorkoutListService.addWorkout(any(), any())).willReturn(1L);
+        given(myWorkoutService.addWorkout(any(), any())).willReturn(1L);
 
         //when
         mockMvc.perform(post("/api/v1/my-workout/{workoutId}", 1L)

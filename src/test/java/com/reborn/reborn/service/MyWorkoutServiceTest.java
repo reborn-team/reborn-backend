@@ -4,7 +4,7 @@ import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkoutList;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.repository.MemberRepository;
-import com.reborn.reborn.repository.MyWorkoutListRepository;
+import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,12 +21,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class MyWorkoutListServiceTest {
+class MyWorkoutServiceTest {
 
     @InjectMocks
-    private MyWorkoutListService myWorkoutListService;
+    private MyWorkoutService myWorkoutService;
     @Mock
-    private MyWorkoutListRepository workoutListRepository;
+    private MyWorkoutRepository workoutListRepository;
     @Mock
     private WorkoutRepository workoutRepository;
     @Mock
@@ -42,7 +42,7 @@ class MyWorkoutListServiceTest {
         given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
 
-        Long myWorkoutId = myWorkoutListService.addWorkout(member.getId(), workout.getId());
+        Long myWorkoutId = myWorkoutService.addWorkout(member.getId(), workout.getId());
 
         verify(workoutListRepository).save(any());
         verify(workoutRepository).findById(any());
