@@ -6,6 +6,7 @@ import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.entity.WorkoutImage;
 import com.reborn.reborn.repository.MemberRepository;
+import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutImageRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import com.reborn.reborn.repository.custom.WorkoutQuerydslRepository;
@@ -26,6 +27,7 @@ public class WorkoutService {
     private final MemberRepository memberRepository;
     private final WorkoutImageRepository workoutImageRepository;
     private final WorkoutQuerydslRepository workoutQuerydslRepository;
+    private final MyWorkoutRepository myWorkoutRepository;
 
 
     public Workout create(Long memberId, WorkoutRequestDto dto) {
@@ -95,7 +97,9 @@ public class WorkoutService {
     public WorkoutResponseDto getWorkoutDetailDto(Long memberId, Long workoutId) {
         //TODO Exception
         Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId).orElseThrow();
-        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        Boolean isAdd = myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId);
+
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout, isAdd);
         dto.isAuthor(memberId);
         return dto;
 

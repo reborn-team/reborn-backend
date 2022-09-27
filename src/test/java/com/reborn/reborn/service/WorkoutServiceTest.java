@@ -6,6 +6,7 @@ import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.entity.WorkoutImage;
 import com.reborn.reborn.repository.MemberRepository;
+import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutImageRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
 import com.reborn.reborn.repository.custom.WorkoutQuerydslRepository;
@@ -39,6 +40,8 @@ class WorkoutServiceTest {
 
     @Mock
     WorkoutImageRepository workoutImageRepository;
+    @Mock
+    MyWorkoutRepository myWorkoutRepository;
 
     @Test
     @DisplayName("운동 정보를 생성하고 Id 를 리턴한다.")
@@ -120,7 +123,7 @@ class WorkoutServiceTest {
         Member author = Member.builder().id(1L).build();
         Workout workout = Workout.builder().member(author).build();
 
-        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout, false);
         dto.isAuthor(author.getId());
 
         assertThat(dto.isAuthor()).isTrue();
@@ -133,10 +136,24 @@ class WorkoutServiceTest {
         Member reader = Member.builder().id(2L).build();
         Workout workout = Workout.builder().member(author).build();
 
-        WorkoutResponseDto dto = WorkoutResponseDto.of(workout);
+        WorkoutResponseDto dto = WorkoutResponseDto.of(workout, false);
         dto.isAuthor(reader.getId());
 
         assertThat(dto.isAuthor()).isFalse();
+    }
+    @Test
+    @DisplayName("로그인한 회원의 운동목록에 운동이 있으면 true를 반환한다.")
+    void isAdd() {
+        Member member = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(member).build();
+
+        given(myWorkoutRepository.existsByWorkoutIdAndMemberId(any(), any())).willReturn(true);
+        given(workoutRepository.findByIdWithImagesAndMember(any())).willReturn(Optional.of(workout));
+
+        WorkoutResponseDto workoutDetailDto = workoutService.getWorkoutDetailDto(member.getId(), 1L);
+
+
+        assertThat(workoutDetailDto.isAdd()).isTrue();
     }
 
     @Test
