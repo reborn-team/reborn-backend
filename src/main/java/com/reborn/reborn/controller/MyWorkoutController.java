@@ -28,7 +28,7 @@ public class MyWorkoutController {
     public ResponseEntity addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
         Long myWorkoutId = myWorkoutService.addMyWorkout(memberId, workoutId);
         //TODO Location URI 추가 해야함
-        return ResponseEntity.created(URI.create("/api/v1/members/" + myWorkoutId)).body(myWorkoutId);
+        return ResponseEntity.created(URI.create("/api/v1/my-workout/" + myWorkoutId)).body(myWorkoutId);
     }
 
 
