@@ -21,6 +21,7 @@ public class MyWorkoutController {
 
     @GetMapping
     public ResponseEntity<WorkoutSliceDto> getList(@LoginMember Long memberId, @ModelAttribute WorkoutSearchCondition cond) {
+        log.info("mem3berer={}",memberId);
         return ResponseEntity.ok(myWorkoutService.getMyWorkoutList(cond, memberId));
     }
     @PostMapping("/{workoutId}")

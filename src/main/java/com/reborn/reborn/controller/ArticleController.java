@@ -28,7 +28,7 @@ public class ArticleController {
     }
 
 //    @GetMapping("/{articleId}")
-//    public ResponseEntity<ArticleRequestDto> getArticleContent(@LoginMember Long member, @PathVariable Long articleId){
+//    public ResponseEntity<ArticleRequestDto> getArticleList(@LoginMember Long member, @PathVariable Long articleId){
 //        ArticleRequestDto dto = articleService.getArticleDto(articleId);
 //    }
 }
