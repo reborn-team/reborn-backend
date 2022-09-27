@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class MyWorkout extends BaseTimeEntity{
 
     @Id
+    @Column(name = "my_workout_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

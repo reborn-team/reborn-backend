@@ -1,10 +1,12 @@
 package com.reborn.reborn.repository;
 
+import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Workout;
+import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.custom.WorkoutQuerydslRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,6 +80,14 @@ class MyWorkoutRepositoryTest {
         WorkoutSliceDto page = new WorkoutSliceDto(result);
 
         assertThat(page.hasNext()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("내 운동목록에서 카테고리별로 Dto에 맞게 조회한다.")
+    void myWorkoutDto() {
+        List<MyWorkoutDto> myWorkoutDto = workoutQuerydslRepository.getMyWorkoutDto(member.getId(), WorkoutCategory.BACK);
+
+        assertThat(myWorkoutDto.size()).isEqualTo(11);
     }
 
 }

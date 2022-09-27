@@ -2,6 +2,8 @@ package com.reborn.reborn.repository.custom;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.reborn.reborn.dto.MyWorkoutDto;
+import com.reborn.reborn.dto.QMyWorkoutDto;
 import com.reborn.reborn.dto.QWorkoutListDto;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.entity.QMyWorkout;
@@ -75,6 +77,32 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                         equalsWorkoutCategory(cond.getCategory())
                 )
                 .limit(10L)
+                .orderBy(myWorkout.createdDate.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<MyWorkoutDto> getMyWorkoutDto(Long memberId,WorkoutCategory workoutCategory) {
+        QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
+
+        return jpaQueryFactory
+                .select(new QMyWorkoutDto(
+                        myWorkout.id,
+                        myWorkout.workout.workoutName,
+                        workoutImage.uploadFileName.coalesce("empty")
+                )).from(myWorkout)
+                .leftJoin(workoutImage).on(workoutImage.workout.eq(myWorkout.workout),
+                        workoutImage.id.eq(
+                                jpaQueryFactory
+                                        .select(qWorkoutImage.id.max())
+                                        .from(qWorkoutImage)
+                                        .where(qWorkoutImage.workout.eq(myWorkout.workout))
+                        ))
+                .innerJoin(myWorkout.workout, workout)
+                .where(
+                        myWorkout.member.id.eq(memberId),
+                        equalsWorkoutCategory(workoutCategory)
+                )
                 .orderBy(myWorkout.createdDate.desc())
                 .fetch();
     }
