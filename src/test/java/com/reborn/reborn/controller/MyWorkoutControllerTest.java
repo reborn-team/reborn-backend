@@ -1,10 +1,13 @@
 package com.reborn.reborn.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.reborn.reborn.dto.MyProgramList;
+import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
+import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.service.MyWorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -38,7 +42,7 @@ class MyWorkoutControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workout")
+    @DisplayName("내 운동 리스트 페이지 조회 : Get /api/v1/my-workout")
     void getPagingWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
@@ -80,11 +84,60 @@ class MyWorkoutControllerTest extends ControllerConfig {
         mockMvc.perform(post("/api/v1/my-workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isCreated())
-                .andDo(document("myWorkout-addMyWorkout",
+                .andDo(document("my-workout-addMyWorkout",
                         pathParameters(
                                 parameterWithName("workoutId").description("운동 정보 Id")
                         )
                 ));
     }
 
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("내 운동 삭제 : Delete /api/v1/my-workout/{workoutId}")
+    void deleteWorkout() throws Exception {
+        //given
+        Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
+
+        doNothing().when(myWorkoutService).deleteMyWorkout(any(), any());
+        //when
+        mockMvc.perform(delete("/api/v1/my-workout/{workoutId}", 1L)
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("my-workout-delete",
+                        pathParameters(
+                                parameterWithName("workoutId").description("운동 정보 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("내 운동 프로그램 : Get /api/v1/my-workout/program")
+    void getMyWorkoutProgram() throws Exception {
+        //given
+        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        List<MyWorkoutDto> list = new ArrayList<>();
+        MyWorkoutDto myWorkout = MyWorkoutDto.builder().myWorkoutId(1L).workoutName("pull up")
+                .uploadFileName("uuid.png")
+                .build();
+        list.add(myWorkout);
+        given(myWorkoutService.getMyProgram(any(), any())).willReturn(new MyProgramList(list));
+
+        //when
+        mockMvc.perform(get("/api/v1/my-workout/program")
+                        .header("Authorization", "Bearer " + getToken(member))
+                        .queryParam("category", "BACK"))
+                .andExpect(status().isOk())
+                .andDo(document("my-workout-getMyProgram",
+                        requestParameters(
+                                parameterWithName("category").description("운동 카테고리")
+                        ),
+                        responseFields(
+                                fieldWithPath("list").type(ARRAY).description("페이지에 출력할 List")
+                        ).andWithPrefix("list[].",
+                                fieldWithPath("workoutName").type(STRING).description("운동 이름"),
+                                fieldWithPath("myWorkoutId").type(NUMBER).description("운동 ID"),
+                                fieldWithPath("uploadFileName").type(STRING).description("업로드 파일 이름")
+                        )));
+    }
 }

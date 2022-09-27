@@ -1,10 +1,13 @@
 package com.reborn.reborn.service;
 
+import com.reborn.reborn.dto.MyProgramList;
+import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Workout;
+import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
@@ -50,6 +53,11 @@ public class MyWorkoutService {
         return new WorkoutSliceDto(result);
     }
 
+    public MyProgramList getMyProgram(Long memberId, WorkoutCategory workoutCategory) {
+        List<MyWorkoutDto> list = workoutQuerydslRepository.getMyWorkoutDto(memberId, workoutCategory);
+        return new MyProgramList(list);
+    }
+
     private Workout getWorkout(Long workoutId) {
         return workoutRepository.findById(workoutId).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다"));
     }
@@ -57,5 +65,4 @@ public class MyWorkoutService {
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow();
     }
-
 }

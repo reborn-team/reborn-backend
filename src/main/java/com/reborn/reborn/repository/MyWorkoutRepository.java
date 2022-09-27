@@ -10,4 +10,6 @@ public interface MyWorkoutRepository extends JpaRepository<MyWorkout, Long> {
     Boolean existsByWorkoutIdAndMemberId(Long workoutId, Long memberId);
 
     Optional<MyWorkout> findByWorkoutIdAndMemberId(Long workoutId, Long memberId);
+
+
 }

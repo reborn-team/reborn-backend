@@ -36,15 +36,44 @@ include::{snippets}/my-workout-getPagingList/response-fields.adoc[]
 
 === Request
 
-include::{snippets}/myWorkout-addMyWorkout/http-request.adoc[]
-include::{snippets}/myWorkout-addMyWorkout/path-parameters.adoc[]
+include::{snippets}/my-workout-addMyWorkout/http-request.adoc[]
+include::{snippets}/my-workout-addMyWorkout/path-parameters.adoc[]
 
 
 === Response
 
-include::{snippets}/myWorkout-addMyWorkout/http-response.adoc[]
+include::{snippets}/my-workout-addMyWorkout/http-response.adoc[]
+
+
+== 내 운동 삭제
+
+`DELETE /api/v1/my-workout/{id}`
+
+=== Request
+
+include::{snippets}/my-workout-delete/http-request.adoc[]
+include::{snippets}/my-workout-delete/path-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/my-workout-delete/http-response.adoc[]
 
 
 
+== 내 운동 조회
+
+`GET /api/v1/my-workout/program`
+
+=== Request
+
+include::{snippets}/my-workout-getMyProgram/http-request.adoc[]
+include::{snippets}/my-workout-getMyProgram/request-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/my-workout-getMyProgram/http-response.adoc[]
+include::{snippets}/my-workout-getMyProgram/response-fields.adoc[]
 
 
