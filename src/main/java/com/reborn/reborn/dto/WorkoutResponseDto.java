@@ -42,8 +42,10 @@ public class WorkoutResponseDto {
     }
 
     public static WorkoutResponseDto of(Workout workout) {
+
         List<FileDto> fileDtos = new ArrayList<>();
         workout.getWorkoutImages().forEach(image -> fileDtos.add(new FileDto(image.getOriginFileName(), image.getUploadFileName())));
+
         return WorkoutResponseDto.builder()
                 .id(workout.getId())
                 .workoutName(workout.getWorkoutName())

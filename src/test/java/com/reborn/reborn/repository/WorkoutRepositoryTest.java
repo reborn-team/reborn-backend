@@ -3,6 +3,7 @@ package com.reborn.reborn.repository;
 import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.*;
+import com.reborn.reborn.repository.custom.WorkoutQuerydslRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,8 @@ class WorkoutRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     WorkoutImageRepository workoutImageRepository;
+    @Autowired
+    WorkoutQuerydslRepository workoutQuerydslRepository;
     @Autowired
     EntityManager em;
 
@@ -79,14 +82,14 @@ class WorkoutRepositoryTest {
     @Test
     @DisplayName("운동 목록을 Dto에 맞게 조회하고 10개를 반환한다.")
     void sliceTest() {
-        List<WorkoutListDto> result = workoutRepository.pagingWorkWithSearchCondition(new WorkoutSearchCondition(null, null));
+        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, WorkoutCategory.BACK));
         assertThat(result.size()).isEqualTo(10);
     }
 
     @Test
     @DisplayName("운동 목록을 조회하고 값이 10개면 true를 반환한다.")
     void pageTest() {
-        List<WorkoutListDto> result = workoutRepository.pagingWorkWithSearchCondition(new WorkoutSearchCondition(null, null));
+        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null));
         WorkoutSliceDto page = new WorkoutSliceDto(result);
         assertThat(page.hasNext()).isEqualTo(true);
     }
@@ -157,7 +160,7 @@ class WorkoutRepositoryTest {
         return member;
     }
 
-    private Workout createWorkout(Member member, String text) {
+    public static Workout createWorkout(Member member, String text) {
         Workout workout = Workout.builder()
                 .workoutName("pull up" + text)
                 .member(member)

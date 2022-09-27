@@ -13,19 +13,36 @@ endif::[]
 = My workout
 ---
 
+== 내 운동 조회
+
+`GET /api/v1/my-workout`
+
+=== Request
+
+include::{snippets}/my-workout-getPagingList/http-request.adoc[]
+include::{snippets}/my-workout-getPagingList/request-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/my-workout-getPagingList/http-response.adoc[]
+include::{snippets}/my-workout-getPagingList/response-fields.adoc[]
+
+
+
 == 내 운동 추가
 
 `POST /api/v1/my-workout/{id}`
 
 === Request
 
-include::{snippets}/workoutList-addMyWorkoutList/http-request.adoc[]
-include::{snippets}/workoutList-addMyWorkoutList/path-parameters.adoc[]
+include::{snippets}/myWorkout-addMyWorkout/http-request.adoc[]
+include::{snippets}/myWorkout-addMyWorkout/path-parameters.adoc[]
 
 
 === Response
 
-include::{snippets}/workoutList-addMyWorkoutList/http-response.adoc[]
+include::{snippets}/myWorkout-addMyWorkout/http-response.adoc[]
 
 
 

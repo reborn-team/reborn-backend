@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MyWorkoutList {
+public class MyWorkout extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class MyWorkoutList {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    public MyWorkoutList(Workout workout, Member member) {
+    public MyWorkout(Workout workout, Member member) {
         this.workout = workout;
         this.member = member;
     }
