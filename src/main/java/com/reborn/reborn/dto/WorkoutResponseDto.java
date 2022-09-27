@@ -29,19 +29,23 @@ public class WorkoutResponseDto {
     @Accessors(fluent = true)
     private boolean isAuthor;
 
+    @JsonProperty("isAdd")
+    private boolean isAdd;
+
 
     @Builder
-    public WorkoutResponseDto(Long id, String workoutName, List<FileDto> files, String content, WorkoutCategory workoutCategory, Long memberId, String memberNickname) {
+    public WorkoutResponseDto(Long id, String workoutName, List<FileDto> files, String content, WorkoutCategory workoutCategory, Long memberId, String memberNickname, boolean isAdd) {
         this.id = id;
         this.workoutName = workoutName;
         this.content = content;
         this.files = files;
         this.workoutCategory = workoutCategory;
         this.memberId = memberId;
+        this.isAdd = isAdd;
         this.memberNickname = memberNickname;
     }
 
-    public static WorkoutResponseDto of(Workout workout) {
+    public static WorkoutResponseDto of(Workout workout, boolean isAdd) {
 
         List<FileDto> fileDtos = new ArrayList<>();
         workout.getWorkoutImages().forEach(image -> fileDtos.add(new FileDto(image.getOriginFileName(), image.getUploadFileName())));
@@ -53,6 +57,7 @@ public class WorkoutResponseDto {
                 .content(workout.getContent())
                 .memberId(workout.getMember().getId())
                 .memberNickname(workout.getMember().getNickname())
+                .isAdd(isAdd)
                 .files(fileDtos)
                 .build();
     }

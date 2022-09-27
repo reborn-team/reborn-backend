@@ -117,7 +117,9 @@ class WorkoutControllerTest extends ControllerConfig {
                                 fieldWithPath("memberId").type(NUMBER).description("작성자 Id"),
                                 fieldWithPath("memberNickname").type(STRING).description("작성자 닉네임"),
                                 fieldWithPath("author").type(BOOLEAN).description("작성자가 맞는지"),
-                                fieldWithPath("isAuthor").type(BOOLEAN).description("작성자가 맞는지")
+                                fieldWithPath("isAuthor").type(BOOLEAN).description("작성자가 맞는지"),
+                                fieldWithPath("add").type(BOOLEAN).description("내 운동목록에 추가 되어있는지"),
+                                fieldWithPath("isAdd").type(BOOLEAN).description("내 운동목록에 추가 되어있는지")
                         )
 
                 ));
