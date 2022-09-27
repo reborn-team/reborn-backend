@@ -1,4 +1,4 @@
-package com.reborn.reborn;
+package com.reborn.reborn.controller.converter;
 
 import com.reborn.reborn.entity.WorkoutCategory;
 import org.springframework.core.convert.converter.Converter;

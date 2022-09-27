@@ -8,6 +8,7 @@ import com.reborn.reborn.entity.WorkoutImage;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.WorkoutImageRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
+import com.reborn.reborn.repository.custom.WorkoutQuerydslRepository;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,8 @@ class WorkoutServiceTest {
     WorkoutRepository workoutRepository;
     @Mock
     MemberRepository memberRepository;
+    @Mock
+    WorkoutQuerydslRepository workoutQuerydslRepository;
 
     @Mock
     WorkoutImageRepository workoutImageRepository;
@@ -81,16 +84,15 @@ class WorkoutServiceTest {
             list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
-        given(workoutRepository.pagingWorkWithSearchCondition(cond))
+        given(workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond))
                 .willReturn(list);
 
-        List<WorkoutListDto> findList = workoutService.pagingWorkoutWithSearchCondition(cond);
-        verify(workoutRepository).pagingWorkWithSearchCondition(any());
+        WorkoutSliceDto slice = workoutService.getPagingWorkout(cond);
+        verify(workoutQuerydslRepository).pagingWorkoutWithSearchCondition(any());
 
-        WorkoutSliceDto workoutSliceDto = new WorkoutSliceDto(findList);
 
-        assertThat(list.size()).isEqualTo(findList.size());
-        assertThat(workoutSliceDto.hasNext()).isTrue();
+        assertThat(list.size()).isEqualTo(slice.getPage().size());
+        assertThat(slice.hasNext()).isTrue();
     }
 
     @Test
@@ -101,16 +103,15 @@ class WorkoutServiceTest {
             list.add(new WorkoutListDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
-        given(workoutRepository.pagingWorkWithSearchCondition(cond))
+        given(workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond))
                 .willReturn(list);
 
-        List<WorkoutListDto> findList = workoutService.pagingWorkoutWithSearchCondition(cond);
-        verify(workoutRepository).pagingWorkWithSearchCondition(any());
+        WorkoutSliceDto slice = workoutService.getPagingWorkout(cond);
+        verify(workoutQuerydslRepository).pagingWorkoutWithSearchCondition(any());
 
-        WorkoutSliceDto workoutSliceDto = new WorkoutSliceDto(findList);
 
-        assertThat(list.size()).isEqualTo(findList.size());
-        assertThat(workoutSliceDto.hasNext()).isFalse();
+        assertThat(list.size()).isEqualTo(slice.getPage().size());
+        assertThat(slice.hasNext()).isFalse();
     }
 
     @Test

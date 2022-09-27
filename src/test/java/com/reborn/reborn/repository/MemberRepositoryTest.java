@@ -2,6 +2,7 @@ package com.reborn.reborn.repository;
 
 import com.reborn.reborn.dto.MemberUpdateRequest;
 import com.reborn.reborn.entity.Member;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManager;
 import static com.reborn.reborn.repository.WorkoutRepositoryTest.createMember;
 import static org.assertj.core.api.Assertions.*;
 
+@Slf4j
 @SpringBootTest
 @Transactional
 class MemberRepositoryTest {
@@ -51,7 +53,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
         em.flush();
         em.clear();
-
+        log.info("repository ={}", memberRepository.getClass());
         Member findMember = memberRepository.findById(member.getId()).get();
         MemberUpdateRequest request = new MemberUpdateRequest("update", "010", "zip", "road", "detail");
 

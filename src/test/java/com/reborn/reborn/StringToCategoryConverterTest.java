@@ -1,5 +1,6 @@
 package com.reborn.reborn;
 
+import com.reborn.reborn.controller.converter.StringToCategoryConverter;
 import com.reborn.reborn.entity.WorkoutCategory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

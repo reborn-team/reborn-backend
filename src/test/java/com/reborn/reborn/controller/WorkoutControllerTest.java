@@ -132,7 +132,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .uploadFileName("uuid.png")
                 .build();
         list.add(workoutResponseDto);
-        given(workoutService.pagingWorkoutWithSearchCondition(any())).willReturn(list);
+        given(workoutService.getPagingWorkout(any())).willReturn(new WorkoutSliceDto(list));
 
         //when
         mockMvc.perform(get("/api/v1/workout")
