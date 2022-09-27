@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
@@ -38,7 +39,7 @@ class MyWorkoutControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workout")
+    @DisplayName("내 운동 리스트 페이지 조회 : Get /api/v1/my-workout")
     void getPagingWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
@@ -80,7 +81,26 @@ class MyWorkoutControllerTest extends ControllerConfig {
         mockMvc.perform(post("/api/v1/my-workout/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isCreated())
-                .andDo(document("myWorkout-addMyWorkout",
+                .andDo(document("my-workout-addMyWorkout",
+                        pathParameters(
+                                parameterWithName("workoutId").description("운동 정보 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("내 운동 삭제 : Delete /api/v1/my-workout/{workoutId}")
+    void deleteWorkout() throws Exception {
+        //given
+        Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
+
+        doNothing().when(myWorkoutService).deleteMyWorkout(any(), any());
+        //when
+        mockMvc.perform(delete("/api/v1/my-workout/{workoutId}", 1L)
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("my-workout-delete",
                         pathParameters(
                                 parameterWithName("workoutId").description("운동 정보 Id")
                         )
