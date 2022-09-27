@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface WorkoutQuerydslRepository {
 
-    List<WorkoutListDto> pagingWorkWithSearchCondition(WorkoutSearchCondition cond);
+    List<WorkoutListDto> pagingWorkoutWithSearchCondition(WorkoutSearchCondition cond);
+
+    List<WorkoutListDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId);
 
 }

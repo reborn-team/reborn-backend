@@ -23,8 +23,7 @@ public class WorkoutController {
 
     @GetMapping
     public ResponseEntity<WorkoutSliceDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
-        List<WorkoutListDto> responseDto = workoutService.pagingWorkoutWithSearchCondition(cond);
-        return ResponseEntity.ok().body(new WorkoutSliceDto(responseDto));
+        return ResponseEntity.ok().body(workoutService.getPagingWorkout(cond));
     }
 
     @PostMapping
