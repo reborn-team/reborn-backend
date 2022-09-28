@@ -61,6 +61,9 @@ public class WorkoutService {
 
     public void deleteWorkout(Long authorId, Long workoutId) {
         //TODO Exception
+        if (myWorkoutRepository.existsByWorkoutId(workoutId)) {
+            throw new RuntimeException("나의 리스트에 추가된 운동은 삭제될 수 없습니다");
+        }
         Workout workout = getWorkout(workoutId);
         validIsAuthor(authorId, workout);
         workoutRepository.delete(workout);
