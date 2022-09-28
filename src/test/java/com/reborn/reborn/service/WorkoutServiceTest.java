@@ -227,7 +227,7 @@ class WorkoutServiceTest {
 
         workoutService.deleteAndUpdateImage(fileDtoList, workout);
 
-        verify(workoutImageRepository).deleteAllByWorkoutId(workout.getId());
+        verify(workoutImageRepository).deleteAllByWorkout(workout);
         verify(workoutImageRepository).save(any());
     }
 
@@ -256,7 +256,7 @@ class WorkoutServiceTest {
 
         workoutService.deleteAndUpdateImage(fileDtoList, workout);
 
-        verify(workoutImageRepository, never()).deleteAllByWorkoutId(workout.getId());
+        verify(workoutImageRepository, never()).deleteAllByWorkout(workout);
         verify(workoutImageRepository, never()).save(any());
     }
 }

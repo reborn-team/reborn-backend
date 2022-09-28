@@ -89,7 +89,7 @@ public class WorkoutService {
         if (files.size() == 0) {
             return;
         }
-        workoutImageRepository.deleteAllByWorkoutId(workout.getId());
+        workoutImageRepository.deleteAllByWorkout(workout);
         files.forEach(file -> createImage(file, workout));
     }
 
