@@ -1,6 +1,7 @@
 package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.RecordRequest;
+import com.reborn.reborn.dto.RecordRequestList;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Record;
@@ -45,7 +46,7 @@ class RecordServiceTest {
         given(myWorkoutRepository.findById(any())).willReturn(Optional.of(myWorkout));
         given(recordRepository.findByToday(any())).willReturn(Optional.empty());
 
-        recordService.create(list);
+        recordService.create(new RecordRequestList(list));
 
         verify(recordRepository).save(any());
 
@@ -54,19 +55,21 @@ class RecordServiceTest {
     @DisplayName("요청을 받아 오늘 날짜기준으로 이미 저장되어있다면 무게만 더한다.")
     void createTwice() {
         List<RecordRequest> list = new ArrayList<>();
-        list.add(new RecordRequest(1L, 10));
+        RecordRequest recordRequest = new RecordRequest(1L, 10);
+        list.add(recordRequest);
         Workout workout = Workout.builder().build();
         Member member = Member.builder().build();
         MyWorkout myWorkout = new MyWorkout(workout, member);
+
         Record record = new Record(myWorkout, 10);
         given(myWorkoutRepository.findById(any())).willReturn(Optional.of(myWorkout));
         given(recordRepository.findByToday(any())).willReturn(Optional.of(record));
 
-        recordService.create(list);
+        recordService.create(new RecordRequestList(list));
 
         verify(recordRepository, never()).save(any());
 
-        Assertions.assertThat(record.getWeight()).isEqualTo(20);
+        Assertions.assertThat(record.getTotal()).isEqualTo(20);
 
     }
 }
