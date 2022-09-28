@@ -1,6 +1,5 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.RecordRequest;
 import com.reborn.reborn.dto.RecordRequestList;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Record;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +25,7 @@ public class RecordService {
         List<Record> recordList = list.getRecordList().stream()
                 .map(recordRequest -> {
                     MyWorkout myWorkout = myWorkoutRepository.findById(recordRequest.getMyWorkoutId()).orElseThrow();
-                    return new Record(myWorkout, recordRequest.getWeight());
+                    return new Record(myWorkout, recordRequest.getTotal());
                 })
                 .collect(Collectors.toList());
 
