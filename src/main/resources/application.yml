@@ -37,12 +37,12 @@ spring:
   profiles:
     include: oauth
 
-logging:
-  level:
-    org:
-      springframework:
-        security:
-          web: trace
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security:
+#          web: trace
 
 app:
   auth:

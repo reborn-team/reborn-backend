@@ -1,7 +1,6 @@
 package com.reborn.reborn.controller;
 
 import com.reborn.reborn.dto.MyProgramList;
-import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.repository.custom.WorkoutSearchCondition;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,13 +26,13 @@ public class MyWorkoutController {
         log.info("mem3berer={}",memberId);
         return ResponseEntity.ok(myWorkoutService.getMyWorkoutList(cond, memberId));
     }
+
     @PostMapping("/{workoutId}")
     public ResponseEntity addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
         Long myWorkoutId = myWorkoutService.addMyWorkout(memberId, workoutId);
         //TODO Location URI 추가 해야함
         return ResponseEntity.created(URI.create("/api/v1/my-workout/" + myWorkoutId)).body(myWorkoutId);
     }
-
 
     @DeleteMapping("/{workoutId}")
     public ResponseEntity<Void> deleteWorkout(@LoginMember Long memberId, @PathVariable Long workoutId) {
