@@ -43,7 +43,7 @@ class RecordControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 생성 : POST /api/v1/workout")
+    @DisplayName("기록 생성 : POST /api/v1/record")
     void workoutCreate() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
@@ -51,12 +51,12 @@ class RecordControllerTest extends ControllerConfig {
         List<RecordRequest> list = new ArrayList<>();
         list.add(new RecordRequest(1L, 10));
 
-        willDoNothing().given(recordService).create(list);
+        willDoNothing().given(recordService).create(new RecordRequestList(list));
 
         //when
         mockMvc.perform(post("/api/v1/record")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(list))
+                        .content(objectMapper.writeValueAsBytes(new RecordRequestList(list)))
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isCreated())
                 .andDo(document("record-create"
