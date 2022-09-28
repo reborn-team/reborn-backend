@@ -56,12 +56,14 @@ class MyWorkoutControllerTest extends ControllerConfig {
         //when
         mockMvc.perform(get("/api/v1/my-workout")
                         .header("Authorization", "Bearer " + getToken(member))
-                .queryParam("id", "1").queryParam("category", "BACK"))
-                .andExpect(status().isOk())
+                        .queryParam("id", "1").queryParam("category", "BACK")
+                        .queryParam("title","벤치 프레스").queryParam("author","nickname"))                .andExpect(status().isOk())
                 .andDo(document("my-workout-getPagingList",
                         requestParameters(
                                 parameterWithName("id").description("마지막으로 받은 운동 Id"),
-                                parameterWithName("category").description("운동 카테고리")
+                                parameterWithName("category").description("운동 카테고리"),
+                                parameterWithName("title").description("운동 제목"),
+                                parameterWithName("author").description("운동 작성자")
                         ),
                         responseFields(
                                 fieldWithPath("page").type(ARRAY).description("페이지에 출력할 List"),

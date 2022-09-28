@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 public class WorkoutSearchCondition {
     private Long id;
     private WorkoutCategory category;
+    private String author;
+    private String title;
 
 }
