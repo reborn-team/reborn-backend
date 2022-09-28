@@ -61,7 +61,7 @@ include::{snippets}/my-workout-delete/http-response.adoc[]
 
 
 
-== 내 운동 조회
+== 내 프로그램 조회
 
 `GET /api/v1/my-workout/program`
 
