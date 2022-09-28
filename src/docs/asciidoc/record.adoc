@@ -1,0 +1,28 @@
+= REST Docs
+reborn docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Record
+---
+
+== Record 생성
+
+`POST /api/v1/record`
+
+=== Request
+
+include::{snippets}/record-create/http-request.adoc[]
+
+
+=== Response
+
+include::{snippets}/record-create/http-response.adoc[]
+
