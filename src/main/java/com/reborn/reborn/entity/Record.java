@@ -20,14 +20,14 @@ public class Record extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     private MyWorkout myWorkout;
 
-    private Integer weight;
+    private Integer total;
 
-    public Record(MyWorkout myWorkout, Integer weight) {
+    public Record(MyWorkout myWorkout, Integer total) {
         this.myWorkout = myWorkout;
-        this.weight = weight;
+        this.total = total;
     }
 
-    public void addWeight(Integer weight) {
-        this.weight += weight;
+    public void addWeight(Integer total) {
+        this.total += total;
     }
 }

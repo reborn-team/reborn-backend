@@ -1,6 +1,7 @@
 package com.reborn.reborn.controller;
 
 import com.reborn.reborn.dto.RecordRequest;
+import com.reborn.reborn.dto.RecordRequestList;
 import com.reborn.reborn.service.RecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class RecordController {
     private final RecordService recordService;
 
     @PostMapping
-    public ResponseEntity createRecord(@RequestBody List<RecordRequest> list) {
+    public ResponseEntity createRecord(@RequestBody RecordRequestList list) {
         recordService.create(list);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
