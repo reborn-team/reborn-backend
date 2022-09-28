@@ -21,7 +21,9 @@ spring:
       max-request-size: 30MB
   thymeleaf:
     cache: 'false'
-
+  output:
+    ansi:
+      enabled: always
   h2:
     console:
       path: /h2-console
@@ -55,3 +57,4 @@ file:
 #file:
 #  upload:
 #    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+

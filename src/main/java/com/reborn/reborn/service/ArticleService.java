@@ -1,15 +1,15 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.ArticleRequestDto;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Article;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.repository.ArticleRepository;
 import com.reborn.reborn.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +34,7 @@ public class ArticleService {
         return articleRepository.findById(articleId).orElseThrow();
     }
 
-//    @Transactional
-//    public ArticleRequestDto getArticleDto(Long articleId) { return articleRepository);
-//    }
+    public Page<ArticleResponseDto> pagingArticleBySearchCondition(ArticleSearchType articleSearchType, Pageable pageable){
+        return articleRepository.searchArticlePaging(articleSearchType, pageable);
+    }
 }

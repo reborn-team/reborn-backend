@@ -1,12 +1,13 @@
 package com.reborn.reborn.controller;
 
-import com.reborn.reborn.dto.ArticleRequestDto;
+import com.reborn.reborn.dto.*;
 import com.reborn.reborn.entity.Article;
 import com.reborn.reborn.security.LoginMember;
 import com.reborn.reborn.service.ArticleImageService;
 import com.reborn.reborn.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,12 @@ public class ArticleController {
         return ResponseEntity.created(URI.create("/api/v1/articles/" + saveArticleId)).body(saveArticleId);
     }
 
-//    @GetMapping("/{articleId}")
-//    public ResponseEntity<ArticleRequestDto> getArticleList(@LoginMember Long member, @PathVariable Long articleId){
-//        ArticleRequestDto dto = articleService.getArticleDto(articleId);
-//    }
+    @GetMapping
+    public ResponseEntity<PageResponseDto<ArticleResponseDto>> getArticleList(@ModelAttribute ArticleSearchType articleSearchType, PageRequestDTO pageRequestDTO){
+        Page<ArticleResponseDto> result = articleService.pagingArticleBySearchCondition(articleSearchType, pageRequestDTO.of());
+        log.info("articleSearchType={}",articleSearchType);
+        PageResponseDto<ArticleResponseDto> articleResponseDto = new PageResponseDto<>(result);
+        return ResponseEntity.ok().body(articleResponseDto);
+    }
+
 }
