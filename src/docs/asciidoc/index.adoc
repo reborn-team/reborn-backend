@@ -4,4 +4,5 @@
 - link:/docs/workout.html[운동 관련 API]
 - link:/docs/my-workout.html[내 운동 관련 API]
 - link:/docs/upload.html[파일 관련 API]
+- link:/docs/record.html[기록 관련 API]
 
