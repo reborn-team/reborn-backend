@@ -21,7 +21,9 @@ spring:
       max-request-size: 30MB
   thymeleaf:
     cache: 'false'
-
+  output:
+    ansi:
+      enabled: always
   h2:
     console:
       path: /h2-console
@@ -49,9 +51,10 @@ app:
     tokenExpireDate: 1800000
     refresh-token-expire-date: 604800000
 
-#file:
-#  upload:
-#    directory: 'D:\upload\'
 file:
   upload:
-    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+    directory: 'D:\upload\'
+#file:
+#  upload:
+#    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+

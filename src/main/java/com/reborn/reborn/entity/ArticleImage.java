@@ -21,18 +21,17 @@ public class ArticleImage {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    public ArticleImage(String originFileName, String uploadFileName,Article article){
+    public ArticleImage(String originFileName, String uploadFileName){
         this.originFileName = originFileName;
         this.uploadFileName = uploadFileName;
-        this.article =article;
     }
 
-//    public void uploadToArticle(Article article){
-//        if(this.article != null){
-//            this.article.getArticleImages().remove(this);
-//        }
-//        this.article = article;
-//        article.getArticleImages().add(this);
-//    }
+    public void uploadToArticle(Article article){
+        if(this.article != null){
+            this.article.getArticleImages().remove(this);
+        }
+        this.article = article;
+        article.getArticleImages().add(this);
+    }
 
 }

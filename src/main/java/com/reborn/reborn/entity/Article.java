@@ -28,8 +28,6 @@ public class Article extends BaseTimeEntity {
 
     private int viewCount;
 
-    private int likeCount;
-
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticleImage> articleImages = new ArrayList<>();
 
@@ -39,4 +37,10 @@ public class Article extends BaseTimeEntity {
         this.content = content;
         this.member = member;
     }
+
+    public void modifyArticle(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+
 }
