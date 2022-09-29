@@ -3,7 +3,7 @@ package com.reborn.reborn.repository.custom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.reborn.reborn.dto.ArticleResponseDto;
+import com.reborn.reborn.dto.ArticleListDto;
 import com.reborn.reborn.dto.ArticleSearchType;
 import com.reborn.reborn.dto.QArticleResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,9 @@ public class ArticleRepositoryImpl implements ArticleResponsitoryQuerydsl {
 
 
     @Override
-    public Page<ArticleResponseDto> searchArticlePaging(ArticleSearchType searchType, Pageable pageable) {
+    public Page<ArticleListDto> searchArticlePaging(ArticleSearchType searchType, Pageable pageable) {
 
-        List<ArticleResponseDto> result = queryFactory
+        List<ArticleListDto> result = queryFactory
                 .select(new QArticleResponseDto(
                         article.id,
                         article.title,

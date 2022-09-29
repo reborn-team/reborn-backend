@@ -34,7 +34,7 @@ public class ArticleService {
         return articleRepository.findById(articleId).orElseThrow();
     }
 
-    public Page<ArticleResponseDto> pagingArticleBySearchCondition(ArticleSearchType articleSearchType, Pageable pageable){
+    public Page<ArticleListDto> pagingArticleBySearchCondition(ArticleSearchType articleSearchType, Pageable pageable){
         return articleRepository.searchArticlePaging(articleSearchType, pageable);
     }
 }
