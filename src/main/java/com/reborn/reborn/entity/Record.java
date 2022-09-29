@@ -3,6 +3,8 @@ package com.reborn.reborn.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -17,7 +19,8 @@ public class Record extends BaseTimeEntity {
     private Long id;
 
     @JoinColumn(name = "my_workout_id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY)
     private MyWorkout myWorkout;
 
     private Integer total;
