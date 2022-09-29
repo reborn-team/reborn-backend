@@ -1,6 +1,8 @@
 package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.FileDto;
+import com.reborn.reborn.exception.FileDownloadException;
+import com.reborn.reborn.exception.FileUploadException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -27,12 +29,15 @@ public class LocalFileService implements FileService {
             String originFileName = file.getOriginalFilename();
             String uploadFileName = createUploadFileName(originFileName);
             String fullPath = getFullPath(uploadFileName);
+
+
             try {
                 file.transferTo(new File(fullPath));
             } catch (IOException e) {
-                //TODO 예외처리 해야함
-                throw new RuntimeException(e);
+                throw new FileUploadException(e.getMessage());
             }
+
+
             files.add(new FileDto(originFileName, uploadFileName));
         });
         return files;
@@ -40,7 +45,6 @@ public class LocalFileService implements FileService {
 
     @Override
     public boolean deleteFile(String uploadFilename) {
-        //TODO 해당 파일을 지우지 못했을 경우, 1. 해당 파일 이름 없음. 2. 그냥 시스템 상으로 실패,  
         File file = new File(getFullPath(uploadFilename));
         return file.delete();
     }
@@ -55,8 +59,7 @@ public class LocalFileService implements FileService {
         try {
             return new UrlResource("file:" + getFullPath(filename));
         } catch (Exception e) {
-            //TODO 예외처리
-            throw new RuntimeException("aa");
+            throw new FileDownloadException("aa");
         }
     }
 }

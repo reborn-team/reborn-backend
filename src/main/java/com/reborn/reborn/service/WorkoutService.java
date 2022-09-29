@@ -5,6 +5,9 @@ import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.entity.WorkoutImage;
+import com.reborn.reborn.exception.member.MemberNotFoundException;
+import com.reborn.reborn.exception.member.UnAuthorizedException;
+import com.reborn.reborn.exception.workout.WorkoutNotFoundException;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutImageRepository;
@@ -32,8 +35,8 @@ public class WorkoutService {
 
 
     public Workout create(Long memberId, WorkoutRequestDto dto) {
-        //TODO Exception
-        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException("찾으시는 회원이 없습니다 : " + memberId));
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
                 .content(dto.getContent())
@@ -56,14 +59,15 @@ public class WorkoutService {
 
     @Transactional(readOnly = true)
     public WorkoutSliceDto<WorkoutListDto> getPagingWorkout(WorkoutSearchCondition cond) {
+
         List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond);
         return new WorkoutSliceDto<>(result);
     }
 
     public void deleteWorkout(Long authorId, Long workoutId) {
-        //TODO Exception
+
         if (myWorkoutRepository.existsByWorkoutId(workoutId)) {
-            throw new NoSuchElementException("나의 리스트에 추가된 운동은 삭제될 수 없습니다");
+            throw new UnAuthorizedException("나의 리스트에 추가된 운동은 삭제될 수 없습니다");
         }
         Workout workout = getWorkout(workoutId);
         validIsAuthor(authorId, workout);
@@ -71,7 +75,6 @@ public class WorkoutService {
     }
 
     public Workout updateWorkout(Long authorId, Long workoutId, WorkoutEditForm form) {
-        //TODO EXCEPTION
         Workout workout = getWorkout(workoutId);
         validIsAuthor(authorId, workout);
         workout.modifyWorkout(form.getWorkoutName(), form.getContent());
@@ -99,8 +102,9 @@ public class WorkoutService {
 
     @Transactional(readOnly = true)
     public WorkoutResponseDto getWorkoutDetailDto(Long memberId, Long workoutId) {
-        //TODO Exception
-        Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId).orElseThrow();
+
+        Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId)
+                .orElseThrow(() -> new WorkoutNotFoundException("찾으시는 운동이 없습니다 : " + workoutId));
         Boolean isAdd = myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId);
 
         WorkoutResponseDto dto = WorkoutResponseDto.of(workout, isAdd);
@@ -110,14 +114,13 @@ public class WorkoutService {
     }
 
     private void validIsAuthor(Long authorId, Workout workout) {
-        //TODO Exception
         if (workout.getMember().getId() != authorId) {
-            throw new RuntimeException("권한이 없음");
+            throw new UnAuthorizedException("권한이 없습니다 : "+ authorId);
         }
     }
 
     private Workout getWorkout(Long workoutId) {
-        return workoutRepository.findById(workoutId).orElseThrow();
+        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException("찾으시는 운동이 없습니다 :" + workoutId));
     }
 
 }

@@ -5,6 +5,8 @@ import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
 import com.reborn.reborn.entity.WorkoutImage;
+import com.reborn.reborn.exception.member.MemberNotFoundException;
+import com.reborn.reborn.exception.member.UnAuthorizedException;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutImageRepository;
@@ -65,6 +67,19 @@ class WorkoutServiceTest {
     }
 
     @Test
+    @DisplayName("운동 정보를 생성할 때 회원이 조회가 안되면 예외가 발생한다.")
+    void createEx() {
+        WorkoutRequestDto requestDto = WorkoutRequestDto.builder()
+                .workoutCategory("BACK").build();
+        Workout workout = Workout.builder().build();
+        Member member = Member.builder().build();
+
+        given(memberRepository.findById(any())).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> workoutService.create(member.getId(), requestDto)).isInstanceOf(MemberNotFoundException.class);
+
+    }
+    @Test
     @DisplayName("운동 정보를 조회한다.")
     void getMyWorkout() {
         Workout workout = Workout.builder().workoutCategory(WorkoutCategory.BACK).build();
@@ -91,7 +106,7 @@ class WorkoutServiceTest {
         given(workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond))
                 .willReturn(list);
 
-        WorkoutSliceDto slice = workoutService.getPagingWorkout(cond);
+        WorkoutSliceDto<WorkoutListDto> slice = workoutService.getPagingWorkout(cond);
         verify(workoutQuerydslRepository).pagingWorkoutWithSearchCondition(any());
 
 
@@ -110,7 +125,7 @@ class WorkoutServiceTest {
         given(workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond))
                 .willReturn(list);
 
-        WorkoutSliceDto slice = workoutService.getPagingWorkout(cond);
+        WorkoutSliceDto<WorkoutListDto> slice = workoutService.getPagingWorkout(cond);
         verify(workoutQuerydslRepository).pagingWorkoutWithSearchCondition(any());
 
 
@@ -191,7 +206,7 @@ class WorkoutServiceTest {
     void deleteWorkoutInMyWorkout() {
         when(myWorkoutRepository.existsByWorkoutId(1L)).thenReturn(true);
 
-        assertThatThrownBy(() -> workoutService.deleteWorkout(1L, 1L)).isInstanceOf(NoSuchElementException.class);
+        assertThatThrownBy(() -> workoutService.deleteWorkout(1L, 1L)).isInstanceOf(UnAuthorizedException.class);
         verify(workoutRepository, never()).delete(any());
     }
 
