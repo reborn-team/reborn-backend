@@ -75,7 +75,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                         myWorkout.member.id.eq(memberId),
                         containsWorkoutTitle(cond.getTitle()),
                         containsWorkoutAuthor(cond.getNickname()),
-                        ltWorkoutId(cond.getId()),
+                        ltMyWorkoutId(cond.getId()),
                         equalsWorkoutCategory(cond.getCategory())
                 )
                 .limit(10L)
@@ -122,6 +122,10 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
         return workoutId == null ? null : workout.id.lt(workoutId);
     }
 
+
+    private BooleanExpression ltMyWorkoutId(Long workoutId) {
+        return workoutId == null ? null : myWorkout.id.lt(workoutId);
+    }
     private BooleanExpression containsWorkoutAuthor(String author) {
         return StringUtils.hasText(author) ? workout.member.nickname.eq(author) : null;
     }
