@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Record extends BaseTimeEntity{
+public class Record extends BaseTimeEntity {
 
     @Id
     @Column(name = "record_id")
@@ -17,7 +17,7 @@ public class Record extends BaseTimeEntity{
     private Long id;
 
     @JoinColumn(name = "my_workout_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private MyWorkout myWorkout;
 
     private Integer total;
@@ -28,6 +28,8 @@ public class Record extends BaseTimeEntity{
     }
 
     public void addWeight(Integer total) {
-        this.total += total;
+        if (this.total != null) {
+            this.total += total;
+        }
     }
 }

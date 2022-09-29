@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class WorkoutImage {
 
     @Id
+    @Column(name = "workout_image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

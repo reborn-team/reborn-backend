@@ -1,12 +1,12 @@
 package com.reborn.reborn.repository.custom;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.reborn.reborn.dto.MyWorkoutDto;
 import com.reborn.reborn.dto.QMyWorkoutDto;
 import com.reborn.reborn.dto.QWorkoutListDto;
 import com.reborn.reborn.dto.WorkoutListDto;
-import com.reborn.reborn.entity.QMyWorkout;
 import com.reborn.reborn.entity.QWorkoutImage;
 import com.reborn.reborn.entity.WorkoutCategory;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,6 @@ import java.util.List;
 import static com.reborn.reborn.entity.QMyWorkout.*;
 import static com.reborn.reborn.entity.QWorkout.*;
 import static com.reborn.reborn.entity.QWorkoutImage.*;
-import static org.springframework.util.StringUtils.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,6 +44,8 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                         ))
                 .groupBy(workout)
                 .where(
+                        containsWorkoutTitle(cond.getTitle()),
+                        containsWorkoutAuthor(cond.getAuthor()),
                         ltWorkoutId(cond.getId()),
                         equalsWorkoutCategory(cond.getCategory())
                 )
@@ -52,6 +53,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                 .orderBy(workout.createdDate.desc())
                 .fetch();
     }
+
 
     @Override
     public List<WorkoutListDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId) {
@@ -70,9 +72,10 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                                         .where(qWorkoutImage.workout.eq(myWorkout.workout))
                         ))
                 .innerJoin(myWorkout.workout, workout)
-//                .groupBy(workout)
                 .where(
                         myWorkout.member.id.eq(memberId),
+                        containsWorkoutTitle(cond.getTitle()),
+                        containsWorkoutAuthor(cond.getAuthor()),
                         ltWorkoutId(cond.getId()),
                         equalsWorkoutCategory(cond.getCategory())
                 )
@@ -82,7 +85,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
     }
 
     @Override
-    public List<MyWorkoutDto> getMyWorkoutDto(Long memberId,WorkoutCategory workoutCategory) {
+    public List<MyWorkoutDto> getMyWorkoutDto(Long memberId, WorkoutCategory workoutCategory) {
         QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
 
         return jpaQueryFactory
@@ -107,6 +110,10 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                 .fetch();
     }
 
+    private BooleanExpression containsWorkoutTitle(String title) {
+        return StringUtils.hasText(title) ? workout.workoutName.eq(title) : null;
+    }
+
 
     private BooleanExpression equalsWorkoutCategory(WorkoutCategory workoutCategory) {
         return workoutCategory == null ? null : workout.workoutCategory.eq(workoutCategory);
@@ -115,4 +122,9 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
     private BooleanExpression ltWorkoutId(Long workoutId) {
         return workoutId == null ? null : workout.id.lt(workoutId);
     }
+
+    private BooleanExpression containsWorkoutAuthor(String author) {
+        return StringUtils.hasText(author) ? workout.member.nickname.eq(author) : null;
+    }
+
 }
