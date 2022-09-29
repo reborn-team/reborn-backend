@@ -3,6 +3,7 @@ package com.reborn.reborn.service;
 import com.reborn.reborn.dto.RecordRequestList;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Record;
+import com.reborn.reborn.exception.myworkout.MyWorkoutNotFoundException;
 import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.RecordRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,8 @@ public class RecordService {
     public void create(RecordRequestList list) {
         List<Record> recordList = list.getRecordList().stream()
                 .map(recordRequest -> {
-                    MyWorkout myWorkout = myWorkoutRepository.findById(recordRequest.getMyWorkoutId()).orElseThrow();
+                    MyWorkout myWorkout = myWorkoutRepository.findById(recordRequest.getMyWorkoutId())
+                            .orElseThrow(() -> new MyWorkoutNotFoundException("찾으시는 내 운동이 없습니다 :" + recordRequest.getMyWorkoutId()));
                     return new Record(myWorkout, recordRequest.getTotal());
                 })
                 .collect(Collectors.toList());

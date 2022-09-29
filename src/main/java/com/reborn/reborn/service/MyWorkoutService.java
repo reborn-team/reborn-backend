@@ -7,6 +7,9 @@ import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.entity.Workout;
 import com.reborn.reborn.entity.WorkoutCategory;
+import com.reborn.reborn.exception.member.MemberNotFoundException;
+import com.reborn.reborn.exception.workout.WorkoutAlreadyExistException;
+import com.reborn.reborn.exception.workout.WorkoutNotFoundException;
 import com.reborn.reborn.repository.MemberRepository;
 import com.reborn.reborn.repository.MyWorkoutRepository;
 import com.reborn.reborn.repository.WorkoutRepository;
@@ -17,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,7 @@ public class MyWorkoutService {
         Workout workout = getWorkout(workoutId);
         Member member = getMember(memberId);
         if (myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId)) {
-            //TODO Exception
-            throw new RuntimeException("이미 추가된 운동");
+            throw new WorkoutAlreadyExistException("이미 추가된 운동입니다 : " + workout.getWorkoutName());
         }
         MyWorkout saveList = myWorkoutRepository.save(new MyWorkout(workout, member));
         return saveList.getId();
@@ -58,10 +59,10 @@ public class MyWorkoutService {
     }
 
     private Workout getWorkout(Long workoutId) {
-        return workoutRepository.findById(workoutId).orElseThrow(() -> new NoSuchElementException("찾으시는 운동이 없습니다"));
+        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()));
     }
 
     private Member getMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow();
+        return memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId.toString()));
     }
 }
