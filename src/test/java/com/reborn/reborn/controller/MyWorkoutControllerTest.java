@@ -3,11 +3,9 @@ package com.reborn.reborn.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.dto.MyProgramList;
 import com.reborn.reborn.dto.MyWorkoutDto;
-import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MemberRole;
-import com.reborn.reborn.entity.MyWorkout;
 import com.reborn.reborn.service.MyWorkoutService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +44,10 @@ class MyWorkoutControllerTest extends ControllerConfig {
     void getPagingWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        List<WorkoutListDto> list = new ArrayList<>();
-        WorkoutListDto workoutResponseDto = WorkoutListDto.builder().workoutId(1L).workoutName("pull up")
-                .uploadFileName("uuid.png")
-                .build();
-        list.add(workoutResponseDto);
-        given(myWorkoutService.getMyWorkoutList(any(), any())).willReturn(new WorkoutSliceDto(list));
+        List<MyWorkoutDto> list = new ArrayList<>();
+        MyWorkoutDto dto = new MyWorkoutDto(1L, 1L, "운동명", "파일명");
+        list.add(dto);
+        given(myWorkoutService.getMyWorkoutList(any(), any())).willReturn(new WorkoutSliceDto<>(list));
 
         //when
         mockMvc.perform(get("/api/v1/my-workout")
@@ -71,6 +67,7 @@ class MyWorkoutControllerTest extends ControllerConfig {
                         ).andWithPrefix("page[].",
                                 fieldWithPath("workoutName").type(STRING).description("운동 이름"),
                                 fieldWithPath("workoutId").type(NUMBER).description("운동 ID"),
+                                fieldWithPath("myWorkoutId").type(NUMBER).description("내 운동 ID"),
                                 fieldWithPath("uploadFileName").type(STRING).description("업로드 파일 이름")
                         )));
     }
@@ -119,7 +116,7 @@ class MyWorkoutControllerTest extends ControllerConfig {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
         List<MyWorkoutDto> list = new ArrayList<>();
-        MyWorkoutDto myWorkout = MyWorkoutDto.builder().myWorkoutId(1L).workoutName("pull up")
+        MyWorkoutDto myWorkout = MyWorkoutDto.builder().workoutId(1L).myWorkoutId(1L).workoutName("pull up")
                 .uploadFileName("uuid.png")
                 .build();
         list.add(myWorkout);
@@ -139,6 +136,7 @@ class MyWorkoutControllerTest extends ControllerConfig {
                         ).andWithPrefix("list[].",
                                 fieldWithPath("workoutName").type(STRING).description("운동 이름"),
                                 fieldWithPath("myWorkoutId").type(NUMBER).description("운동 ID"),
+                                fieldWithPath("workoutId").type(NUMBER).description("운동 ID"),
                                 fieldWithPath("uploadFileName").type(STRING).description("업로드 파일 이름")
                         )));
     }

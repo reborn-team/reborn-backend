@@ -10,7 +10,7 @@ public interface WorkoutQuerydslRepository {
 
     List<WorkoutListDto> pagingWorkoutWithSearchCondition(WorkoutSearchCondition cond);
 
-    List<WorkoutListDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId);
+    List<MyWorkoutDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId);
 
     List<MyWorkoutDto> getMyWorkoutDto(Long memberId,WorkoutCategory workoutCategory);
 

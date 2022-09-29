@@ -55,9 +55,9 @@ public class WorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public WorkoutSliceDto getPagingWorkout(WorkoutSearchCondition cond) {
+    public WorkoutSliceDto<WorkoutListDto> getPagingWorkout(WorkoutSearchCondition cond) {
         List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond);
-        return new WorkoutSliceDto(result);
+        return new WorkoutSliceDto<>(result);
     }
 
     public void deleteWorkout(Long authorId, Long workoutId) {

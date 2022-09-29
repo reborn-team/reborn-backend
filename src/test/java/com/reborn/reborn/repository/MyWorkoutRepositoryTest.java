@@ -67,7 +67,7 @@ class MyWorkoutRepositoryTest {
     @Test
     @DisplayName("내 운동 목록을 Dto에 맞게 조회하고 10개를 반환한다.")
     void sliceTest() {
-        List<WorkoutListDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null,null,null), member.getId());
+        List<MyWorkoutDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, null, null), member.getId());
 
         assertThat(result.size()).isEqualTo(10);
     }
@@ -75,18 +75,18 @@ class MyWorkoutRepositoryTest {
     @Test
     @DisplayName("내 운동 목록을 조회하고 값이 10개면 true를 반환한다.")
     void pageTest() {
-        List<WorkoutListDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, null, null), member.getId());
+        List<MyWorkoutDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, null, null), member.getId());
 
-        WorkoutSliceDto page = new WorkoutSliceDto(result);
+        WorkoutSliceDto<MyWorkoutDto> page = new WorkoutSliceDto<>(result);
 
         assertThat(page.hasNext()).isEqualTo(true);
     }
     @Test
     @DisplayName("내 운동 목록을 조회하고 값이 10개면 true를 반환한다.")
     void pageSearchTest() {
-        List<WorkoutListDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, "han", null), member.getId());
+        List<MyWorkoutDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, "han", null), member.getId());
 
-        WorkoutSliceDto page = new WorkoutSliceDto(result);
+        WorkoutSliceDto<MyWorkoutDto> page = new WorkoutSliceDto<>(result);
 
         assertThat(result.size()).isEqualTo(10);
     }

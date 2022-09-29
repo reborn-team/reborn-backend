@@ -21,7 +21,7 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @GetMapping
-    public ResponseEntity<WorkoutSliceDto> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
+    public ResponseEntity<WorkoutSliceDto<WorkoutListDto>> getWorkoutList(@ModelAttribute WorkoutSearchCondition cond) {
         return ResponseEntity.ok().body(workoutService.getPagingWorkout(cond));
     }
 

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class MyWorkoutDto {
 
     private Long myWorkoutId;
+    private Long workoutId;
 
     private String workoutName;
 
@@ -19,6 +20,14 @@ public class MyWorkoutDto {
     @QueryProjection
     public MyWorkoutDto(Long myWorkoutId, String workoutName, String uploadFileName) {
         this.myWorkoutId = myWorkoutId;
+        this.workoutName = workoutName;
+        this.uploadFileName = uploadFileName;
+    }
+
+    @QueryProjection
+    public MyWorkoutDto(Long myWorkoutId, Long workoutId, String workoutName, String uploadFileName) {
+        this.myWorkoutId = myWorkoutId;
+        this.workoutId = workoutId;
         this.workoutName = workoutName;
         this.uploadFileName = uploadFileName;
     }

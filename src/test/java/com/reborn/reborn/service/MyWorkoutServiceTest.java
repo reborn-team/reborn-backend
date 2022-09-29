@@ -115,15 +115,15 @@ class MyWorkoutServiceTest {
     @Test
     @DisplayName("내 운동 목록을 검색조건에 따라 결과가 10개면 true를 출력한다")
     void sliceResultTenWorkout() {
-        List<WorkoutListDto> list = new ArrayList<>();
+        List<MyWorkoutDto> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            list.add(new WorkoutListDto((long) i, "name", ""));
+            list.add(new MyWorkoutDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
         given(workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, 1L))
                 .willReturn(list);
 
-        WorkoutSliceDto slice = myWorkoutService.getMyWorkoutList(cond, 1L);
+        WorkoutSliceDto<MyWorkoutDto> slice = myWorkoutService.getMyWorkoutList(cond, 1L);
         verify(workoutQuerydslRepository).pagingMyWorkoutWithSearchCondition(any(), any());
 
 
@@ -134,15 +134,15 @@ class MyWorkoutServiceTest {
     @Test
     @DisplayName("내 운동 목록을 검색조건에 따라 결과가 10개 미만이면 false를 출력한다")
     void sliceResultNotTenWorkout() {
-        List<WorkoutListDto> list = new ArrayList<>();
+        List<MyWorkoutDto> list = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            list.add(new WorkoutListDto((long) i, "name", ""));
+            list.add(new MyWorkoutDto((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
         given(workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, 1L))
                 .willReturn(list);
 
-        WorkoutSliceDto slice = myWorkoutService.getMyWorkoutList(cond, 1L);
+        WorkoutSliceDto<MyWorkoutDto> slice = myWorkoutService.getMyWorkoutList(cond, 1L);
         verify(workoutQuerydslRepository).pagingMyWorkoutWithSearchCondition(any(), any());
 
 
