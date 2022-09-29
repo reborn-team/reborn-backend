@@ -55,10 +55,11 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
 
 
     @Override
-    public List<WorkoutListDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId) {
+    public List<MyWorkoutDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId) {
         QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
 
-        return jpaQueryFactory.select(new QWorkoutListDto(
+        return jpaQueryFactory.select(new QMyWorkoutDto(
+                        myWorkout.id,
                         myWorkout.workout.id,
                         myWorkout.workout.workoutName,
                         workoutImage.uploadFileName.coalesce("empty")

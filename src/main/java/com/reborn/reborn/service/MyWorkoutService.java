@@ -2,7 +2,6 @@ package com.reborn.reborn.service;
 
 import com.reborn.reborn.dto.MyProgramList;
 import com.reborn.reborn.dto.MyWorkoutDto;
-import com.reborn.reborn.dto.WorkoutListDto;
 import com.reborn.reborn.dto.WorkoutSliceDto;
 import com.reborn.reborn.entity.Member;
 import com.reborn.reborn.entity.MyWorkout;
@@ -48,9 +47,9 @@ public class MyWorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public WorkoutSliceDto getMyWorkoutList(WorkoutSearchCondition cond, Long memberId) {
-        List<WorkoutListDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, memberId);
-        return new WorkoutSliceDto(result);
+    public WorkoutSliceDto<MyWorkoutDto> getMyWorkoutList(WorkoutSearchCondition cond, Long memberId) {
+        List<MyWorkoutDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, memberId);
+        return new WorkoutSliceDto<>(result);
     }
 
     public MyProgramList getMyProgram(Long memberId, WorkoutCategory workoutCategory) {
