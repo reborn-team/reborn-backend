@@ -1,6 +1,5 @@
 package com.reborn.reborn.repository.custom;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.reborn.reborn.dto.MyWorkoutDto;
@@ -45,7 +44,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                 .groupBy(workout)
                 .where(
                         containsWorkoutTitle(cond.getTitle()),
-                        containsWorkoutAuthor(cond.getAuthor()),
+                        containsWorkoutAuthor(cond.getNickname()),
                         ltWorkoutId(cond.getId()),
                         equalsWorkoutCategory(cond.getCategory())
                 )
@@ -75,7 +74,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
                 .where(
                         myWorkout.member.id.eq(memberId),
                         containsWorkoutTitle(cond.getTitle()),
-                        containsWorkoutAuthor(cond.getAuthor()),
+                        containsWorkoutAuthor(cond.getNickname()),
                         ltWorkoutId(cond.getId()),
                         equalsWorkoutCategory(cond.getCategory())
                 )
