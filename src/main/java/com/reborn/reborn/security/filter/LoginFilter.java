@@ -2,7 +2,7 @@ package com.reborn.reborn.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.StandardCharset;
-import com.reborn.reborn.dto.LoginRequestDto;
+import com.reborn.reborn.member.presentation.dto.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,7 +39,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
 
-        LoginRequestDto emailAndPassword = getEmailAndPassword(request);
+        LoginRequest emailAndPassword = getEmailAndPassword(request);
 
         String email = emailAndPassword.getEmail();
         String password = emailAndPassword.getPassword();
@@ -48,11 +48,11 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         return super.getAuthenticationManager().authenticate(authRequest);
     }
 
-    private LoginRequestDto getEmailAndPassword(HttpServletRequest request) {
+    private LoginRequest getEmailAndPassword(HttpServletRequest request) {
         try {
-            LoginRequestDto emailAndPassword = objectMapper
+            LoginRequest emailAndPassword = objectMapper
                     .readValue(StreamUtils.copyToString(
-                            request.getInputStream(), StandardCharset.UTF_8), LoginRequestDto.class);
+                            request.getInputStream(), StandardCharset.UTF_8), LoginRequest.class);
             ;
             return emailAndPassword;
         } catch (IOException e) {

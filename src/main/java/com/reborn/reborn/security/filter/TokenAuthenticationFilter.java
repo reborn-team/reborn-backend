@@ -1,8 +1,8 @@
 package com.reborn.reborn.security.filter;
 
-import com.reborn.reborn.security.jwt.AuthToken;
-import com.reborn.reborn.security.jwt.TokenProvider;
-import com.reborn.reborn.security.service.MemberDetailsService;
+import com.reborn.reborn.security.domain.AuthToken;
+import com.reborn.reborn.security.application.TokenProvider;
+import com.reborn.reborn.security.application.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
