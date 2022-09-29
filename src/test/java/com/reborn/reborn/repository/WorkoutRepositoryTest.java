@@ -82,18 +82,25 @@ class WorkoutRepositoryTest {
     @Test
     @DisplayName("운동 목록을 Dto에 맞게 조회하고 10개를 반환한다.")
     void sliceTest() {
-        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, WorkoutCategory.BACK));
+        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, WorkoutCategory.BACK, null, null));
         assertThat(result.size()).isEqualTo(10);
     }
 
     @Test
     @DisplayName("운동 목록을 조회하고 값이 10개면 true를 반환한다.")
     void pageTest() {
-        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null));
+        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, null, null));
         WorkoutSliceDto page = new WorkoutSliceDto(result);
         assertThat(page.hasNext()).isEqualTo(true);
     }
 
+    @Test
+    @DisplayName("운동 목록을 검색조건에 따라 조회하고 값이 10개면 true를 반환한다.")
+    void pageSearchTest() {
+        List<WorkoutListDto> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(new WorkoutSearchCondition(null, null, "han", null));
+        WorkoutSliceDto page = new WorkoutSliceDto(result);
+        assertThat(page.hasNext()).isEqualTo(true);
+    }
     @Test
     @DisplayName("운동 정보에 이미지를 같이 반환한다")
     void findWorkoutAndImage() {

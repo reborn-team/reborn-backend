@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -61,6 +62,9 @@ public class WorkoutService {
 
     public void deleteWorkout(Long authorId, Long workoutId) {
         //TODO Exception
+        if (myWorkoutRepository.existsByWorkoutId(workoutId)) {
+            throw new NoSuchElementException("나의 리스트에 추가된 운동은 삭제될 수 없습니다");
+        }
         Workout workout = getWorkout(workoutId);
         validIsAuthor(authorId, workout);
         workoutRepository.delete(workout);
@@ -89,7 +93,7 @@ public class WorkoutService {
         if (files.size() == 0) {
             return;
         }
-        workoutImageRepository.deleteAllByWorkoutId(workout.getId());
+        workoutImageRepository.deleteAllByWorkout(workout);
         files.forEach(file -> createImage(file, workout));
     }
 

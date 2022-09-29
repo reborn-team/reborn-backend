@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -141,6 +142,7 @@ class WorkoutServiceTest {
 
         assertThat(dto.isAuthor()).isFalse();
     }
+
     @Test
     @DisplayName("로그인한 회원의 운동목록에 운동이 있으면 true를 반환한다.")
     void isAdd() {
@@ -182,6 +184,29 @@ class WorkoutServiceTest {
         assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(RuntimeException.class);
 
         verify(workoutRepository).findById(any());
+    }
+
+    @Test
+    @DisplayName("내 운동 목록에 추가된 운동은 삭제하지 할 수 없다")
+    void deleteWorkoutInMyWorkout() {
+        when(myWorkoutRepository.existsByWorkoutId(1L)).thenReturn(true);
+
+        assertThatThrownBy(() -> workoutService.deleteWorkout(1L, 1L)).isInstanceOf(NoSuchElementException.class);
+        verify(workoutRepository, never()).delete(any());
+    }
+
+    @Test
+    @DisplayName("내 운동 목록에 추가되지않은 운동은 삭제하지 할 수 있다")
+    void deleteWorkoutNotInMyWorkout() {
+        Member member = Member.builder().id(1L).build();
+        Workout workout = Workout.builder().member(member).build();
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
+
+        when(myWorkoutRepository.existsByWorkoutId(1L)).thenReturn(false);
+
+        workoutService.deleteWorkout(1L, 1L);
+
+        verify(workoutRepository).delete(any());
     }
 
     @Test
@@ -227,7 +252,7 @@ class WorkoutServiceTest {
 
         workoutService.deleteAndUpdateImage(fileDtoList, workout);
 
-        verify(workoutImageRepository).deleteAllByWorkoutId(workout.getId());
+        verify(workoutImageRepository).deleteAllByWorkout(workout);
         verify(workoutImageRepository).save(any());
     }
 
@@ -256,7 +281,7 @@ class WorkoutServiceTest {
 
         workoutService.deleteAndUpdateImage(fileDtoList, workout);
 
-        verify(workoutImageRepository, never()).deleteAllByWorkoutId(workout.getId());
+        verify(workoutImageRepository, never()).deleteAllByWorkout(workout);
         verify(workoutImageRepository, never()).save(any());
     }
 }
