@@ -111,7 +111,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
     }
 
     private BooleanExpression containsWorkoutTitle(String title) {
-        return StringUtils.hasText(title) ? workout.workoutName.eq(title) : null;
+        return StringUtils.hasText(title) ? workout.workoutName.contains(title) : null;
     }
 
 
@@ -128,7 +128,7 @@ public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
         return workoutId == null ? null : myWorkout.id.lt(workoutId);
     }
     private BooleanExpression containsWorkoutAuthor(String author) {
-        return StringUtils.hasText(author) ? workout.member.nickname.eq(author) : null;
+        return StringUtils.hasText(author) ? workout.member.nickname.contains(author) : null;
     }
 
 }

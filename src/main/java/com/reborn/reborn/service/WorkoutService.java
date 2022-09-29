@@ -36,7 +36,7 @@ public class WorkoutService {
 
     public Workout create(Long memberId, WorkoutRequestDto dto) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException("찾으시는 회원이 없습니다 : " + memberId));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId.toString()));
         Workout workout = Workout.builder()
                 .workoutName(dto.getWorkoutName())
                 .content(dto.getContent())
@@ -104,7 +104,7 @@ public class WorkoutService {
     public WorkoutResponseDto getWorkoutDetailDto(Long memberId, Long workoutId) {
 
         Workout workout = workoutRepository.findByIdWithImagesAndMember(workoutId)
-                .orElseThrow(() -> new WorkoutNotFoundException("찾으시는 운동이 없습니다 : " + workoutId));
+                .orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()));
         Boolean isAdd = myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId);
 
         WorkoutResponseDto dto = WorkoutResponseDto.of(workout, isAdd);
@@ -120,7 +120,7 @@ public class WorkoutService {
     }
 
     private Workout getWorkout(Long workoutId) {
-        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException("찾으시는 운동이 없습니다 :" + workoutId));
+        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()));
     }
 
 }
