@@ -37,4 +37,10 @@ public class Article extends BaseTimeEntity {
         this.content = content;
         this.member = member;
     }
+
+    public void modifyArticle(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+
 }

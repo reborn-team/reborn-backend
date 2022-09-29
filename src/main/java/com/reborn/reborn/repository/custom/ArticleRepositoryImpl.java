@@ -42,6 +42,7 @@ public class ArticleRepositoryImpl implements ArticleResponsitoryQuerydsl {
                         titleContains(searchType.getTitle()),
                         nicknameContains(searchType.getNickname())
                 )
+                .orderBy(article.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -67,10 +68,6 @@ public class ArticleRepositoryImpl implements ArticleResponsitoryQuerydsl {
 
     private BooleanExpression titleContains(String title) {
         return hasText(title) ? article.title.contains(title) : null;
-    }
-
-    private BooleanExpression contentContains(String content) {
-        return hasText(content) ? article.content.contains(content) : null;
     }
 
 }

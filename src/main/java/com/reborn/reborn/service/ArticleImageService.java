@@ -1,6 +1,5 @@
 package com.reborn.reborn.service;
 
-import com.reborn.reborn.dto.FileDto;
 import com.reborn.reborn.entity.Article;
 import com.reborn.reborn.entity.ArticleImage;
 import com.reborn.reborn.repository.ArticleImageRepository;
@@ -16,7 +15,7 @@ public class ArticleImageService {
 
     @Transactional
     public Long create(Article article, String originFileName, String uploadFileName){
-        ArticleImage articleImage = new ArticleImage(originFileName, uploadFileName, article);
+        ArticleImage articleImage = new ArticleImage(originFileName, uploadFileName);
         articleImageRepository.save(articleImage);
         return articleImage.getId();
     }

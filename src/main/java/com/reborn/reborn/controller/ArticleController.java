@@ -38,4 +38,18 @@ public class ArticleController {
         PageResponseDto<ArticleListDto> articleResponseDto = new PageResponseDto<>(result);
         return ResponseEntity.ok().body(articleResponseDto);
     }
+
+    @GetMapping("/{articleId}")
+    public ResponseEntity<ArticleResponseDto> getArticleDetail(@LoginMember Long memberId, @PathVariable Long articleId ){
+        ArticleResponseDto dto = articleService.getArticleDetailDto(memberId, articleId);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @PatchMapping("/{articleId}")
+    public ResponseEntity<Void> editArticle(@LoginMember Long memberId, @PathVariable("articleId") Long articleId, @RequestBody ArticleEditForm form){
+        articleService.updateWorkout(memberId, articleId, form);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
