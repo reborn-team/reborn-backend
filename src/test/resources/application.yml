@@ -4,12 +4,10 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
         format_sql: 'true'
     hibernate:
       ddl-auto: create
     show-sql: 'true'
-    database-platform: org.hibernate.dialect.H2Dialect
   main:
     allow-bean-definition-overriding: true
   datasource:
@@ -17,18 +15,6 @@ spring:
     password: '1'
     username: sa
     url: jdbc:h2:tcp://localhost/~/reborntest
-
-#  datasource:
-#    url: jdbc:mysql://testdb.cmltf5ipyjrf.ap-northeast-2.rds.amazonaws.com:3306/mytestdb
-#    username: admin
-#    password: gksdntjr
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-
-#  datasource:
-#    driverClassName: org.mariadb.jdbc.Driver
-#    password: '1234'
-#    username: bootuser
-#    url: jdbc:mariadb://localhost:3306/bootex
 
   thymeleaf:
     cache: 'false'
@@ -67,3 +53,6 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+mybatis:
+  type-aliases-package: 'com.reborn.reborn.repository.mybatis'
+  configuration.map-underscore-to-camel-case=: true
