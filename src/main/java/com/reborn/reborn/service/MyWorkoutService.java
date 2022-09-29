@@ -59,10 +59,10 @@ public class MyWorkoutService {
     }
 
     private Workout getWorkout(Long workoutId) {
-        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException("찾으시는 운동이 없습니다 : " + workoutId));
+        return workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()));
     }
 
     private Member getMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException("찾으시는 회원이 없습니다 : " + memberId));
+        return memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId.toString()));
     }
 }
