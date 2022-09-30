@@ -87,4 +87,9 @@ public class ArticleService {
         return articleRepository.findById(articleId).orElseThrow();
     }
 
+    public void deleteArticle(Long authorId, Long articleId) {
+        Article article = getArticle(articleId);
+        validIsAuthor(authorId, article);
+        articleRepository.delete(article);
+    }
 }
