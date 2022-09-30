@@ -3,6 +3,7 @@ package com.reborn.reborn.comment.presentation;
 import com.reborn.reborn.comment.application.CommentService;
 import com.reborn.reborn.comment.domain.Comment;
 import com.reborn.reborn.comment.presentation.dto.CommentRequestDto;
+import com.reborn.reborn.comment.presentation.dto.CommentResponseDto;
 import com.reborn.reborn.security.domain.LoginMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

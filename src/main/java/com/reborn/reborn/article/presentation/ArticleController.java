@@ -23,12 +23,9 @@ public class ArticleController {
     private final ArticleImageService articleImageService;
 
     @PostMapping
-    public ResponseEntity createArticle(@LoginMember Long memberId, @RequestBody ArticleRequestDto articleRequestDto){
-        Long saveArticleId = articleService.create(memberId, articleRequestDto);
-        Article article = articleService.findArticleById(saveArticleId);
-        log.info("filename={}",articleRequestDto.getUploadFileName());
-        articleImageService.create(article, articleRequestDto.getOriginFileName(), articleRequestDto.getUploadFileName());
-        return ResponseEntity.created(URI.create("/api/v1/articles/" + saveArticleId)).body(saveArticleId);
+    public ResponseEntity<Long> createArticle(@LoginMember Long memberId, @RequestBody ArticleRequestDto articleRequestDto){
+        Article article = articleService.create(memberId, articleRequestDto);
+        return ResponseEntity.created(URI.create("/api/v1/articles/" + article.getId())).body(article.getId());
     }
 
     @GetMapping
@@ -40,8 +37,8 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public ResponseEntity<ArticleResponseDto> getArticleDetail(@LoginMember Long memberId, @PathVariable Long articleId ){
-        ArticleResponseDto dto = articleService.getArticleDetailDto(memberId, articleId);
+    public ResponseEntity<ArticleResponseDto> getArticleDetail(@PathVariable Long articleId ){
+        ArticleResponseDto dto = articleService.getArticleDetailDto(articleId);
         return ResponseEntity.ok().body(dto);
     }
 
