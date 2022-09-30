@@ -30,9 +30,7 @@ public class CommentService {
         Comment saveComment = commentRepository.save(comment);
         return saveComment;
     }
-
-    public Comment findCommentById(Long commentId){ return commentRepository.findById(commentId).orElseThrow(); }
-
+    
     @Transactional(readOnly = true)
     public CommentResponseDto getCommentDetail(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
