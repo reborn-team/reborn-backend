@@ -24,9 +24,9 @@ public class CommentController {
         return ResponseEntity.created(URI.create("/api/v1/articles/" + articleId)).body(commentId);
     }
 
-    @GetMapping("/{commentId}")
-    public ResponseEntity<CommentResponseDto> getComment(@PathVariable Long commentId){
-        CommentResponseDto dto = commentService.getCommentDetail(commentId);
+    @GetMapping("/{articleId}/comments")
+    public ResponseEntity<CommentResponseDto> getComment(@LoginMember Long memberId, @PathVariable("articleId") Long articleId){
+        CommentResponseDto dto = commentService.getCommentDetail(memberId, articleId);
         return ResponseEntity.ok().body(dto);
     }
 

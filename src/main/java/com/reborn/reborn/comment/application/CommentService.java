@@ -10,9 +10,13 @@ import com.reborn.reborn.comment.presentation.dto.CommentResponseDto;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.member.exception.MemberNotFoundException;
+import com.reborn.reborn.security.domain.LoginMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @RequiredArgsConstructor
@@ -36,16 +40,18 @@ public class CommentService {
         Comment saveComment = commentRepository.save(comment);
         return saveComment.getId();
     }
-    
-    @Transactional(readOnly = true)
-    public CommentResponseDto getCommentDetail(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
-        CommentResponseDto dto= CommentResponseDto.of(comment);
-        return dto;
+
+    public CommentResponseDto getCommentDetail(Long authorId, Long articleId) {
+
+        List<CommentResponseDto> response = commentRepository.findAllbyArticleIdWithMember(articleId).stream()
+                .map(comment -> validIsAuthor(authorId, ))
+                .collect(Collectors.toList());
+
+        return new CommentResponseDto(response);
     }
 
     public Comment updateComment(Long authorId, Long commentId, CommentEditForm form) {
-        Comment comment = getComment(commentId);
+        Comment comment = getComment(commentId)
         validIsAuthor(authorId, comment);
         comment.modifyComment(form.getContent());
 
@@ -67,4 +73,5 @@ public class CommentService {
         validIsAuthor(authorId, comment);
         commentRepository.delete(comment);
     }
+
 }
