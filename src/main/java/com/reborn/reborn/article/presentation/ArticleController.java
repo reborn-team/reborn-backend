@@ -46,8 +46,14 @@ public class ArticleController {
     }
 
     @PatchMapping("/{articleId}")
-    public ResponseEntity<Void> editArticle(@LoginMember Long memberId, @PathVariable("articleId") Long articleId, @RequestBody ArticleEditForm form){
+    public ResponseEntity<Void> editArticle(@LoginMember Long memberId, @PathVariable Long articleId, @RequestBody ArticleEditForm form){
         articleService.updateWorkout(memberId, articleId, form);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{articleId}")
+    public ResponseEntity<Void> deleteArticle(@LoginMember Long memberId, @PathVariable Long articleId){
+        articleService.deleteArticle(memberId, articleId);
         return ResponseEntity.noContent().build();
     }
 

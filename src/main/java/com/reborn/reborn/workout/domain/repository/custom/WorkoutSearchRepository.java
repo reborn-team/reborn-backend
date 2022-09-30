@@ -5,7 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
 import com.reborn.reborn.myworkout.presentation.dto.QMyWorkoutDto;
 import com.reborn.reborn.workout.domain.QWorkoutImage;
-import com.reborn.reborn.workout.presentation.dto.QWorkoutListDto;
+import com.reborn.reborn.workout.presentation.dto.QWorkoutPreviewResponse;
 import com.reborn.reborn.workout.presentation.dto.WorkoutPreviewResponse;
 import com.reborn.reborn.workout.domain.WorkoutCategory;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
 
         QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
 
-        return jpaQueryFactory.select(new QWorkoutListDto(
+        return jpaQueryFactory.select(new QWorkoutPreviewResponse(
                         workout.id,
                         workout.workoutName,
                         workoutImage.uploadFileName.coalesce("empty")
