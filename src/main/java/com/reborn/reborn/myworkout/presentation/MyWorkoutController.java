@@ -3,7 +3,7 @@ package com.reborn.reborn.myworkout.presentation;
 import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.workout.domain.WorkoutCategory;
-import com.reborn.reborn.workout.domain.repository.WorkoutSearchCondition;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.security.domain.LoginMember;
 import com.reborn.reborn.myworkout.application.MyWorkoutService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class MyWorkoutController {
 
     @GetMapping
     public ResponseEntity<Slice<MyWorkoutDto>> getList(@LoginMember Long memberId, @ModelAttribute WorkoutSearchCondition cond) {
-        log.info("mem3berer={}",memberId);
+        log.info("memberId={}",memberId);
         return ResponseEntity.ok(myWorkoutService.getMyWorkoutList(cond, memberId));
     }
 
