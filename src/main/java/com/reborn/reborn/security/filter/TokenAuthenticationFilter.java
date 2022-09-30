@@ -30,11 +30,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //헤더에서 토큰 꺼냄
         String token = "Bearer guest";
         Optional<String> auth = Optional.ofNullable(request.getHeader(AUTHORIZATION));
         if (auth.isPresent() && !auth.get().equals("null")) {
-            token = request.getHeader(AUTHORIZATION).substring(PREFIX.length());
+            token = auth.get().substring(PREFIX.length());
         }
 
         log.info("token11={}", token);
@@ -48,7 +47,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
             log.info("authenticationToken.getAuthorities()={}", authenticationToken.getAuthorities());
 
-            //로그인한 Ip, SessoionId 가져와서 저장함.
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }

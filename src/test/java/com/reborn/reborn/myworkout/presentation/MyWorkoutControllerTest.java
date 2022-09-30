@@ -54,7 +54,8 @@ class MyWorkoutControllerTest extends ControllerConfig {
         mockMvc.perform(get("/api/v1/my-workout")
                         .header("Authorization", "Bearer " + getToken(member))
                         .queryParam("id", "1").queryParam("category", "BACK")
-                        .queryParam("title","벤치 프레스").queryParam("author","nickname"))                .andExpect(status().isOk())
+                        .queryParam("title","벤치 프레스").queryParam("author","nickname"))
+                .andExpect(status().isOk())
                 .andDo(document("my-workout-getPagingList",
                         requestParameters(
                                 parameterWithName("id").description("마지막으로 받은 운동 Id"),
