@@ -33,7 +33,8 @@ public class ControllerConfig {
     @BeforeEach
     void before() {
         TokenProvider tokenProvider = new TokenProvider(value);
-        token = tokenProvider.createAuthToken("user", MemberRole.USER, new Date(100000000000L));
+        Date now = new Date();
+        token = tokenProvider.createAuthToken("email@naver.com", MemberRole.USER, new Date(now.getTime()+100000000000L));
 
     }
 
@@ -48,6 +49,7 @@ public class ControllerConfig {
     }
 
     public String getToken(Member member) {
-        return token.createToken(member.getEmail(), member.getMemberRole(), new Date());
+        Date now = new Date();
+        return token.createToken("email@naver.com", member.getMemberRole(), new Date(now.getTime()+100000000000L));
     }
 }
