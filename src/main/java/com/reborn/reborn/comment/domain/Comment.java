@@ -19,8 +19,10 @@ import com.reborn.reborn.common.domain.BaseTimeEntity;
 import com.reborn.reborn.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
