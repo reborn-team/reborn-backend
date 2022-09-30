@@ -20,7 +20,6 @@ import java.net.URI;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ArticleImageService articleImageService;
 
     @PostMapping
     public ResponseEntity<Long> createArticle(@LoginMember Long memberId, @RequestBody ArticleRequestDto articleRequestDto){

@@ -22,8 +22,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
 
@@ -50,8 +50,12 @@ public class Comment extends BaseTimeEntity {
     private List<Comment> child = new ArrayList<>();
 
     @Builder
-    public Comment(Member member, String content) {
+    public Comment(String content, Member member) {
+        this.content = content;
         this.member = member;
+    }
+
+    public void modifyComment(String content){
         this.content = content;
     }
 
