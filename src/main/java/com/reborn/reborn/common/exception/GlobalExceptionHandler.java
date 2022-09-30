@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> customException(CustomException e) {
         log.info(String.format("Custom Exception : %s", e));
-        return ResponseEntity.status(e.getHttpStatus()).body(new ErrorResponse( e.getMessage()));
+        return ResponseEntity.status(e.getHttpStatus()).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler

@@ -1,6 +1,8 @@
 package com.reborn.reborn.security.domain;
 
 import com.reborn.reborn.member.domain.MemberRole;
+import com.reborn.reborn.security.exception.ExpiredTokenException;
+import com.reborn.reborn.security.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +29,7 @@ public class AuthToken {
         this.token = createToken(id, role, expireDate);
     }
 
-    public String createToken(String id, MemberRole memberRole , Date expireDate){
+    public String createToken(String id, MemberRole memberRole, Date expireDate) {
         return Jwts.builder()
                 .setSubject(id)
                 .claim(AUTHORITIES_KEY, memberRole.getKey())
@@ -36,7 +38,7 @@ public class AuthToken {
                 .compact();
     }
 
-    public boolean validateToken(){
+    public boolean validateToken() {
         return this.getTokenClaims() != null;
     }
 
@@ -47,30 +49,11 @@ public class AuthToken {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (SecurityException e) {
-            log.info("Invalid JWT signature.");
-        } catch (MalformedJwtException e) {
-            log.info("Invalid JWT token.");
+        } catch (SecurityException | IllegalArgumentException | UnsupportedJwtException | MalformedJwtException e) {
+            throw new InvalidTokenException("잘못된 토큰입니다.");
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
+            throw new ExpiredTokenException("로그인 시간이 만료되었습니다.");
         }
-        return null;
     }
-    public Claims getExpiredTokenClaims() {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-            return e.getClaims();
-        }
-        return null;
-    }
+
 }

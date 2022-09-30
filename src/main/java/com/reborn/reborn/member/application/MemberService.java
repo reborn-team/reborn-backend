@@ -1,5 +1,7 @@
 package com.reborn.reborn.member.application;
 
+import com.reborn.reborn.member.exception.MemberNotFoundException;
+import com.reborn.reborn.member.exception.PasswordNotMatchException;
 import com.reborn.reborn.member.presentation.dto.ChangePasswordRequest;
 import com.reborn.reborn.member.presentation.dto.MemberRequest;
 import com.reborn.reborn.member.presentation.dto.MemberResponse;
@@ -39,25 +41,27 @@ public class MemberService {
 
     @Transactional
     public void changePassword(Long memberId, ChangePasswordRequest request) {
-        //TODO Exception
-        Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
+        Member member = getMember(memberId);
         if (isNotMatchRawPassword(member, request)) {
-            throw new IllegalStateException("Password가 맞지 않습니다.");
+            throw new PasswordNotMatchException();
         }
         member.changePassword(passwordEncoder.encode(request.getChangePassword()));
     }
 
     @Transactional
     public void updateMember(Long memberId, MemberEditForm request) {
-        Member member = memberRepository.findById(memberId).orElseThrow(RuntimeException::new);
+        Member member = getMember(memberId);
         Member data = request.toEntity(request);
         member.modifyInfo(data);
     }
 
     public MemberResponse getOne(Long memberId) {
-        //TODO Exception
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = getMember(memberId);
         return MemberResponse.of(member);
+    }
+
+    private Member getMember(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(memberId.toString()));
     }
 
     private boolean isNotMatchRawPassword(Member member, ChangePasswordRequest request) {

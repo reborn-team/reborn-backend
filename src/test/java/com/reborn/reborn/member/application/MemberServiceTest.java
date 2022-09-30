@@ -1,5 +1,6 @@
 package com.reborn.reborn.member.application;
 
+import com.reborn.reborn.member.exception.PasswordNotMatchException;
 import com.reborn.reborn.member.presentation.dto.ChangePasswordRequest;
 import com.reborn.reborn.member.presentation.dto.MemberRequest;
 import com.reborn.reborn.member.presentation.dto.MemberResponse;
@@ -111,7 +112,7 @@ class MemberServiceTest {
         given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
 
 
-        assertThatThrownBy(() -> memberService.changePassword(member.getId(), changePasswordRequest)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> memberService.changePassword(member.getId(), changePasswordRequest)).isInstanceOf(PasswordNotMatchException.class);
     }
 
     @Test
