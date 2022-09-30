@@ -1,5 +1,7 @@
 package com.reborn.reborn.workout.domain.repository;
 
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutQuerydslRepository;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.workout.presentation.dto.WorkoutPreviewResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
