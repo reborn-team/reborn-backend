@@ -12,8 +12,8 @@ import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.myworkout.domain.repository.MyWorkoutRepository;
 import com.reborn.reborn.workout.domain.repository.WorkoutImageRepository;
 import com.reborn.reborn.workout.domain.repository.WorkoutRepository;
-import com.reborn.reborn.workout.domain.repository.WorkoutQuerydslRepository;
-import com.reborn.reborn.workout.domain.repository.WorkoutSearchCondition;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutQuerydslRepository;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.workout.presentation.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -195,7 +195,7 @@ class WorkoutServiceTest {
 
         given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
-        assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> workoutService.deleteWorkout(reader.getId(), workout.getId())).isInstanceOf(UnAuthorizedException.class);
 
         verify(workoutRepository).findById(any());
     }

@@ -1,4 +1,4 @@
-package com.reborn.reborn.workout.domain.repository;
+package com.reborn.reborn.workout.domain.repository.custom;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,7 +21,7 @@ import static com.reborn.reborn.workout.domain.QWorkoutImage.workoutImage;
 
 @Repository
 @RequiredArgsConstructor
-public class WorkoutRepositoryImpl implements WorkoutQuerydslRepository {
+public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 

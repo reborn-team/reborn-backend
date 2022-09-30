@@ -2,7 +2,7 @@ package com.reborn.reborn.workout.presentation;
 
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.workout.domain.Workout;
-import com.reborn.reborn.workout.domain.repository.WorkoutSearchCondition;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.security.domain.LoginMember;
 import com.reborn.reborn.workout.application.WorkoutService;
 import com.reborn.reborn.workout.presentation.dto.*;

@@ -1,4 +1,4 @@
-package com.reborn.reborn.workout.domain.repository;
+package com.reborn.reborn.workout.domain.repository.custom;
 
 import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
 import com.reborn.reborn.workout.presentation.dto.WorkoutPreviewResponse;

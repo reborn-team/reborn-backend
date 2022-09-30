@@ -9,8 +9,9 @@ import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.myworkout.domain.repository.MyWorkoutRepository;
 import com.reborn.reborn.workout.domain.repository.WorkoutRepository;
-import com.reborn.reborn.workout.domain.repository.WorkoutQuerydslRepository;
-import com.reborn.reborn.workout.domain.repository.WorkoutSearchCondition;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutQuerydslRepository;
+import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
+import com.reborn.reborn.workout.exception.WorkoutAlreadyExistException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,8 +74,8 @@ class MyWorkoutServiceTest {
         given(myWorkoutRepository.existsByWorkoutIdAndMemberId(anyLong(), anyLong())).willReturn(true);
 
         assertThatThrownBy(
-                () -> myWorkoutService.addMyWorkout(member.getId(), workout.getId())
-        ).isInstanceOf(RuntimeException.class);
+                () -> myWorkoutService.addMyWorkout(1L, 1L)
+        ).isInstanceOf(WorkoutAlreadyExistException.class);
 
         verify(workoutRepository).findById(any());
         verify(memberRepository).findById(any());
