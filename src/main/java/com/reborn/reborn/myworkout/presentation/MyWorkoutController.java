@@ -1,6 +1,6 @@
 package com.reborn.reborn.myworkout.presentation;
 
-import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
+import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto.*;
+import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse.*;
 
 @Slf4j
 @RestController
@@ -24,16 +24,15 @@ public class MyWorkoutController {
     private final MyWorkoutService myWorkoutService;
 
     @GetMapping
-    public ResponseEntity<Slice<MyWorkoutDto>> getList(@LoginMember Long memberId, @ModelAttribute WorkoutSearchCondition cond) {
+    public ResponseEntity<Slice<MyWorkoutResponse>> getList(@LoginMember Long memberId, @ModelAttribute WorkoutSearchCondition cond) {
         log.info("memberId={}",memberId);
         return ResponseEntity.ok(myWorkoutService.getMyWorkoutList(cond, memberId));
     }
 
     @PostMapping("/{workoutId}")
-    public ResponseEntity addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
+    public ResponseEntity<MyWorkoutIdResponse> addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
         Long myWorkoutId = myWorkoutService.addMyWorkout(memberId, workoutId);
-        //TODO Location URI 추가 해야함
-        return ResponseEntity.created(URI.create("/api/v1/my-workout/" + myWorkoutId)).body(myWorkoutId);
+        return ResponseEntity.created(URI.create("/api/v1/my-workout/" + myWorkoutId)).body(new MyWorkoutIdResponse(myWorkoutId));
     }
 
     @DeleteMapping("/{workoutId}")
@@ -43,8 +42,8 @@ public class MyWorkoutController {
     }
 
     @GetMapping("/program")
-    public ResponseEntity<MyProgramList> getMyProgram(@LoginMember Long memberId, @RequestParam("category") WorkoutCategory workoutCategory) {
-        MyProgramList myProgram = myWorkoutService.getMyProgram(memberId, workoutCategory);
+    public ResponseEntity<MyWorkoutList> getMyProgram(@LoginMember Long memberId, @RequestParam("category") WorkoutCategory workoutCategory) {
+        MyWorkoutList myProgram = myWorkoutService.getMyProgram(memberId, workoutCategory);
         return ResponseEntity.ok(myProgram);
     }
 

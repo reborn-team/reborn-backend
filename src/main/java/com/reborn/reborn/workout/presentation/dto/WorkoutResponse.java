@@ -66,4 +66,13 @@ public class WorkoutResponse {
     public void isAuthor(Long memberId) {
         this.isAuthor = this.memberId == memberId;
     }
+
+    @Getter
+    public static class WorkoutIdResponse {
+        private Long saveId;
+
+        public WorkoutIdResponse(Long saveId) {
+            this.saveId = saveId;
+        }
+    }
 }

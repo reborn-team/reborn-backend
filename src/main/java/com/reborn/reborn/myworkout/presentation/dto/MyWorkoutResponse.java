@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Builder
 @NoArgsConstructor
-public class MyWorkoutDto {
+public class MyWorkoutResponse {
 
     private Long myWorkoutId;
     private Long workoutId;
@@ -20,14 +20,14 @@ public class MyWorkoutDto {
     private String uploadFileName;
 
     @QueryProjection
-    public MyWorkoutDto(Long myWorkoutId, String workoutName, String uploadFileName) {
+    public MyWorkoutResponse(Long myWorkoutId, String workoutName, String uploadFileName) {
         this.myWorkoutId = myWorkoutId;
         this.workoutName = workoutName;
         this.uploadFileName = uploadFileName;
     }
 
     @QueryProjection
-    public MyWorkoutDto(Long myWorkoutId, Long workoutId, String workoutName, String uploadFileName) {
+    public MyWorkoutResponse(Long myWorkoutId, Long workoutId, String workoutName, String uploadFileName) {
         this.myWorkoutId = myWorkoutId;
         this.workoutId = workoutId;
         this.workoutName = workoutName;
@@ -35,14 +35,23 @@ public class MyWorkoutDto {
     }
 
     @Getter
-    public static class MyProgramList {
+    public static class MyWorkoutList {
 
-        private List<MyWorkoutDto> list;
+        private List<MyWorkoutResponse> list;
 
-        public MyProgramList(List<MyWorkoutDto> list) {
+        public MyWorkoutList(List<MyWorkoutResponse> list) {
             this.list = list;
         }
     }
 
+
+    @Getter
+    public static class MyWorkoutIdResponse {
+        private Long saveId;
+
+        public MyWorkoutIdResponse(Long saveId) {
+            this.saveId = saveId;
+        }
+    }
 }
 

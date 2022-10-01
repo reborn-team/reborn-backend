@@ -19,7 +19,7 @@ public class RecordController {
     private final RecordService recordService;
 
     @PostMapping
-    public ResponseEntity createRecord(@RequestBody RecordRequestList list) {
+    public ResponseEntity<Void> createRecord(@RequestBody RecordRequestList list) {
         recordService.create(list);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
