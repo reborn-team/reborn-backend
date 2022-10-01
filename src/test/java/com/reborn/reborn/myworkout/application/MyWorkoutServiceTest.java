@@ -1,6 +1,6 @@
 package com.reborn.reborn.myworkout.application;
 
-import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
+import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.myworkout.domain.MyWorkout;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto.*;
+import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -115,15 +115,15 @@ class MyWorkoutServiceTest {
     @Test
     @DisplayName("내 운동 목록을 검색조건에 따라 결과가 10개면 true를 출력한다")
     void sliceResultTenWorkout() {
-        List<MyWorkoutDto> list = new ArrayList<>();
+        List<MyWorkoutResponse> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            list.add(new MyWorkoutDto((long) i, "name", ""));
+            list.add(new MyWorkoutResponse((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
         given(workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, 1L))
                 .willReturn(list);
 
-        Slice<MyWorkoutDto> slice = myWorkoutService.getMyWorkoutList(cond, 1L);
+        Slice<MyWorkoutResponse> slice = myWorkoutService.getMyWorkoutList(cond, 1L);
         verify(workoutQuerydslRepository).pagingMyWorkoutWithSearchCondition(any(), any());
 
 
@@ -134,15 +134,15 @@ class MyWorkoutServiceTest {
     @Test
     @DisplayName("내 운동 목록을 검색조건에 따라 결과가 10개 미만이면 false를 출력한다")
     void sliceResultNotTenWorkout() {
-        List<MyWorkoutDto> list = new ArrayList<>();
+        List<MyWorkoutResponse> list = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            list.add(new MyWorkoutDto((long) i, "name", ""));
+            list.add(new MyWorkoutResponse((long) i, "name", ""));
         }
         WorkoutSearchCondition cond = new WorkoutSearchCondition();
         given(workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, 1L))
                 .willReturn(list);
 
-        Slice<MyWorkoutDto> slice = myWorkoutService.getMyWorkoutList(cond, 1L);
+        Slice<MyWorkoutResponse> slice = myWorkoutService.getMyWorkoutList(cond, 1L);
         verify(workoutQuerydslRepository).pagingMyWorkoutWithSearchCondition(any(), any());
 
 
@@ -153,11 +153,11 @@ class MyWorkoutServiceTest {
     @Test
     @DisplayName("내 프로그램 목록을 반환한다.")
     void getMyProgram() {
-        List<MyWorkoutDto> list = new ArrayList<>();
+        List<MyWorkoutResponse> list = new ArrayList<>();
 
         given(workoutQuerydslRepository.getMyWorkoutDto(anyLong(), any())).willReturn(list);
 
-        MyProgramList myProgram = myWorkoutService.getMyProgram(1L, WorkoutCategory.BACK);
+        MyWorkoutList myProgram = myWorkoutService.getMyProgram(1L, WorkoutCategory.BACK);
 
         assertThat(myProgram.getList()).isEqualTo(list);
     }

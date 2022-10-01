@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+import static com.reborn.reborn.workout.presentation.dto.WorkoutResponse.*;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/workout")
@@ -27,10 +29,10 @@ public class WorkoutController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> createWorkout(@LoginMember Long memberId, @RequestBody WorkoutRequest dto) {
+    public ResponseEntity<WorkoutIdResponse> createWorkout(@LoginMember Long memberId, @RequestBody WorkoutRequest dto) {
         Workout workout = workoutService.create(memberId, dto);
         log.info("save Workout");
-        return ResponseEntity.created(URI.create("/api/v1/workout/" + workout.getId())).body(workout.getId());
+        return ResponseEntity.created(URI.create("/api/v1/workout/" + workout.getId())).body(new WorkoutIdResponse(workout.getId()));
     }
 
     @GetMapping("/{workoutId}")

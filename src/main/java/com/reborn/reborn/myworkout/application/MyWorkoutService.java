@@ -1,6 +1,6 @@
 package com.reborn.reborn.myworkout.application;
 
-import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
+import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.myworkout.domain.MyWorkout;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto.*;
+import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,14 +49,14 @@ public class MyWorkoutService {
     }
 
     @Transactional(readOnly = true)
-    public Slice<MyWorkoutDto> getMyWorkoutList(WorkoutSearchCondition cond, Long memberId) {
-        List<MyWorkoutDto> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, memberId);
+    public Slice<MyWorkoutResponse> getMyWorkoutList(WorkoutSearchCondition cond, Long memberId) {
+        List<MyWorkoutResponse> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, memberId);
         return new Slice<>(result);
     }
 
-    public MyProgramList getMyProgram(Long memberId, WorkoutCategory workoutCategory) {
-        List<MyWorkoutDto> list = workoutQuerydslRepository.getMyWorkoutDto(memberId, workoutCategory);
-        return new MyProgramList(list);
+    public MyWorkoutList getMyProgram(Long memberId, WorkoutCategory workoutCategory) {
+        List<MyWorkoutResponse> list = workoutQuerydslRepository.getMyWorkoutDto(memberId, workoutCategory);
+        return new MyWorkoutList(list);
     }
 
     private Workout getWorkout(Long workoutId) {

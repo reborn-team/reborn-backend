@@ -2,8 +2,8 @@ package com.reborn.reborn.workout.domain.repository.custom;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
-import com.reborn.reborn.myworkout.presentation.dto.QMyWorkoutDto;
+import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
+import com.reborn.reborn.myworkout.presentation.dto.QMyWorkoutResponse;
 import com.reborn.reborn.workout.domain.QWorkoutImage;
 import com.reborn.reborn.workout.presentation.dto.QWorkoutPreviewResponse;
 import com.reborn.reborn.workout.presentation.dto.WorkoutPreviewResponse;
@@ -56,10 +56,10 @@ public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
 
 
     @Override
-    public List<MyWorkoutDto> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId) {
+    public List<MyWorkoutResponse> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId) {
         QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
 
-        return jpaQueryFactory.select(new QMyWorkoutDto(
+        return jpaQueryFactory.select(new QMyWorkoutResponse(
                         myWorkout.id,
                         myWorkout.workout.id,
                         myWorkout.workout.workoutName,
@@ -86,11 +86,11 @@ public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
     }
 
     @Override
-    public List<MyWorkoutDto> getMyWorkoutDto(Long memberId, WorkoutCategory workoutCategory) {
+    public List<MyWorkoutResponse> getMyWorkoutDto(Long memberId, WorkoutCategory workoutCategory) {
         QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
 
         return jpaQueryFactory
-                .select(new QMyWorkoutDto(
+                .select(new QMyWorkoutResponse(
                         myWorkout.id,
                         myWorkout.workout.workoutName,
                         workoutImage.uploadFileName.coalesce("empty")

@@ -2,7 +2,7 @@ package com.reborn.reborn.myworkout.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.config.ControllerConfig;
-import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto;
+import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.member.domain.MemberRole;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutDto.*;
+import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -45,8 +45,8 @@ class MyWorkoutControllerTest extends ControllerConfig {
     void getPagingWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        List<MyWorkoutDto> list = new ArrayList<>();
-        MyWorkoutDto dto = new MyWorkoutDto(1L, 1L, "운동명", "파일명");
+        List<MyWorkoutResponse> list = new ArrayList<>();
+        MyWorkoutResponse dto = new MyWorkoutResponse(1L, 1L, "운동명", "파일명");
         list.add(dto);
         given(myWorkoutService.getMyWorkoutList(any(), any())).willReturn(new Slice<>(list));
 
@@ -117,12 +117,12 @@ class MyWorkoutControllerTest extends ControllerConfig {
     void getMyWorkoutProgram() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
-        List<MyWorkoutDto> list = new ArrayList<>();
-        MyWorkoutDto myWorkout = builder().workoutId(1L).myWorkoutId(1L).workoutName("pull up")
+        List<MyWorkoutResponse> list = new ArrayList<>();
+        MyWorkoutResponse myWorkout = builder().workoutId(1L).myWorkoutId(1L).workoutName("pull up")
                 .uploadFileName("uuid.png")
                 .build();
         list.add(myWorkout);
-        given(myWorkoutService.getMyProgram(any(), any())).willReturn(new MyProgramList(list));
+        given(myWorkoutService.getMyProgram(any(), any())).willReturn(new MyWorkoutList(list));
 
         //when
         mockMvc.perform(get("/api/v1/my-workout/program")
