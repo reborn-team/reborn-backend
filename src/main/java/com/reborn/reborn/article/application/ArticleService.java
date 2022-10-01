@@ -8,6 +8,7 @@ import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.article.domain.repository.ArticleImageRepository;
 import com.reborn.reborn.article.domain.repository.ArticleRepository;
 import com.reborn.reborn.member.domain.repository.MemberRepository;
+import com.reborn.reborn.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class ArticleService {
@@ -23,21 +25,22 @@ public class ArticleService {
     private final MemberRepository memberRepository;
     private final ArticleImageRepository articleImageRepository;
 
-    @Transactional
-    public Long create(Long memberId, ArticleRequestDto articleRequest) {
+    public Article create(Long memberId, ArticleRequestDto articleRequest) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId.toString()));
         Article article = Article.builder()
-                .member(member)
                 .title(articleRequest.getTitle())
-                .content(articleRequest.getContent()).build();
+                .content(articleRequest.getContent())
+                .member(member)
+                .build();
 
         Article saveArticle = articleRepository.save(article);
-        return saveArticle.getId();
-    }
 
-    public Article findArticleById(Long articleId) {
-        return articleRepository.findById(articleId).orElseThrow();
+        List<FileDto> files = articleRequest.getFiles();
+        if(files.size() > 0){
+            files.forEach(file -> createImage(file, article));
+        }
+        return saveArticle;
     }
 
     public Page<ArticleListDto> pagingArticleBySearchCondition(ArticleSearchType articleSearchType, Pageable pageable){
@@ -45,13 +48,12 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleResponseDto getArticleDetailDto(Long memberId, Long articleId){
+    public ArticleResponseDto getArticleDetailDto(Long articleId){
         Article article = articleRepository.findByIdWithImageAndMemberAndReplyCount(articleId).orElseThrow();
         ArticleResponseDto dto = ArticleResponseDto.of(article);
         return dto;
     }
 
-    @Transactional
     public Article updateWorkout(Long authorId, Long articleId, ArticleEditForm form) {
         Article article = getArticle(articleId);
         validIsAuthor(authorId, article);

@@ -22,8 +22,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
 
@@ -52,8 +52,12 @@ public class Comment extends BaseTimeEntity {
     @Builder
     public Comment(Long id, Member member, Article article, String content) {
         this.id = id;
-        this.article = article;
         this.member = member;
+        this.article = article;
+        this.content = content;
+    }
+
+    public void modifyComment(String content){
         this.content = content;
     }
 
