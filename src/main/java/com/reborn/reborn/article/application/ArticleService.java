@@ -43,10 +43,6 @@ public class ArticleService {
         return saveArticle;
     }
 
-    public Article findArticleById(Long articleId) {
-        return articleRepository.findById(articleId).orElseThrow();
-    }
-
     public Page<ArticleListDto> pagingArticleBySearchCondition(ArticleSearchType articleSearchType, Pageable pageable){
         return articleRepository.searchArticlePaging(articleSearchType, pageable);
     }

@@ -1,12 +1,10 @@
 package com.reborn.reborn.comment.presentation.dto;
 
 import com.reborn.reborn.comment.domain.Comment;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -33,4 +31,5 @@ public class CommentResponseDto {
                 .regDate(comment.getCreatedDate())
                 .build();
     }
+
 }

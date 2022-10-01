@@ -12,6 +12,7 @@ import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.member.exception.MemberNotFoundException;
 import com.reborn.reborn.security.domain.LoginMember;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,17 +42,16 @@ public class CommentService {
         return saveComment.getId();
     }
 
-    public CommentResponseDto getCommentDetail(Long authorId, Long articleId) {
-
-        List<CommentResponseDto> response = commentRepository.findAllbyArticleIdWithMember(articleId).stream()
-                .map(comment -> validIsAuthor(authorId, ))
+    public List<CommentResponseDto> getCommentList(Long articleId) {
+        List<CommentResponseDto> responses = commentRepository.findAllbyArticleIdWithMember(articleId).stream()
+                .map(comment -> CommentResponseDto.of(comment))
                 .collect(Collectors.toList());
 
-        return new CommentResponseDto(response);
+        return responses;
     }
 
     public Comment updateComment(Long authorId, Long commentId, CommentEditForm form) {
-        Comment comment = getComment(commentId)
+        Comment comment = getComment(commentId);
         validIsAuthor(authorId, comment);
         comment.modifyComment(form.getContent());
 
