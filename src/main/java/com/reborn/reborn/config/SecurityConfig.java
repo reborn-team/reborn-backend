@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.reborn.reborn.member.domain.MemberRole.*;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -36,11 +38,9 @@ public class SecurityConfig {
         http.csrf().disable()
                 .formLogin().disable();
         http.authorizeRequests().antMatchers(
-                "/api/v1/file/images",
-                "api/v1/workout",
-                "api/v1/file",
-                "api/v1/members",
-                "api/v1/email-check").permitAll();
+                "/api/v1/my-workout/**",
+                "/api/v1/members/me"
+              ).hasAnyAuthority(USER.getKey(), ADMIN.getKey());
         http.addFilterBefore(localMemberLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -52,7 +52,7 @@ public class AuthToken {
         } catch (SecurityException | IllegalArgumentException | UnsupportedJwtException e) {
             throw new InvalidTokenException("잘못된 토큰입니다.");
         } catch (ExpiredJwtException e) {
-            throw new ExpiredTokenException("로그인 시간이 만료되었습니다.");
+            throw new ExpiredTokenException();
         } catch (MalformedJwtException e) {
             log.info("guest");
         }
