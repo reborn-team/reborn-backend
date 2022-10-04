@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorResponse(message));
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> runtimeException(Exception e) {
         StackTraceElement[] stackTrace = e.getStackTrace();
         log.error(String.format("UnHandled Exception : %s\n" + "%s:%s:%s", e, stackTrace[0].getClassName(),
