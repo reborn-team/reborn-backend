@@ -9,10 +9,7 @@ import com.reborn.reborn.comment.presentation.dto.CommentRequestDto;
 import com.reborn.reborn.comment.presentation.dto.CommentResponseDto;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.member.domain.repository.MemberRepository;
-import com.reborn.reborn.member.exception.MemberNotFoundException;
-import com.reborn.reborn.security.domain.LoginMember;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Check;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +40,10 @@ public class CommentService {
     }
 
     public List<CommentResponseDto> getCommentList(Long articleId) {
-        List<CommentResponseDto> responses = commentRepository.findAllbyArticleIdWithMember(articleId).stream()
-                .map(comment -> CommentResponseDto.of(comment))
-                .collect(Collectors.toList());
 
-        return responses;
+        return commentRepository.findAllByArticleIdWithMember(articleId).stream()
+                .map(CommentResponseDto::of)
+                .collect(Collectors.toList());
     }
 
     public Comment updateComment(Long authorId, Long commentId, CommentEditForm form) {

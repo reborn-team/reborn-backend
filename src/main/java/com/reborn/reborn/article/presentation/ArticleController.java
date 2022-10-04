@@ -30,7 +30,6 @@ public class ArticleController {
     @GetMapping
     public ResponseEntity<PageResponseDto<ArticleListDto>> getArticleList(@ModelAttribute ArticleSearchType articleSearchType, PageRequestDTO pageRequestDTO){
         Page<ArticleListDto> result = articleService.pagingArticleBySearchCondition(articleSearchType, pageRequestDTO.of());
-        log.info("articleSearchType={}",articleSearchType);
         PageResponseDto<ArticleListDto> articleResponseDto = new PageResponseDto<>(result);
         return ResponseEntity.ok().body(articleResponseDto);
     }

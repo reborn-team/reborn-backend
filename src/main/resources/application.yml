@@ -45,8 +45,8 @@ app:
 
 file:
   upload:
-    directory: 'C:\Users\A\Desktop\uploadFile\'
-file:
-  upload:
-    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+    directory: 'D:\upload\'
+#file:
+#  upload:
+#    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
 
