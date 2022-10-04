@@ -38,7 +38,6 @@ public class LocalFileService implements FileService {
                 throw new FileUploadException(e.getMessage());
             }
 
-
             files.add(new FileDto(originFileName, uploadFileName));
         });
         return files;
