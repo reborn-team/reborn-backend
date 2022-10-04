@@ -16,9 +16,11 @@ import javax.validation.constraints.NotNull;
 public class MemberRequest {
     @Email
     private String email;
+    @NotNull
+    @Length(min = 1,max = 20)
     private String password;
     @NotNull
-    @Length(min = 1, message = "수정할 이름의 길이는 1이상이어야 합니다.")
+    @Length(min = 1)
     private String nickname;
     private String phone;
     private String zipcode;

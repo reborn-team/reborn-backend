@@ -1,4 +1,9 @@
 spring:
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
   jpa:
     properties:
       hibernate:
@@ -41,12 +46,23 @@ spring:
 app:
   auth:
     tokenExpireDate: 1800000
-    refresh-token-expire-date: 604800000
 
-file:
-  upload:
-    directory: 'D:\upload\'
 #file:
 #  upload:
-#    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
+#    directory: 'C:\Users\A\Desktop\uploadFile\'
+file:
+  upload:
+    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
 
+cloud:
+  aws:
+    s3:
+      bucket: "reborn-test-bucket"
+    credentials:
+      access-key: "AKIAVK5CHHBEH3E5WMGF"
+      secret-key: "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"
+    region:
+      static: "ap-northeast-2"
+      auto: false
+    stack:
+      auto: false

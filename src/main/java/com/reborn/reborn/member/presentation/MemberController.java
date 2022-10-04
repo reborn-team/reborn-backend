@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @Slf4j
@@ -22,14 +23,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public ResponseEntity<JoinResponse> join(@RequestBody MemberRequest memberRequest) {
+    public ResponseEntity<JoinResponse> join(@RequestBody @Valid MemberRequest memberRequest) {
         Long memberId = memberService.registerMember(memberRequest);
         log.info("aa");
         return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new JoinResponse(memberId));
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<Void> modify(@LoginMember Long memberId, @RequestBody MemberEditForm request) {
+    public ResponseEntity<Void> modify(@LoginMember Long memberId, @RequestBody @Valid MemberEditForm request) {
         memberService.updateMember(memberId, request);
         return ResponseEntity.noContent().build();
     }
