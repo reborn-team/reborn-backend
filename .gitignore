@@ -38,3 +38,4 @@ out/
 
 ##amazon
 application-amazon.yml
+*.yml

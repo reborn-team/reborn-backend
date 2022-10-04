@@ -17,12 +17,14 @@ import com.reborn.reborn.workout.domain.repository.custom.WorkoutQuerydslReposit
 import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.workout.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -110,6 +112,7 @@ public class WorkoutService {
 
         WorkoutResponse dto = WorkoutResponse.of(workout, isAdd);
         dto.isAuthor(memberId);
+        log.info("author={}", dto);
         return dto;
 
     }
