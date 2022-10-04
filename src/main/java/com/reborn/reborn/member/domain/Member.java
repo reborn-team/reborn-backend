@@ -5,10 +5,12 @@ import javax.persistence.*;
 import com.reborn.reborn.common.domain.BaseTimeEntity;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseTimeEntity {
+public class Member extends BaseTimeEntity implements Serializable {
 
     @Id
     @Column(name = "member_id")

@@ -15,7 +15,11 @@ spring:
     password: '1'
     username: sa
     url: jdbc:h2:tcp://localhost/~/reborntest
-
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
   thymeleaf:
     cache: 'false'
 
@@ -53,6 +57,3 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
-mybatis:
-  type-aliases-package: 'com.reborn.reborn.repository.mybatis'
-  configuration.map-underscore-to-camel-case=: true
