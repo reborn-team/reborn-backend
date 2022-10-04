@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Profile("dev")
+@Profile("test")
 @Service
 @Slf4j
 public class LocalFileService implements FileService {
