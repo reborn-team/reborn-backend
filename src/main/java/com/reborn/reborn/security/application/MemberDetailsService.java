@@ -20,7 +20,7 @@ public class MemberDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
-    @Cacheable(value = "Member", key = "#username")
+//    @Cacheable(value = "Member", key = "#username")
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> findMember = memberRepository.findByEmail(username);

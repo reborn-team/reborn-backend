@@ -20,7 +20,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticleRepositoryImpl implements ArticleResponsitoryQuerydsl {
+public class ArticleRepositoryImpl implements ArticleRepositoryQuerydsl {
 
     private final JPAQueryFactory queryFactory;
 

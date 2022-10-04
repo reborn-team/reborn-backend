@@ -4,7 +4,6 @@ import com.reborn.reborn.comment.domain.Comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor

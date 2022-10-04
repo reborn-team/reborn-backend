@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-@Profile("!dev")
+@Profile("local")
 @Service
 @RequiredArgsConstructor
 public class S3UploadService implements FileService {
@@ -72,7 +72,7 @@ public class S3UploadService implements FileService {
         try {
             return new UrlResource(getFullPath(filename));
         } catch (Exception e) {
-            throw new FileDownloadException("aa");
+            throw new FileDownloadException("파일 다운로드에 실패하였습니다.");
         }
     }
 
