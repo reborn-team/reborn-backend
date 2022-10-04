@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -64,7 +65,7 @@ public class WorkoutResponse {
     }
 
     public void isAuthor(Long memberId) {
-        this.isAuthor = this.memberId == memberId;
+        this.isAuthor = Objects.equals(this.memberId, memberId);
     }
 
     @Getter

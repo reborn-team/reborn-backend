@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 import static com.reborn.reborn.record.presentation.dto.RecordRequest.*;
 
 @RestController
@@ -19,7 +21,7 @@ public class RecordController {
     private final RecordService recordService;
 
     @PostMapping
-    public ResponseEntity<Void> createRecord(@RequestBody RecordRequestList list) {
+    public ResponseEntity<Void> createRecord(@RequestBody @Valid RecordRequestList list) {
         recordService.create(list);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

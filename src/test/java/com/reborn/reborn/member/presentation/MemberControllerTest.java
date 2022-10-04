@@ -46,7 +46,7 @@ public class MemberControllerTest extends ControllerConfig {
     @Test
     @DisplayName("회원 가입 : POST /api/v1/members")
     void joinTest() throws Exception {
-        MemberRequest memberRequest = new MemberRequest("email", "password", "nickname", "phone", "postcode", "address", "detailAddress");
+        MemberRequest memberRequest = new MemberRequest("email@email.com", "password", "nickname", "phone", "postcode", "address", "detailAddress");
 
         when(memberService.registerMember(memberRequest)).thenReturn(1L);
 

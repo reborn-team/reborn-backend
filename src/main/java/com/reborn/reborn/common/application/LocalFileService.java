@@ -5,6 +5,7 @@ import com.reborn.reborn.common.exception.FileDownloadException;
 import com.reborn.reborn.common.exception.FileUploadException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Profile("dev")
 @Service
 @Slf4j
 public class LocalFileService implements FileService {
@@ -29,7 +31,6 @@ public class LocalFileService implements FileService {
             String originFileName = file.getOriginalFilename();
             String uploadFileName = createUploadFileName(originFileName);
             String fullPath = getFullPath(uploadFileName);
-
 
             try {
                 file.transferTo(new File(fullPath));
@@ -59,7 +60,7 @@ public class LocalFileService implements FileService {
         try {
             return new UrlResource("file:" + getFullPath(filename));
         } catch (Exception e) {
-            throw new FileDownloadException("aa");
+            throw new FileDownloadException("파일 다운로드에 실패했습니다.");
         }
     }
 }

@@ -1,4 +1,9 @@
 spring:
+  cache:
+    type: redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
   jpa:
     properties:
       hibernate:
@@ -41,12 +46,10 @@ spring:
 app:
   auth:
     tokenExpireDate: 1800000
-    refresh-token-expire-date: 604800000
 
-file:
-  upload:
-    directory: 'D:\upload\'
 #file:
 #  upload:
-#    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
-
+#    directory: 'C:\Users\A\Desktop\uploadFile\'
+file:
+  upload:
+    directory: '/Users/drunkenhw/Desktop/computer/uploadTest/'
