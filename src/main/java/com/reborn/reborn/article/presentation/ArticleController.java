@@ -3,7 +3,6 @@ package com.reborn.reborn.article.presentation;
 import com.reborn.reborn.article.presentation.dto.*;
 import com.reborn.reborn.article.domain.Article;
 import com.reborn.reborn.security.domain.LoginMember;
-import com.reborn.reborn.article.application.ArticleImageService;
 import com.reborn.reborn.article.application.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,6 @@ public class ArticleController {
     @GetMapping
     public ResponseEntity<PageResponseDto<ArticleListDto>> getArticleList(@ModelAttribute ArticleSearchType articleSearchType, PageRequestDTO pageRequestDTO){
         Page<ArticleListDto> result = articleService.pagingArticleBySearchCondition(articleSearchType, pageRequestDTO.of());
-        log.info("articleSearchType={}",articleSearchType);
         PageResponseDto<ArticleListDto> articleResponseDto = new PageResponseDto<>(result);
         return ResponseEntity.ok().body(articleResponseDto);
     }
