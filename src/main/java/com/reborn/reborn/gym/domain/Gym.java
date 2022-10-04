@@ -38,5 +38,6 @@ public class Gym extends BaseTimeEntity {
         this.member = member;
     }
 
+    
 
 }
