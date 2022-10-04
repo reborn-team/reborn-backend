@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static com.reborn.reborn.workout.presentation.dto.WorkoutResponse.*;
@@ -29,7 +30,7 @@ public class WorkoutController {
     }
 
     @PostMapping
-    public ResponseEntity<WorkoutIdResponse> createWorkout(@LoginMember Long memberId, @RequestBody WorkoutRequest dto) {
+    public ResponseEntity<WorkoutIdResponse> createWorkout(@LoginMember Long memberId, @RequestBody @Valid WorkoutRequest dto) {
         Workout workout = workoutService.create(memberId, dto);
         log.info("save Workout");
         return ResponseEntity.created(URI.create("/api/v1/workout/" + workout.getId())).body(new WorkoutIdResponse(workout.getId()));
@@ -51,7 +52,7 @@ public class WorkoutController {
     }
 
     @PatchMapping("/{workoutId}")
-    public ResponseEntity<Void> editWorkout(@LoginMember Long memberId, @PathVariable Long workoutId, @RequestBody WorkoutEditForm form) {
+    public ResponseEntity<Void> editWorkout(@LoginMember Long memberId, @PathVariable Long workoutId, @RequestBody @Valid WorkoutEditForm form) {
         workoutService.updateWorkout(memberId, workoutId, form);
         return ResponseEntity.noContent().build();
     }

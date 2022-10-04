@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class JoinController {
     }
 
     @PatchMapping("/change-password")
-    public ResponseEntity<Void> changePassword(@LoginMember Long memberId, @RequestBody ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<Void> changePassword(@LoginMember Long memberId, @RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
         memberService.changePassword(memberId, changePasswordRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

@@ -7,11 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberEditForm {
+    @NotNull
     private String nickname;
     private String phone;
     private String zipcode;
