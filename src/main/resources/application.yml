@@ -1,5 +1,14 @@
 spring:
   profiles:
+    group:
+      local:
+        - local-file
+        - local-db
+        - redis
+      prod:
+        - aws-file
+        - aws-db
+        - redis
     active: local
   config:
     import: secret/
