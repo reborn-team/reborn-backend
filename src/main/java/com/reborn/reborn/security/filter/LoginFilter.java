@@ -1,7 +1,6 @@
 package com.reborn.reborn.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.util.StandardCharset;
 import com.reborn.reborn.member.presentation.dto.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -15,6 +14,7 @@ import org.springframework.util.StreamUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -52,7 +52,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         try {
             LoginRequest emailAndPassword = objectMapper
                     .readValue(StreamUtils.copyToString(
-                            request.getInputStream(), StandardCharset.UTF_8), LoginRequest.class);
+                            request.getInputStream(), StandardCharsets.UTF_8), LoginRequest.class);
             ;
             return emailAndPassword;
         } catch (IOException e) {
