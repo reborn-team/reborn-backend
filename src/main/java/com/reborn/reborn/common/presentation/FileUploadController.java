@@ -5,11 +5,13 @@ import com.reborn.reborn.common.application.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -33,6 +35,6 @@ public class FileUploadController {
     @GetMapping("/images")
     public ResponseEntity<Resource> downloadImage(@RequestParam String filename) {
         Resource resource = fileService.downloadFile(filename);
-        return ResponseEntity.ok().body(resource);
+        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS)).body(resource);
     }
 }
