@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Slf4j
@@ -44,7 +45,7 @@ public class WorkoutService {
                 .workoutName(dto.getWorkoutName())
                 .content(dto.getContent())
                 .member(member)
-                .workoutCategory(WorkoutCategory.valueOf(dto.getWorkoutCategory()))
+                .workoutCategory(dto.getWorkoutCategory())
                 .build();
 
         Workout saveWorkout = workoutRepository.save(workout);
@@ -118,7 +119,7 @@ public class WorkoutService {
     }
 
     private void validIsAuthor(Long authorId, Workout workout) {
-        if (workout.getMember().getId() != authorId) {
+        if (!Objects.equals(workout.getMember().getId(), authorId)) {
             throw new UnAuthorizedException("권한이 없습니다 : "+ authorId);
         }
     }

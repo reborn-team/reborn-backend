@@ -1,6 +1,7 @@
 package com.reborn.reborn.workout.presentation.dto;
 
 import com.reborn.reborn.common.presentation.dto.FileDto;
+import com.reborn.reborn.workout.domain.WorkoutCategory;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ public class WorkoutRequest {
     @NotNull
     private String content;
     @NotNull
-    private String workoutCategory;
+    private WorkoutCategory workoutCategory;
     @Builder.Default
     private List<FileDto> files = new ArrayList<>();
 

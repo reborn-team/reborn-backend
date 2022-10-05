@@ -5,8 +5,8 @@ import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.myworkout.domain.MyWorkout;
 import com.reborn.reborn.myworkout.domain.repository.MyWorkoutRepository;
 import com.reborn.reborn.record.domain.Record;
-import com.reborn.reborn.record.domain.repository.RecordRepository;
 import com.reborn.reborn.workout.domain.Workout;
+import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.workout.domain.repository.WorkoutRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,6 @@ class RecordRepositoryTest {
 
     @Autowired
     RecordRepository recordRepository;
-
     @Autowired
     MyWorkoutRepository myWorkoutRepository;
     @Autowired
@@ -48,7 +47,7 @@ class RecordRepositoryTest {
         List<Record> records = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            records.add(new Record(saveMyWorkout, i));
+            records.add(new Record(saveMyWorkout, i, WorkoutCategory.BACK));
         }
 
         List<Record> saveRecord = recordRepository.saveAll(records);
@@ -62,7 +61,7 @@ class RecordRepositoryTest {
         Member saveMember = memberRepository.save(Member.builder().build());
         Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
         MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
-        recordRepository.save(new Record(saveMyWorkout, 10));
+        recordRepository.save(new Record(saveMyWorkout, 10, WorkoutCategory.BACK));
         em.flush();
         em.clear();
 

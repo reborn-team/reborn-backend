@@ -58,7 +58,7 @@ class WorkoutControllerTest extends ControllerConfig {
                 .workoutName("pull up")
                 .content("광배 운동")
                 .files(files)
-                .workoutCategory("BACK").build();
+                .workoutCategory(WorkoutCategory.BACK).build();
 
         given(workoutService.createImage(any(), any())).willReturn(1L);
         given(workoutService.create(any(), any())).willReturn(Workout.builder().build());

@@ -1,5 +1,6 @@
 package com.reborn.reborn.record.presentation.dto;
 
+import com.reborn.reborn.workout.domain.WorkoutCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,10 @@ public class RecordRequest {
     private Long myWorkoutId;
     @NotNull
     private Integer total;
+    @NotNull
+    private WorkoutCategory workoutCategory;
 
-    public RecordRequest(Long myWorkoutId, Integer total) {
+    public RecordRequest(Long myWorkoutId, Integer total, WorkoutCategory workoutCategory) {
         this.myWorkoutId = myWorkoutId;
         this.total = total;
     }

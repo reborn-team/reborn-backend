@@ -28,7 +28,7 @@ public class RecordService {
                 .map(recordRequest -> {
                     MyWorkout myWorkout = myWorkoutRepository.findById(recordRequest.getMyWorkoutId())
                             .orElseThrow(() -> new MyWorkoutNotFoundException("찾으시는 내 운동이 없습니다 :" + recordRequest.getMyWorkoutId()));
-                    return new Record(myWorkout, recordRequest.getTotal());
+                    return new Record(myWorkout, recordRequest.getTotal(), recordRequest.getWorkoutCategory());
                 })
                 .collect(Collectors.toList());
 
