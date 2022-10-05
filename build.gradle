@@ -115,3 +115,12 @@ bootJar {
         into 'static/docs'
     }
 }
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'src/main/resources/secret/application-aws.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-dev.yml'
+    into 'src/main/resources'
+}

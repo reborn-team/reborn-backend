@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Profile("dev")
+@Profile("test")
 @Service
 @Slf4j
 public class LocalFileService implements FileService {
@@ -37,7 +37,6 @@ public class LocalFileService implements FileService {
             } catch (IOException e) {
                 throw new FileUploadException(e.getMessage());
             }
-
 
             files.add(new FileDto(originFileName, uploadFileName));
         });
