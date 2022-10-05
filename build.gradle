@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     //mysql
     runtimeOnly 'mysql:mysql-connector-java'
-    //h2 test
+    //h2
     runtimeOnly group: 'com.h2database', name: 'h2'
     //valid
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'

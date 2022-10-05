@@ -46,3 +46,15 @@ file:
   upload:
     directory: 'C:\Users\A\Desktop\uploadFile\'
 
+cloud:
+  aws:
+    s3:
+      bucket: test
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: "ap-northeast-2"
+      auto: false
+    stack:
+      auto: false
