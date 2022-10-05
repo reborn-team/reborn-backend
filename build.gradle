@@ -121,4 +121,13 @@ processResources.dependsOn('copySecret')
 task copySecret(type: Copy) {
     from 'src/main/resources/secret/application-aws.yml'
     into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-aws-db.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-aws-file.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-redis.yml'
+    into 'src/main/resources'
 }

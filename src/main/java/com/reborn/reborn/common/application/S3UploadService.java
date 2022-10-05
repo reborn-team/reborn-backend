@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-@Profile("local")
+@Profile("prod")
 @Service
 @RequiredArgsConstructor
 public class S3UploadService implements FileService {
