@@ -5,6 +5,7 @@ import com.reborn.reborn.record.domain.Record;
 import com.reborn.reborn.myworkout.exception.MyWorkoutNotFoundException;
 import com.reborn.reborn.myworkout.domain.repository.MyWorkoutRepository;
 import com.reborn.reborn.record.domain.repository.RecordRepository;
+import com.reborn.reborn.record.presentation.dto.RecordTodayResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class RecordService {
                 .map(recordRequest -> {
                     MyWorkout myWorkout = myWorkoutRepository.findById(recordRequest.getMyWorkoutId())
                             .orElseThrow(() -> new MyWorkoutNotFoundException("찾으시는 내 운동이 없습니다 :" + recordRequest.getMyWorkoutId()));
-                    return new Record(myWorkout, recordRequest.getTotal());
+                    return new Record(myWorkout, recordRequest.getTotal(), recordRequest.getWorkoutCategory());
                 })
                 .collect(Collectors.toList());
 
@@ -36,9 +37,16 @@ public class RecordService {
 
     }
 
+    public RecordTodayResponse getTodayRecord(Long memberId) {
+        List<Record> records = recordRepository.findTodayRecordByMemberId(memberId);
+        RecordTodayResponse response = new RecordTodayResponse();
+        records.forEach(record -> response.addTotal(record.getWorkoutCategory(), record.getTotal()));
+        return response;
+    }
+
     private void updateOrSaveRecord(List<Record> recordList) {
         recordList.forEach(record -> {
-            Optional<Record> findToday = recordRepository.findByToday(record.getMyWorkout().getId());
+            Optional<Record> findToday = recordRepository.findTodayRecordByMyWorkoutId(record.getMyWorkout().getId());
             if (findToday.isPresent()) {
                 findToday.get().addWeight(record.getTotal());
                 return;
@@ -46,4 +54,5 @@ public class RecordService {
             recordRepository.save(record);
         });
     }
+
 }

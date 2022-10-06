@@ -40,7 +40,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     //mysql
     runtimeOnly 'mysql:mysql-connector-java'
-    //h2 test
+    //h2
     runtimeOnly group: 'com.h2database', name: 'h2'
     //valid
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
@@ -51,7 +51,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+    testImplementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
     testCompileOnly 'org.projectlombok:lombok'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testAnnotationProcessor 'org.projectlombok:lombok'

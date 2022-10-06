@@ -51,7 +51,7 @@ class WorkoutServiceTest {
     @DisplayName("운동 정보를 생성하고 Id 를 리턴한다.")
     void create() {
         WorkoutRequest requestDto = WorkoutRequest.builder()
-                .workoutCategory("BACK").build();
+                .workoutCategory(WorkoutCategory.BACK).build();
         Workout workout = Workout.builder().build();
         Member member = Member.builder().build();
 
@@ -71,7 +71,7 @@ class WorkoutServiceTest {
     @DisplayName("운동 정보를 생성할 때 회원이 조회가 안되면 예외가 발생한다.")
     void createEx() {
         WorkoutRequest requestDto = WorkoutRequest.builder()
-                .workoutCategory("BACK").build();
+                .workoutCategory(WorkoutCategory.BACK).build();
 
         given(memberRepository.findById(any())).willReturn(Optional.empty());
 

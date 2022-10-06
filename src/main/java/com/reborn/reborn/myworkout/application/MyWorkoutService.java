@@ -23,6 +23,7 @@ import java.util.List;
 import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MyWorkoutService {
 
@@ -31,7 +32,6 @@ public class MyWorkoutService {
     private final MemberRepository memberRepository;
     private final WorkoutQuerydslRepository workoutQuerydslRepository;
 
-    @Transactional
     public Long addMyWorkout(Long memberId, Long workoutId) {
         Workout workout = getWorkout(workoutId);
         Member member = getMember(memberId);
@@ -42,7 +42,6 @@ public class MyWorkoutService {
         return saveList.getId();
     }
 
-    @Transactional
     public void deleteMyWorkout(Long memberId, Long workoutId) {
         myWorkoutRepository.findByWorkoutIdAndMemberId(workoutId, memberId)
                 .ifPresent(myWorkoutRepository::delete);
@@ -53,7 +52,7 @@ public class MyWorkoutService {
         List<MyWorkoutResponse> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, memberId);
         return new Slice<>(result);
     }
-
+    @Transactional(readOnly = true)
     public MyWorkoutList getMyProgram(Long memberId, WorkoutCategory workoutCategory) {
         List<MyWorkoutResponse> list = workoutQuerydslRepository.getMyWorkoutDto(memberId, workoutCategory);
         return new MyWorkoutList(list);

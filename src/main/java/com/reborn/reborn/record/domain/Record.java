@@ -2,9 +2,8 @@ package com.reborn.reborn.record.domain;
 
 import com.reborn.reborn.common.domain.BaseTimeEntity;
 import com.reborn.reborn.myworkout.domain.MyWorkout;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.reborn.reborn.workout.domain.WorkoutCategory;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -26,10 +25,13 @@ public class Record extends BaseTimeEntity {
     private MyWorkout myWorkout;
 
     private Integer total;
+    @Enumerated(EnumType.STRING)
+    private WorkoutCategory workoutCategory;
 
-    public Record(MyWorkout myWorkout, Integer total) {
+    public Record(MyWorkout myWorkout, Integer total, WorkoutCategory workoutCategory) {
         this.myWorkout = myWorkout;
         this.total = total;
+        this.workoutCategory = workoutCategory;
     }
 
     public void addWeight(Integer total) {
