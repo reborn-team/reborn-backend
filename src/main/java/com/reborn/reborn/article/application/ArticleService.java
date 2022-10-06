@@ -52,9 +52,9 @@ public class ArticleService {
         return articleRepository.searchArticlePagingByMemberId(articleSearchType, pageable, memberId);
     }
 
-    @Transactional(readOnly = true)
     public ArticleResponseDto getArticleDetailDto(Long memberId, Long articleId){
         Article article = articleRepository.findByIdWithImageAndMemberAndReplyCount(articleId).orElseThrow();
+        article.addViewCount();
         ArticleResponseDto dto = ArticleResponseDto.of(article);
         dto.isAuthor(memberId);
 
