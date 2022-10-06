@@ -11,23 +11,21 @@ import static com.reborn.reborn.workout.domain.WorkoutCategory.*;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class RecordTodayResponse {
-    private int back;
-    private int chest;
-    private int lowerBody;
-    private int core;
+    private long back;
+    private long chest;
+    private long lowerBody;
+    private long core;
 
-    @QueryProjection
-    public RecordTodayResponse(Integer back, Integer chest, Integer lowerBody, Integer core) {
+    public RecordTodayResponse(Long back, Long chest, Long lowerBody, Long core) {
         this.back = back;
         this.chest = chest;
         this.lowerBody = lowerBody;
         this.core = core;
     }
 
-    public void addTotal(WorkoutCategory category, Integer total) {
+    public void addTotal(WorkoutCategory category, Long total) {
         switch (category) {
             case BACK:
                 this.back += total;

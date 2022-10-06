@@ -1,5 +1,6 @@
 package com.reborn.reborn.member.domain.repository;
 
+import com.reborn.reborn.config.RepositoryTest;
 import com.reborn.reborn.member.domain.MemberRole;
 import com.reborn.reborn.member.presentation.dto.MemberEditForm;
 import com.reborn.reborn.member.domain.Member;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
-@SpringBootTest
+@RepositoryTest
 @Transactional
 class MemberRepositoryTest {
 
@@ -57,7 +57,7 @@ class MemberRepositoryTest {
         Member findMember = memberRepository.findById(member.getId()).get();
         MemberEditForm request = new MemberEditForm("update", "010", "zip", "road", "detail");
 
-        Member requestMember = request.toEntity(request);
+        Member requestMember = request.of(request);
         findMember.modifyInfo(requestMember);
 
         em.flush();

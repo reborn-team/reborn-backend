@@ -15,11 +15,11 @@ public class RecordRequest {
     @NotNull
     private Long myWorkoutId;
     @NotNull
-    private Integer total;
+    private Long total;
     @NotNull
     private WorkoutCategory workoutCategory;
 
-    public RecordRequest(Long myWorkoutId, Integer total, WorkoutCategory workoutCategory) {
+    public RecordRequest(Long myWorkoutId, Long total, WorkoutCategory workoutCategory) {
         this.myWorkoutId = myWorkoutId;
         this.total = total;
     }

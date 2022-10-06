@@ -6,10 +6,12 @@ import com.reborn.reborn.myworkout.exception.MyWorkoutNotFoundException;
 import com.reborn.reborn.myworkout.domain.repository.MyWorkoutRepository;
 import com.reborn.reborn.record.domain.repository.RecordRepository;
 import com.reborn.reborn.record.presentation.dto.RecordTodayResponse;
+import com.reborn.reborn.record.presentation.dto.RecordWeekResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 import static com.reborn.reborn.record.presentation.dto.RecordRequest.*;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RecordService {
 
@@ -42,6 +45,10 @@ public class RecordService {
         RecordTodayResponse response = new RecordTodayResponse();
         records.forEach(record -> response.addTotal(record.getWorkoutCategory(), record.getTotal()));
         return response;
+    }
+
+    public RecordWeekResponse getWeekRecord(Long memberId, LocalDate localDate) {
+        return recordRepository.findWeekMyRecord(memberId, localDate);
     }
 
     private void updateOrSaveRecord(List<Record> recordList) {

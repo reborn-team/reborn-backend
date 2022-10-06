@@ -28,7 +28,7 @@ public class MemberRequest {
     private String detailAddress;
 
 
-    public Member toEntity(MemberRequest memberRequest){
+    public static Member toEntity(MemberRequest memberRequest){
         return Member.builder()
                 .nickname((memberRequest.getNickname()))
                 .phone(memberRequest.getPhone())
