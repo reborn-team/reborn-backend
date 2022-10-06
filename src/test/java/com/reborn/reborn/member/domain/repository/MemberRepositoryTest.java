@@ -57,7 +57,7 @@ class MemberRepositoryTest {
         Member findMember = memberRepository.findById(member.getId()).get();
         MemberEditForm request = new MemberEditForm("update", "010", "zip", "road", "detail");
 
-        Member requestMember = request.toEntity(request);
+        Member requestMember = request.of(request);
         findMember.modifyInfo(requestMember);
 
         em.flush();

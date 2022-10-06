@@ -32,7 +32,7 @@ public class AuthToken {
     public String createToken(String id, MemberRole memberRole, Date expireDate) {
         return Jwts.builder()
                 .setSubject(id)
-                .claim(AUTHORITIES_KEY, memberRole.getKey())
+                .claim(AUTHORITIES_KEY, memberRole.getValue())
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(expireDate)
                 .compact();

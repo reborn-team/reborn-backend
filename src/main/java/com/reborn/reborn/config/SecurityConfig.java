@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.authorizeRequests().antMatchers(
                 "/api/v1/my-workout/**",
                 "/api/v1/members/me"
-              ).hasAnyAuthority(USER.getKey(), ADMIN.getKey());
+              ).hasAnyAuthority(USER.getValue(), ADMIN.getValue());
         http.addFilterBefore(localMemberLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

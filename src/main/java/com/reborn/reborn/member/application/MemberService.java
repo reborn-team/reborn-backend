@@ -25,7 +25,7 @@ public class MemberService {
 
     @Transactional
     public Long registerMember(MemberRequest memberRequest) {
-        Member member = memberRequest.toEntity(memberRequest);
+        Member member = MemberRequest.toEntity(memberRequest);
         member.changePassword(passwordEncoder.encode(memberRequest.getPassword()));
         Member save = memberRepository.save(member);
         return save.getId();
@@ -51,7 +51,7 @@ public class MemberService {
     @Transactional
     public void updateMember(Long memberId, MemberEditForm request) {
         Member member = getMember(memberId);
-        Member data = request.toEntity(request);
+        Member data = MemberEditForm.of(request);
         member.modifyInfo(data);
     }
 
@@ -62,7 +62,7 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(Long memberId) {
-        memberRepository.deleteById(memberId);
+        memberRepository.delete(getMember(memberId));
     }
 
     private Member getMember(Long memberId) {

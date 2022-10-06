@@ -21,7 +21,7 @@ public class MemberEditForm {
     private String roadName;
     private String detailAddress;
 
-    public Member toEntity(MemberEditForm request) {
+    public static Member of(MemberEditForm request) {
         return Member.builder()
                 .nickname(request.getNickname())
                 .phone(request.getPhone())
