@@ -29,7 +29,7 @@ include::{snippets}/record-create/http-response.adoc[]
 
 == Record 오늘 기록 조회
 
-`POST /api/v1/record/today`
+`GET /api/v1/record/today`
 
 === Request
 
@@ -40,3 +40,19 @@ include::{snippets}/record-get-today/http-request.adoc[]
 
 include::{snippets}/record-get-today/http-response.adoc[]
 include::{snippets}/record-get-today/response-fields.adoc[]
+
+
+== Record 주간 기록 조회
+
+`GET /api/v1/record/week`
+
+=== Request
+
+include::{snippets}/record-get-week/http-request.adoc[]
+include::{snippets}/record-get-week/request-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/record-get-week/http-response.adoc[]
+include::{snippets}/record-get-week/response-fields.adoc[]
