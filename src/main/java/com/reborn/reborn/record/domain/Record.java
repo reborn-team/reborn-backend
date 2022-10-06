@@ -24,17 +24,17 @@ public class Record extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private MyWorkout myWorkout;
 
-    private Integer total;
+    private Long total;
     @Enumerated(EnumType.STRING)
     private WorkoutCategory workoutCategory;
 
-    public Record(MyWorkout myWorkout, Integer total, WorkoutCategory workoutCategory) {
+    public Record(MyWorkout myWorkout, Long total, WorkoutCategory workoutCategory) {
         this.myWorkout = myWorkout;
         this.total = total;
         this.workoutCategory = workoutCategory;
     }
 
-    public void addWeight(Integer total) {
+    public void addWeight(Long total) {
         if (this.total != null) {
             this.total += total;
         }
