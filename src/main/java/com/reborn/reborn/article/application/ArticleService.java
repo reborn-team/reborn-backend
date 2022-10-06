@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Transactional
 @RequiredArgsConstructor
@@ -48,9 +49,11 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleResponseDto getArticleDetailDto(Long articleId){
+    public ArticleResponseDto getArticleDetailDto(Long memberId, Long articleId){
         Article article = articleRepository.findByIdWithImageAndMemberAndReplyCount(articleId).orElseThrow();
         ArticleResponseDto dto = ArticleResponseDto.of(article);
+        dto.isAuthor(memberId);
+
         return dto;
     }
 
@@ -80,7 +83,7 @@ public class ArticleService {
     }
 
     private void validIsAuthor(Long authorId, Article article) {
-        if(article.getMember().getId() != authorId){
+        if(!Objects.equals(article.getMember().getId(), authorId)){
             throw new RuntimeException("권한이 없음");
         }
     }
