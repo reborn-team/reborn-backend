@@ -84,3 +84,16 @@ include::{snippets}/modify-member/request-fields.adoc[]
 include::{snippets}/modify-member/http-response.adoc[]
 
 
+
+== 회원정보 수정
+
+`DELETE /api/v1/members/me`
+
+=== Request
+
+include::{snippets}/delete-member/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/delete-member/http-response.adoc[]
+
