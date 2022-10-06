@@ -11,6 +11,7 @@ import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,10 +48,13 @@ public class ArticleService {
     public Page<ArticleListDto> pagingArticleBySearchCondition(ArticleSearchType articleSearchType, Pageable pageable){
         return articleRepository.searchArticlePaging(articleSearchType, pageable);
     }
+    public Page<ArticleListDto> pagingArticleBySearchConditionWithMemberId(ArticleSearchType articleSearchType, Long memberId, Pageable pageable) {
+        return articleRepository.searchArticlePagingByMemberId(articleSearchType, pageable, memberId);
+    }
 
-    @Transactional(readOnly = true)
     public ArticleResponseDto getArticleDetailDto(Long memberId, Long articleId){
         Article article = articleRepository.findByIdWithImageAndMemberAndReplyCount(articleId).orElseThrow();
+        article.addViewCount();
         ArticleResponseDto dto = ArticleResponseDto.of(article);
         dto.isAuthor(memberId);
 
@@ -97,4 +101,6 @@ public class ArticleService {
         validIsAuthor(authorId, article);
         articleRepository.delete(article);
     }
+
+
 }

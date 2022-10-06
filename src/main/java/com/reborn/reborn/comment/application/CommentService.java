@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,11 +41,15 @@ public class CommentService {
         return saveComment.getId();
     }
 
-    public List<CommentResponseDto> getCommentList(Long articleId) {
-
-        return commentRepository.findAllByArticleIdWithMember(articleId).stream()
-                .map(comment -> CommentResponseDto.of(comment))
-                .collect(Collectors.toList());
+    public List<CommentResponseDto> getCommentList(Long memberId, Long articleId) {
+        List<CommentResponseDto> list = new ArrayList<>();
+        commentRepository.findAllByArticleIdWithMember(articleId).forEach(comment -> {
+                    CommentResponseDto dto = CommentResponseDto.of(comment);
+                    dto.isAuthor(memberId);
+                    list.add(dto);
+                }
+        );
+         return list;
     }
 
     public Comment updateComment(Long authorId, Long commentId, CommentEditForm form) {

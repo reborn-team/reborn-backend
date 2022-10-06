@@ -33,6 +33,13 @@ public class ArticleController {
         return ResponseEntity.ok().body(articleResponseDto);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<PageResponseDto<ArticleListDto>> getArticleMyList(@ModelAttribute ArticleSearchType articleSearchType, @LoginMember Long memberId, PageRequestDTO pageRequestDTO){
+        Page<ArticleListDto> result = articleService.pagingArticleBySearchConditionWithMemberId(articleSearchType, memberId ,pageRequestDTO.of());
+        PageResponseDto<ArticleListDto> articleListDto = new PageResponseDto<>(result);
+        return ResponseEntity.ok().body(articleListDto);
+    }
+
     @GetMapping("/{articleId}")
     public ResponseEntity<ArticleResponseDto> getArticleDetail(@LoginMember Long memberId, @PathVariable Long articleId ){
         ArticleResponseDto dto = articleService.getArticleDetailDto(memberId, articleId);

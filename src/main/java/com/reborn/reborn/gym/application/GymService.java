@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,10 +38,14 @@ public class GymService {
         return saveGym;
     }
 
-    public GymResponseDto.GymList getGymList() {
-        return new GymResponseDto.GymList(gymRepository.findAll().stream()
-                .map(GymResponseDto::of)
-                .collect(Collectors.toList()));
+    public List<GymResponseDto> getGymList(Long memberId) {
+        List<GymResponseDto> list = new ArrayList<>();
+        gymRepository.findAll().forEach(gym -> {
+            GymResponseDto dto = GymResponseDto.of(gym);
+            dto.isAuthor(memberId);
+            list.add(dto);
+        });
+        return  list;
     }
 
     public void deleteGym(Long authorId, Long gymId) {

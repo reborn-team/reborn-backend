@@ -58,8 +58,39 @@ public class ArticleRepositoryImpl implements ArticleRepositoryQuerydsl {
         return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
     }
 
+    @Override
+    public Page<ArticleListDto> searchArticlePagingByMemberId(ArticleSearchType searchType, Pageable pageable, Long memberId) {
+        List<ArticleListDto> result = queryFactory
+                .select(new QArticleListDto(
+                        article.id,
+                        article.title,
+                        article.member.nickname,
+                        article.viewCount,
+                        article.createdDate
+                ))
+                .from(article)
+                .innerJoin(article.member, member)
+                .where(
+                        titleContains(searchType.getTitle()),
+                        nicknameContains(searchType.getNickname()),
+                        article.member.id.eq(memberId)
+                )
+                .orderBy(article.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
 
+        JPAQuery<Long> countQuery = queryFactory
+                .select(article.count())
+                .from(article)
+                .where(
+                        nicknameContains(searchType.getNickname()),
+                        titleContains(searchType.getTitle()),
+                        article.member.id.eq(memberId)
+                );
 
+        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne);
+    }
 
 
     private BooleanExpression nicknameContains(String nickname) {

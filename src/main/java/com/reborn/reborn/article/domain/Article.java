@@ -45,4 +45,7 @@ public class Article extends BaseTimeEntity {
         this.content = content;
     }
 
+    public void addViewCount() {
+        this.viewCount += 1;
+    }
 }

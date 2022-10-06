@@ -1,5 +1,6 @@
 package com.reborn.reborn.gym.presentation;
 
+import com.reborn.reborn.comment.presentation.dto.CommentResponseDto;
 import com.reborn.reborn.gym.application.GymService;
 import com.reborn.reborn.gym.domain.Gym;
 import com.reborn.reborn.gym.presentation.dto.GymRequestDto;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RequestMapping("/api/v1/gym")
 @RestController
@@ -25,8 +27,8 @@ public class GymController {
     }
 
     @GetMapping
-    public ResponseEntity<GymResponseDto.GymList> getGymList(){
-        GymResponseDto.GymList gymList = gymService.getGymList();
+    public ResponseEntity<List<GymResponseDto>> getGymList(@LoginMember Long memberId){
+        List<GymResponseDto> gymList = gymService.getGymList(memberId);
         return ResponseEntity.ok().body(gymList);
     }
 
