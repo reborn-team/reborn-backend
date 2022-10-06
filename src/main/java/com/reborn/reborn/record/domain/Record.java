@@ -3,9 +3,7 @@ package com.reborn.reborn.record.domain;
 import com.reborn.reborn.common.domain.BaseTimeEntity;
 import com.reborn.reborn.myworkout.domain.MyWorkout;
 import com.reborn.reborn.workout.domain.WorkoutCategory;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 

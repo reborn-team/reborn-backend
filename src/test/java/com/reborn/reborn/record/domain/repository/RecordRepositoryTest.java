@@ -56,7 +56,7 @@ class RecordRepositoryTest {
     }
 
     @Test
-    @DisplayName("오늘 등록한 Record를 출력한다.")
+    @DisplayName("내 운동 ID로 오늘 등록한 Record를 출력한다.")
     void findByToday() {
         Member saveMember = memberRepository.save(Member.builder().build());
         Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
@@ -65,10 +65,28 @@ class RecordRepositoryTest {
         em.flush();
         em.clear();
 
-        Record record = recordRepository.findByToday(saveMyWorkout.getId()).orElseThrow();
-
+        Record record = recordRepository.findTodayRecordByMyWorkoutId(saveMyWorkout.getId()).orElseThrow();
         assertThat(record.getMyWorkout().getId()).isEqualTo(saveMyWorkout.getId());
+    }
+    @Test
+    @DisplayName("member ID로 오늘 등록한 Record 리스트를 출력한다.")
+    void findByTodayList() {
+        Member saveMember = memberRepository.save(Member.builder().build());
+        Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
+        MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
+        Record record = new Record(saveMyWorkout, 10, WorkoutCategory.BACK);
+        Record record2 = new Record(saveMyWorkout, 20, WorkoutCategory.CHEST);
+        Record record3 = new Record(saveMyWorkout, 40, WorkoutCategory.CORE);
+        Record record4 = new Record(saveMyWorkout, 20, WorkoutCategory.BACK);
+        recordRepository.save(record);
+        recordRepository.save(record2);
+        recordRepository.save(record3);
+        recordRepository.save(record4);
+        em.flush();
+        em.clear();
 
+        List<Record> records = recordRepository.findTodayRecordByMemberId(saveMember.getId());
+        assertThat(records.size()).isEqualTo(4);
     }
 
 }
