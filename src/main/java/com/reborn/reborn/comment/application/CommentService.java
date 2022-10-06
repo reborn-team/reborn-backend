@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -42,7 +43,7 @@ public class CommentService {
     public List<CommentResponseDto> getCommentList(Long articleId) {
 
         return commentRepository.findAllByArticleIdWithMember(articleId).stream()
-                .map(CommentResponseDto::of)
+                .map(comment -> CommentResponseDto.of(comment))
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +56,7 @@ public class CommentService {
     }
 
     private void validIsAuthor(Long authorId, Comment comment) {
-        if(comment.getMember().getId() != authorId){
+        if(!Objects.equals(comment.getMember().getId(), authorId)){
             throw new RuntimeException("권한이 없음");
         }
     }

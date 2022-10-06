@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -48,7 +49,7 @@ public class GymService {
     }
 
     private void validIsAuthor(Long authorId, Gym gym) {
-        if(gym.getMember().getId() != authorId){
+        if(!Objects.equals(gym.getMember().getId(), authorId)){
             throw new RuntimeException("권한이 없음");
         }
     }
