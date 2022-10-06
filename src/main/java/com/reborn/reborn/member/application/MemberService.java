@@ -60,6 +60,11 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
+    @Transactional
+    public void deleteMember(Long memberId) {
+        memberRepository.deleteById(memberId);
+    }
+
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(memberId.toString()));
     }

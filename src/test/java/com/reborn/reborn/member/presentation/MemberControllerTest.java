@@ -162,4 +162,18 @@ public class MemberControllerTest extends ControllerConfig {
                 .andExpect(status().isOk())
                 .andDo(document("members-getOne"));
     }
+
+    @Test
+    @WithUserDetails(value = "email@naver.com")
+    @DisplayName("회원탈퇴 : DELETE /api/v1/members/me")
+    void deleteMember() throws Exception {
+        Member member = Member.builder().email("user").password("a").memberRole(MemberRole.USER).build();
+        willDoNothing().given(memberService).deleteMember(member.getId());
+
+        mockMvc.perform(delete("/api/v1/members/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + getToken(member)))
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-member"));
+    }
 }
