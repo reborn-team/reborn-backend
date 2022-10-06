@@ -26,3 +26,17 @@ include::{snippets}/record-create/http-request.adoc[]
 
 include::{snippets}/record-create/http-response.adoc[]
 
+
+== Record 오늘 기록 조회
+
+`POST /api/v1/record/today`
+
+=== Request
+
+include::{snippets}/record-get-today/http-request.adoc[]
+
+
+=== Response
+
+include::{snippets}/record-get-today/http-response.adoc[]
+include::{snippets}/record-get-today/response-fields.adoc[]
