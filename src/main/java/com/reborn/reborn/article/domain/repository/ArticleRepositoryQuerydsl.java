@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ArticleRepositoryQuerydsl {
     Page<ArticleListDto> searchArticlePaging(ArticleSearchType searchType, Pageable pageable);
+
+    Page<ArticleListDto> searchArticlePagingByMemberId(ArticleSearchType articleSearchType, Pageable pageable, Long memberId);
 }
