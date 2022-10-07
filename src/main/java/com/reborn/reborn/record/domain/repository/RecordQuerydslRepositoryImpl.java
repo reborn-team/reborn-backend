@@ -51,29 +51,27 @@ public class RecordQuerydslRepositoryImpl implements RecordQuerydslRepository {
     }
 
     @Override
-    public RecordWeekResponse findWeekMyRecord(Long memberId, LocalDate date) {
-
-        LocalDate localDate = dateIfNullReturnNow(date);
+    public Optional<RecordWeekResponse> findWeekMyRecord(Long memberId, LocalDate date) {
 
         RecordWeekResponse response = queryFactory
                 .select(new QRecordWeekResponse(
-                        getDayOfWeekTotalByMember(memberId, MONDAY, localDate),
-                        getDayOfWeekTotalByMember(memberId, TUESDAY, localDate),
-                        getDayOfWeekTotalByMember(memberId, WEDNESDAY, localDate),
-                        getDayOfWeekTotalByMember(memberId, THURSDAY, localDate),
-                        getDayOfWeekTotalByMember(memberId, FRIDAY, localDate),
-                        getDayOfWeekTotalByMember(memberId, SATURDAY, localDate),
-                        getDayOfWeekTotalByMember(memberId, SUNDAY, localDate)
+                        getDayOfWeekTotalByMember(memberId, MONDAY, date),
+                        getDayOfWeekTotalByMember(memberId, TUESDAY, date),
+                        getDayOfWeekTotalByMember(memberId, WEDNESDAY, date),
+                        getDayOfWeekTotalByMember(memberId, THURSDAY, date),
+                        getDayOfWeekTotalByMember(memberId, FRIDAY, date),
+                        getDayOfWeekTotalByMember(memberId, SATURDAY, date),
+                        getDayOfWeekTotalByMember(memberId, SUNDAY, date)
                 ))
                 .from(record).join(record.myWorkout, myWorkout)
                 .where(
-                        betweenDate(getLocalDateThisWeekOfDay(SUNDAY, localDate), getLocalDateThisWeekOfDay(SATURDAY, localDate)),
+                        betweenDate(getLocalDateThisWeekOfDay(SUNDAY, date), getLocalDateThisWeekOfDay(SATURDAY, date)),
                         myWorkout.member.id.eq(memberId)
                 )
                 .groupBy(myWorkout.member.id)
                 .fetchOne();
 
-        return ifIsNull(response);
+        return Optional.ofNullable(response);
     }
 
 
@@ -100,12 +98,5 @@ public class RecordQuerydslRepositoryImpl implements RecordQuerydslRepository {
         return localDate.with(fieldISO, day.getValue());
     }
 
-    private LocalDate dateIfNullReturnNow(LocalDate date) {
-        return date == null ? LocalDate.now() : date;
-    }
-
-    private RecordWeekResponse ifIsNull(RecordWeekResponse response) {
-        return response == null ? new RecordWeekResponse() : response;
-    }
 
 }
