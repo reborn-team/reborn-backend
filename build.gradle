@@ -25,30 +25,37 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    //redis, jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation "com.querydsl:querydsl-jpa:5.0.0"
+    implementation "com.querydsl:querydsl-apt:5.0.0"
+    //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.security:spring-security-test'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-    implementation "com.querydsl:querydsl-jpa:5.0.0"
-    implementation "com.querydsl:querydsl-apt:5.0.0"
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    //web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    //mysql
     runtimeOnly 'mysql:mysql-connector-java'
+    //h2
     runtimeOnly group: 'com.h2database', name: 'h2'
-    testImplementation 'org.springframework.security:spring-security-test'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    //valid
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //aws
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    //Rest Docs
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-    //TODO 테스트용 라이브러리
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
     testCompileOnly 'org.projectlombok:lombok'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testAnnotationProcessor 'org.projectlombok:lombok'
+
 }
 ext {
     snippetsDir = file('build/generated-snippets')
@@ -108,4 +115,19 @@ bootJar {
     from("${asciidoctor.outputDir}/html5") {
         into 'static/docs'
     }
+}
+processResources.dependsOn('copySecret')
+
+task copySecret(type: Copy) {
+    from 'src/main/resources/secret/application-aws.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-aws-db.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-aws-file.yml'
+    into 'src/main/resources'
+
+    from 'src/main/resources/secret/application-redis.yml'
+    into 'src/main/resources'
 }

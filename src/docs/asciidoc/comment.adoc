@@ -1,0 +1,29 @@
+= REST Docs
+reborn docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Comment
+---
+
+== Comment 생성
+
+`POST /api/v1/articles/{aritcleId}/comments`
+
+=== Request
+
+include::{snippets}/comment-create/http-request.adoc[]
+include::{snippets}/comment-create/path-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/comment-create/http-response.adoc[]
+

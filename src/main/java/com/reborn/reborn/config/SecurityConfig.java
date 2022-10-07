@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reborn.reborn.security.filter.LoginFilter;
 import com.reborn.reborn.security.filter.LoginSuccessHandler;
 import com.reborn.reborn.security.filter.TokenAuthenticationFilter;
-import com.reborn.reborn.security.jwt.TokenProvider;
-import com.reborn.reborn.security.service.MemberDetailsService;
+import com.reborn.reborn.security.application.TokenProvider;
+import com.reborn.reborn.security.application.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +13,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.reborn.reborn.member.domain.MemberRole.*;
 
 @Configuration
 @EnableWebSecurity
@@ -37,11 +38,9 @@ public class SecurityConfig {
         http.csrf().disable()
                 .formLogin().disable();
         http.authorizeRequests().antMatchers(
-                "/api/v1/file/images",
-                "api/v1/workout",
-                "api/v1/file",
-                "api/v1/members",
-                "api/v1/email-check").permitAll();
+                "/api/v1/my-workout/**",
+                "/api/v1/members/me"
+              ).hasAnyAuthority(USER.getValue(), ADMIN.getValue());
         http.addFilterBefore(localMemberLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -73,25 +72,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-    //    @Bean
-//    public AuthenticationManager authManager(HttpSecurity http, UserDetailsService userDetailsService)
-//            throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder())
-//                .and()
-//                .build();
-//    }
-
-    //    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                .formLogin().disable();
-//        http.userDetailsService(memberDetailsService);
-//        http.addFilterBefore(localMemberLoginFilter(),
-//                UsernamePasswordAuthenticationFilter.class);
-//        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//    }
 }
