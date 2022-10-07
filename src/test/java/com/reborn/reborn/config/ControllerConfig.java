@@ -32,24 +32,20 @@ public class ControllerConfig {
 
     @BeforeEach
     void before() {
+        memberRepository.deleteAll();
+        Member member = getMember();
+        memberRepository.save(member);
         TokenProvider tokenProvider = new TokenProvider(value);
         Date now = new Date();
         token = tokenProvider.createAuthToken("email@naver.com", MemberRole.USER, new Date(now.getTime()+100000000000L));
-
-    }
-
-
-    @PostConstruct
-    void createWorkout() {
-        memberRepository.deleteAll();
-        Member member = Member.builder().email("email@naver.com")
-                .nickname("han").build();
-        memberRepository.save(member);
-
     }
 
     public String getToken(Member member) {
         Date now = new Date();
         return token.createToken("email@naver.com", member.getMemberRole(), new Date(now.getTime()+100000000000L));
+    }
+
+    public static Member getMember() {
+        return Member.builder().email("email@naver.com").password("pass").nickname("nick").memberRole(MemberRole.USER).build();
     }
 }

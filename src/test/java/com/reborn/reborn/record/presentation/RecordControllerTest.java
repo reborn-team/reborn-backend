@@ -50,7 +50,7 @@ class RecordControllerTest extends ControllerConfig {
     @DisplayName("기록 생성 : POST /api/v1/record")
     void recordCreate() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        Member member = getMember();
         Workout workout = Workout.builder().member(member).build();
         List<RecordRequest> list = new ArrayList<>();
         list.add(new RecordRequest(1L, 10L, WorkoutCategory.BACK));
@@ -68,12 +68,13 @@ class RecordControllerTest extends ControllerConfig {
                 ));
     }
 
+
     @Test
     @WithUserDetails(value = "email@naver.com")
     @DisplayName("오늘 기록 조회 : GET /api/v1/record/today")
     void getTodayRecord() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        Member member = getMember();
         RecordTodayResponse response = new RecordTodayResponse(10L, 20L, 30L, 40L);
 
         given(recordService.getTodayRecord(any())).willReturn(response);
@@ -96,7 +97,7 @@ class RecordControllerTest extends ControllerConfig {
     @DisplayName("주간 기록 조회 : GET /api/v1/record/week")
     void getWeekRecord() throws Exception {
         //given
-        Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
+        Member member = getMember();
         RecordWeekResponse response = new RecordWeekResponse(10, 20, 10, 30, 40, 50, 60);
         given(recordService.getWeekRecord(any(),any())).willReturn(response);
         //when
