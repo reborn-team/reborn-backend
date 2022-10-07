@@ -89,3 +89,17 @@ include::{snippets}/workout-update/request-fields.adoc[]
 include::{snippets}/workout-delete/http-response.adoc[]
 
 
+== 운동 랭킹 리스트 조회
+
+`GET /api/v1/workout/rank?id=1&category=BACK`
+
+=== Request
+
+include::{snippets}/workout-get-rank/http-request.adoc[]
+include::{snippets}/workout-get-rank/request-parameters.adoc[]
+
+
+=== Response
+
+include::{snippets}/workout-get-rank/http-response.adoc[]
+

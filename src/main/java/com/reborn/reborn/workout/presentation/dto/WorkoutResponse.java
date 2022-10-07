@@ -76,4 +76,13 @@ public class WorkoutResponse {
             this.saveId = saveId;
         }
     }
+
+    @Getter
+    public static class WorkoutListResponse {
+        private List<WorkoutPreviewResponse> list;
+
+        public WorkoutListResponse(List<WorkoutPreviewResponse> list) {
+            this.list = list;
+        }
+    }
 }

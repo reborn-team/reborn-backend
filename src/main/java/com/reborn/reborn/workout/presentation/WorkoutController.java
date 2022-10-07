@@ -2,6 +2,7 @@ package com.reborn.reborn.workout.presentation;
 
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.workout.domain.Workout;
+import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.workout.domain.repository.custom.WorkoutSearchCondition;
 import com.reborn.reborn.security.domain.LoginMember;
 import com.reborn.reborn.workout.application.WorkoutService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static com.reborn.reborn.workout.presentation.dto.WorkoutResponse.*;
 
@@ -55,5 +57,11 @@ public class WorkoutController {
     public ResponseEntity<Void> editWorkout(@LoginMember Long memberId, @PathVariable Long workoutId, @RequestBody @Valid WorkoutEditForm form) {
         workoutService.updateWorkout(memberId, workoutId, form);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/rank")
+    public ResponseEntity<WorkoutListResponse> getRankList(@RequestParam(value = "category",required = false) WorkoutCategory workoutCategory) {
+        List<WorkoutPreviewResponse> list = workoutService.getWorkoutListByRank(workoutCategory);
+        return ResponseEntity.ok().body(new WorkoutListResponse(list));
     }
 }

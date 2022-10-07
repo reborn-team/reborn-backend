@@ -64,6 +64,24 @@ class MyWorkoutServiceTest {
     }
 
     @Test
+    @DisplayName("내 운동 목록에 추가하고 addCount를 1 더한다")
+    void plusWorkoutAddCount() {
+        Workout workout = Workout.builder().build();
+        Member member = Member.builder().build();
+        MyWorkout myWorkout = new MyWorkout(workout, member);
+        given(myWorkoutRepository.save(any())).willReturn(myWorkout);
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
+        given(memberRepository.findById(any())).willReturn(Optional.of(member));
+
+        myWorkoutService.addMyWorkout(member.getId(), workout.getId());
+
+        verify(myWorkoutRepository).save(any());
+        verify(workoutRepository).findById(any());
+
+        assertThat(workout.getAddCount()).isEqualTo(1L);
+    }
+
+    @Test
     @DisplayName("내 운동 목록에 추가되어 있다면 예외를 반환한다.")
     void addWorkoutListEx() {
         Workout workout = Workout.builder().build();
@@ -80,6 +98,7 @@ class MyWorkoutServiceTest {
         verify(workoutRepository).findById(any());
         verify(memberRepository).findById(any());
 
+        assertThat(workout.getAddCount()).isEqualTo(0L);
     }
 
     @Test
@@ -90,11 +109,26 @@ class MyWorkoutServiceTest {
         MyWorkout myWorkout = new MyWorkout(workout, member);
 
         given(myWorkoutRepository.findByWorkoutIdAndMemberId(anyLong(), anyLong())).willReturn(Optional.of(myWorkout));
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
 
-        myWorkoutService.deleteMyWorkout(1L, 1L);
+        myWorkoutService.deleteMyWorkout(anyLong(), anyLong());
 
         verify(myWorkoutRepository).delete(any());
+    }
 
+    @Test
+    @DisplayName("내 운동을 삭제하면 addCount가 1 줄어든다.")
+    void minusWorkoutAddCount() {
+        Workout workout = Workout.builder().build();
+        Member member = Member.builder().build();
+        MyWorkout myWorkout = new MyWorkout(workout, member);
+
+        given(myWorkoutRepository.findByWorkoutIdAndMemberId(anyLong(), anyLong())).willReturn(Optional.of(myWorkout));
+        given(workoutRepository.findById(any())).willReturn(Optional.of(workout));
+
+        myWorkoutService.deleteMyWorkout(anyLong(), anyLong());
+
+        assertThat(workout.getAddCount()).isEqualTo(-1);
     }
 
     @Test
@@ -109,7 +143,7 @@ class MyWorkoutServiceTest {
         myWorkoutService.deleteMyWorkout(1L, 1L);
 
         verify(myWorkoutRepository, never()).delete(any());
-
+        assertThat(workout.getAddCount()).isEqualTo(0L);
     }
 
     @Test
