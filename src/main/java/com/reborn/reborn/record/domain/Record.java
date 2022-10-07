@@ -24,8 +24,10 @@ public class Record extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private MyWorkout myWorkout;
 
+    @Column(nullable = false)
     private Long total;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private WorkoutCategory workoutCategory;
 
     public Record(MyWorkout myWorkout, Long total, WorkoutCategory workoutCategory) {

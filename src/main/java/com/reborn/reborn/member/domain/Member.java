@@ -17,10 +17,12 @@ public class Member extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
-
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     private String phone;

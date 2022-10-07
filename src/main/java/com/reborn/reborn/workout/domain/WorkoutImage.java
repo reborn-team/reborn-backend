@@ -1,6 +1,5 @@
 package com.reborn.reborn.workout.domain;
 
-import com.reborn.reborn.workout.domain.Workout;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,9 @@ public class WorkoutImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String originFileName;
-
+    @Column(nullable = false)
     private String uploadFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
