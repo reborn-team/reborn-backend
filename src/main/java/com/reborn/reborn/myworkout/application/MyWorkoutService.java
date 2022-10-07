@@ -39,12 +39,17 @@ public class MyWorkoutService {
             throw new WorkoutAlreadyExistException(workout.getWorkoutName());
         }
         MyWorkout saveList = myWorkoutRepository.save(new MyWorkout(workout, member));
+        workout.plusAddCount();
         return saveList.getId();
     }
 
     public void deleteMyWorkout(Long memberId, Long workoutId) {
         myWorkoutRepository.findByWorkoutIdAndMemberId(workoutId, memberId)
-                .ifPresent(myWorkoutRepository::delete);
+                .ifPresent(myWorkout -> {
+                    myWorkoutRepository.delete(myWorkout);
+                    workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()))
+                            .minusAddCount();
+                });
     }
 
     @Transactional(readOnly = true)

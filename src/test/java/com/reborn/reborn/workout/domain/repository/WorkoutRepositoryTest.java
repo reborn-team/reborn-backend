@@ -46,7 +46,7 @@ class WorkoutRepositoryTest {
         Member member = createMember();
         memberRepository.save(member);
         for (int i = 0; i < 11; i++) {
-            Workout workout = createWorkout(member, i + "");
+            Workout workout = createWorkout(member, i + "", (long) i);
             workoutRepository.save(workout);
         }
     }
@@ -55,7 +55,7 @@ class WorkoutRepositoryTest {
     @DisplayName("운동을 생성한다.")
     void createTest() {
         Member member = createMember();
-        Workout workout = createWorkout(member, "");
+        Workout workout = createWorkout(member, "",0L);
         WorkoutImage workoutImage = new WorkoutImage("", "");
         workoutImage.uploadToWorkout(workout);
         workoutImageRepository.save(workoutImage);
@@ -70,7 +70,7 @@ class WorkoutRepositoryTest {
     @DisplayName("운동 정보를 상세 조회한다.")
     void detailView() {
         Member member = getMember();
-        Workout workout = createWorkout(member, "");
+        Workout workout = createWorkout(member, "",0L);
         WorkoutImage workoutImage = new WorkoutImage("", "");
         workoutImage.uploadToWorkout(workout);
         memberRepository.save(member);
@@ -115,7 +115,7 @@ class WorkoutRepositoryTest {
     void findWorkoutAndImage() {
         Member member = getMember();
         memberRepository.save(member);
-        Workout workout = createWorkout(member, "a");
+        Workout workout = createWorkout(member, "",0L);
         workoutRepository.save(workout);
         for (int i = 0; i < 10; i++) {
             WorkoutImage workoutImage = new WorkoutImage("a" + i, "b" + i);
@@ -136,7 +136,7 @@ class WorkoutRepositoryTest {
     void findWorkoutAndNoImage() {
         Member member = getMember();
         memberRepository.save(member);
-        Workout workout = createWorkout(member, "a");
+        Workout workout = createWorkout(member, "",0L);
         workoutRepository.save(workout);
         em.flush();
         em.clear();
@@ -154,7 +154,7 @@ class WorkoutRepositoryTest {
         Member member2 = Member.builder().email("a").memberRole(MemberRole.USER).password("a").nickname("a").build();
         memberRepository.save(member);
         memberRepository.save(member2);
-        Workout workout = createWorkout(member, "a");
+        Workout workout = createWorkout(member, "",0L);
         workoutRepository.save(workout);
         em.flush();
         em.clear();
@@ -164,6 +164,20 @@ class WorkoutRepositoryTest {
 
         assertThat(nickname).isEqualTo(member.getNickname());
 
+    }
+
+    @Test
+    @DisplayName("운동 목록을 addCount 순으로 조회한다.")
+    void rank() {
+        List<WorkoutPreviewResponse> workoutPreviewResponses = workoutQuerydslRepository.findWorkoutDtoListOrderByAddCount(WorkoutCategory.BACK);
+        assertThat(workoutPreviewResponses.size()).isEqualTo(6);
+    }
+
+    @Test
+    @DisplayName("운동 목록을 카테고리별로 addCount 순으로 조회한다.")
+    void rankIsNull() {
+        List<WorkoutPreviewResponse> workoutPreviewResponses = workoutQuerydslRepository.findWorkoutDtoListOrderByAddCount(WorkoutCategory.CORE);
+        assertThat(workoutPreviewResponses.size()).isEqualTo(0);
     }
 
     public static Member createMember() {
@@ -176,7 +190,7 @@ class WorkoutRepositoryTest {
         return member;
     }
 
-    public static Workout createWorkout(Member member, String text) {
+    public static Workout createWorkout(Member member, String text,Long i) {
         Workout workout = Workout.builder()
                 .workoutName("pull up" + text)
                 .member(member)

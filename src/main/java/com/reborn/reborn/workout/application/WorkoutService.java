@@ -4,6 +4,7 @@ import com.reborn.reborn.common.presentation.dto.FileDto;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.workout.domain.Workout;
+import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.workout.domain.WorkoutImage;
 import com.reborn.reborn.member.exception.MemberNotFoundException;
 import com.reborn.reborn.member.exception.UnAuthorizedException;
@@ -62,9 +63,13 @@ public class WorkoutService {
 
     @Transactional(readOnly = true)
     public Slice<WorkoutPreviewResponse> getPagingWorkout(WorkoutSearchCondition cond) {
-
         List<WorkoutPreviewResponse> result = workoutQuerydslRepository.pagingWorkoutWithSearchCondition(cond);
         return new Slice<>(result);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WorkoutPreviewResponse> getWorkoutListByRank(WorkoutCategory workoutCategory) {
+        return workoutQuerydslRepository.findWorkoutDtoListOrderByAddCount(workoutCategory);
     }
 
     public void deleteWorkout(Long authorId, Long workoutId) {
