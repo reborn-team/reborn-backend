@@ -4,7 +4,6 @@ import com.reborn.reborn.common.presentation.dto.FileDto;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.workout.domain.Workout;
-import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.workout.domain.WorkoutImage;
 import com.reborn.reborn.member.exception.MemberNotFoundException;
 import com.reborn.reborn.member.exception.UnAuthorizedException;
@@ -113,7 +112,6 @@ public class WorkoutService {
 
         WorkoutResponse dto = WorkoutResponse.of(workout, isAdd);
         dto.isAuthor(memberId);
-        log.info("author={}", dto);
         return dto;
 
     }

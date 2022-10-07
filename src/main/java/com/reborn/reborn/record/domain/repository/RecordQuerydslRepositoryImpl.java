@@ -73,9 +73,7 @@ public class RecordQuerydslRepositoryImpl implements RecordQuerydslRepository {
                 .groupBy(myWorkout.member.id)
                 .fetchOne();
 
-        response = ifIsNull(response);
-
-        return response;
+        return ifIsNull(response);
     }
 
 

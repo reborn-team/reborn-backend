@@ -20,8 +20,9 @@ public class Workout extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String workoutName;
-
+    @Column(nullable = false)
     private String content;
 
     @JoinColumn(name = "member_id")
@@ -29,6 +30,7 @@ public class Workout extends BaseTimeEntity {
     private Member member;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private WorkoutCategory workoutCategory;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)

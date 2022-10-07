@@ -1,13 +1,10 @@
 package com.reborn.reborn.record.presentation.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import com.reborn.reborn.workout.domain.WorkoutCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-import static com.reborn.reborn.workout.domain.WorkoutCategory.*;
 
 @Getter
 @Setter

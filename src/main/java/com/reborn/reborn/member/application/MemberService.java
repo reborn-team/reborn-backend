@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+
     public Long registerMember(MemberRequest memberRequest) {
         Member member = MemberRequest.toEntity(memberRequest);
         member.changePassword(passwordEncoder.encode(memberRequest.getPassword()));
@@ -31,15 +31,16 @@ public class MemberService {
         return save.getId();
     }
 
+    @Transactional(readOnly = true)
     public boolean emailDuplicateCheck(String email) {
         return memberRepository.existsByEmail(email);
     }
 
+    @Transactional(readOnly = true)
     public boolean nicknameDuplicateCheck(String nickname) {
         return memberRepository.existsByNickname(nickname);
     }
 
-    @Transactional
     public void changePassword(Long memberId, ChangePasswordRequest request) {
         Member member = getMember(memberId);
         if (isNotMatchRawPassword(member, request)) {
@@ -48,7 +49,6 @@ public class MemberService {
         member.changePassword(passwordEncoder.encode(request.getChangePassword()));
     }
 
-    @Transactional
     public void updateMember(Long memberId, MemberEditForm request) {
         Member member = getMember(memberId);
         Member data = MemberEditForm.of(request);
@@ -60,13 +60,12 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
-    @Transactional
     public void deleteMember(Long memberId) {
         memberRepository.delete(getMember(memberId));
     }
 
     private Member getMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(memberId.toString()));
+        return memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId.toString()));
     }
 
     private boolean isNotMatchRawPassword(Member member, ChangePasswordRequest request) {

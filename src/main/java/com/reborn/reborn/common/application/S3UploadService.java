@@ -37,7 +37,7 @@ public class S3UploadService implements FileService {
     public List<FileDto> uploadFile(List<MultipartFile> multipartFile) {
         List<FileDto> files = new ArrayList<>();
 
-        for (MultipartFile file : multipartFile) {
+        multipartFile.forEach(file -> {
             String originFileName = file.getOriginalFilename();
             String uploadFileName = createUploadFileName(file.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -52,7 +52,7 @@ public class S3UploadService implements FileService {
             }
 
             files.add(new FileDto(originFileName, uploadFileName));
-        }
+        });
 
         return files;
     }
