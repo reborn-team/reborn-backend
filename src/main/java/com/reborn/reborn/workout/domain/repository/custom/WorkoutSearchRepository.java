@@ -54,6 +54,31 @@ public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
                 .fetch();
     }
 
+    @Override
+    public List<WorkoutPreviewResponse> findWorkoutDtoListOrderByAddCount(WorkoutCategory category) {
+        QWorkoutImage qWorkoutImage = new QWorkoutImage("workoutImageMaxId");
+
+        return jpaQueryFactory.select(new QWorkoutPreviewResponse(
+                        workout.id,
+                        workout.workoutName,
+                        workoutImage.uploadFileName.coalesce("empty")
+                )).from(workout)
+                .leftJoin(workoutImage).on(workoutImage.workout.eq(workout),
+                        workoutImage.id.eq(
+                                jpaQueryFactory
+                                        .select(qWorkoutImage.id.max())
+                                        .from(qWorkoutImage)
+                                        .where(qWorkoutImage.workout.eq(workout))
+                        ))
+                .groupBy(workout)
+                .where(
+                        equalsWorkoutCategory(category)
+                )
+                .limit(6L)
+                .orderBy(workout.addCount.desc(), workout.createdDate.desc())
+                .fetch();
+    }
+
 
     @Override
     public List<MyWorkoutResponse> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId) {

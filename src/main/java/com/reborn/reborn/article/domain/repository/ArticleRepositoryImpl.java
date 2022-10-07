@@ -101,4 +101,28 @@ public class ArticleRepositoryImpl implements ArticleRepositoryQuerydsl {
         return hasText(title) ? article.title.contains(title) : null;
     }
 
+    @Override
+    public Page<ArticleListDto> getPageByArticleViewCount(Pageable pageable) {
+        List<ArticleListDto> result = queryFactory
+                .select(new QArticleListDto(
+                        article.id,
+                        article.title,
+                        article.member.nickname,
+                        article.viewCount,
+                        article.createdDate
+                ))
+                .from(article)
+                .innerJoin(article.member, member)
+                .orderBy(article.viewCount.desc(), article.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(article.count())
+                .from(article);
+
+        return PageableExecutionUtils.getPage(result, pageable, countQuery::fetchOne); 
+    }
+
 }

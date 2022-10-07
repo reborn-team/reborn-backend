@@ -101,5 +101,8 @@ public class ArticleService {
         articleRepository.delete(article);
     }
 
+    public Page<ArticleListDto> getArticleRankByViewCount( Pageable pageable) {
+        return articleRepository.getPageByArticleViewCount(pageable);
+    }
 
 }

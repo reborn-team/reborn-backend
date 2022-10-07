@@ -58,5 +58,11 @@ public class ArticleController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/rank")
+    public ResponseEntity<PageResponseDto<ArticleListDto>> getArticleListRank(PageRequestDTO pageRequestDTO){
+        Page<ArticleListDto> result = articleService.getArticleRankByViewCount(pageRequestDTO.of());
+        PageResponseDto<ArticleListDto> articleResponseDto = new PageResponseDto<>(result);
+        return ResponseEntity.ok().body(articleResponseDto);
+    }
 
 }

@@ -10,6 +10,8 @@ public interface WorkoutQuerydslRepository {
 
     List<WorkoutPreviewResponse> pagingWorkoutWithSearchCondition(WorkoutSearchCondition cond);
 
+    List<WorkoutPreviewResponse> findWorkoutDtoListOrderByAddCount(WorkoutCategory category);
+
     List<MyWorkoutResponse> pagingMyWorkoutWithSearchCondition(WorkoutSearchCondition cond, Long memberId);
 
     List<MyWorkoutResponse> getMyWorkoutDto(Long memberId, WorkoutCategory workoutCategory);

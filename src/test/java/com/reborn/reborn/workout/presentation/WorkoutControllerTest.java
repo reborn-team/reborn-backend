@@ -212,4 +212,26 @@ class WorkoutControllerTest extends ControllerConfig {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("운동 리스트 저장 순 조회 : Get /api/v1/workout/rank")
+    void getRank() throws Exception {
+        //given
+        List<WorkoutPreviewResponse> list = new ArrayList<>();
+        WorkoutPreviewResponse workoutResponseDto = WorkoutPreviewResponse.builder().workoutId(1L).workoutName("pull up")
+                .uploadFileName("uuid.png")
+                .build();
+        list.add(workoutResponseDto);
+
+        given(workoutService.getWorkoutListByRank(any())).willReturn(list);
+
+        //when
+        mockMvc.perform(get("/api/v1/workout/rank")
+                        .queryParam("category", "BACK"))
+                .andExpect(status().isOk())
+                .andDo(document("workout-get-rank",
+                        requestParameters(
+                                parameterWithName("category").description("운동 카테고리")
+                        )));
+    }
 }
