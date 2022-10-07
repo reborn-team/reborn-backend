@@ -75,7 +75,7 @@ public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
                         equalsWorkoutCategory(category)
                 )
                 .limit(6L)
-                .orderBy(workout.addCount.desc())
+                .orderBy(workout.addCount.desc(), workout.createdDate.desc())
                 .fetch();
     }
 
