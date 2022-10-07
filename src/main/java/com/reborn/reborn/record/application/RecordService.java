@@ -31,7 +31,7 @@ public class RecordService {
         List<Record> recordList = list.getRecordList().stream()
                 .map(recordRequest -> {
                     MyWorkout myWorkout = myWorkoutRepository.findById(recordRequest.getMyWorkoutId())
-                            .orElseThrow(() -> new MyWorkoutNotFoundException("찾으시는 내 운동이 없습니다 :" + recordRequest.getMyWorkoutId()));
+                            .orElseThrow(() -> new MyWorkoutNotFoundException(recordRequest.getMyWorkoutId().toString()));
                     return new Record(myWorkout, recordRequest.getTotal(), recordRequest.getWorkoutCategory());
                 })
                 .collect(Collectors.toList());

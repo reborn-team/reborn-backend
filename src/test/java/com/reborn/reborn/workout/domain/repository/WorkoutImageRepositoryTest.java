@@ -1,6 +1,5 @@
 package com.reborn.reborn.workout.domain.repository;
 
-import com.reborn.reborn.config.RepositoryTest;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.workout.domain.Workout;
@@ -8,9 +7,10 @@ import com.reborn.reborn.workout.domain.WorkoutImage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@RepositoryTest
+@SpringBootTest
 @Transactional
 class WorkoutImageRepositoryTest {
 

@@ -36,7 +36,7 @@ public class MyWorkoutService {
         Workout workout = getWorkout(workoutId);
         Member member = getMember(memberId);
         if (myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId)) {
-            throw new WorkoutAlreadyExistException("이미 추가된 운동입니다 : " + workout.getWorkoutName());
+            throw new WorkoutAlreadyExistException(workout.getWorkoutName());
         }
         MyWorkout saveList = myWorkoutRepository.save(new MyWorkout(workout, member));
         return saveList.getId();
@@ -52,6 +52,7 @@ public class MyWorkoutService {
         List<MyWorkoutResponse> result = workoutQuerydslRepository.pagingMyWorkoutWithSearchCondition(cond, memberId);
         return new Slice<>(result);
     }
+
     @Transactional(readOnly = true)
     public MyWorkoutList getMyProgram(Long memberId, WorkoutCategory workoutCategory) {
         List<MyWorkoutResponse> list = workoutQuerydslRepository.getMyWorkoutDto(memberId, workoutCategory);

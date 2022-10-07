@@ -1,6 +1,5 @@
 package com.reborn.reborn.record.domain.repository;
 
-import com.reborn.reborn.config.RepositoryTest;
 import com.reborn.reborn.member.domain.Member;
 import com.reborn.reborn.member.domain.repository.MemberRepository;
 import com.reborn.reborn.myworkout.domain.MyWorkout;
@@ -13,6 +12,7 @@ import com.reborn.reborn.workout.domain.repository.WorkoutRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -22,7 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@RepositoryTest
+@SpringBootTest
 @Transactional
 class RecordRepositoryTest {
 

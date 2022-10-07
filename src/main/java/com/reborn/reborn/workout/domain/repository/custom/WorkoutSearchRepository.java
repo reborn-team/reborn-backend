@@ -128,6 +128,7 @@ public class WorkoutSearchRepository implements WorkoutQuerydslRepository {
     private BooleanExpression ltMyWorkoutId(Long workoutId) {
         return workoutId == null ? null : myWorkout.id.lt(workoutId);
     }
+
     private BooleanExpression containsWorkoutAuthor(String author) {
         return StringUtils.hasText(author) ? workout.member.nickname.contains(author) : null;
     }

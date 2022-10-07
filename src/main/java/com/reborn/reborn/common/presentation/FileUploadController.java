@@ -35,6 +35,6 @@ public class FileUploadController {
     @GetMapping("/images")
     public ResponseEntity<Resource> downloadImage(@RequestParam String filename) {
         Resource resource = fileService.downloadFile(filename);
-        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(60, TimeUnit.SECONDS)).body(resource);
+        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES)).body(resource);
     }
 }

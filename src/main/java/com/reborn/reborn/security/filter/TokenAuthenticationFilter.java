@@ -36,8 +36,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             token = auth.get().substring(PREFIX.length());
         }
 
-        log.info("token11={}", token);
-
         AuthToken authToken = tokenProvider.converterAuthToken(token);
 
         if (authToken.validateToken()) {
