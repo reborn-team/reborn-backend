@@ -105,10 +105,29 @@ class RecordServiceTest {
     @DisplayName("이번 주 기준으로 record를 반환한다.")
     void getWeekRecord() {
 
-        given(recordRepository.findWeekMyRecord(1L,null)).willReturn(new RecordWeekResponse());
+        given(recordRepository.findWeekMyRecord(any(), any())).willReturn(Optional.of(new RecordWeekResponse()));
 
         RecordWeekResponse weekRecord = recordService.getWeekRecord(1L, null);
 
         assertThat(weekRecord.getFri()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("이번 주 기준으로 record가 없으면 값이 0인 dto를 반환한다.")
+    void getWeekRecordIfNull() {
+
+        given(recordRepository.findWeekMyRecord(any(), any())).willReturn(Optional.empty());
+
+        RecordWeekResponse weekRecord = recordService.getWeekRecord(1L, null);
+
+        assertAll(
+                () -> assertThat(weekRecord.getMon()).isEqualTo(0),
+                () -> assertThat(weekRecord.getTue()).isEqualTo(0),
+                () -> assertThat(weekRecord.getWed()).isEqualTo(0),
+                () -> assertThat(weekRecord.getThu()).isEqualTo(0),
+                () -> assertThat(weekRecord.getFri()).isEqualTo(0),
+                () -> assertThat(weekRecord.getSat()).isEqualTo(0),
+                () -> assertThat(weekRecord.getSun()).isEqualTo(0)
+        );
     }
 }

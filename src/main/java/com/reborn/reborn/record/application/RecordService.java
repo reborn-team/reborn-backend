@@ -48,7 +48,12 @@ public class RecordService {
     }
 
     public RecordWeekResponse getWeekRecord(Long memberId, LocalDate localDate) {
-        return recordRepository.findWeekMyRecord(memberId, localDate);
+        LocalDate date = dateIfNullReturnNow(localDate);
+        return recordRepository.findWeekMyRecord(memberId, date).orElse(new RecordWeekResponse());
+    }
+
+    private LocalDate dateIfNullReturnNow(LocalDate date) {
+        return date == null ? LocalDate.now() : date;
     }
 
     private void updateOrSaveRecord(List<Record> recordList) {

@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.reborn.reborn.config.ControllerConfig.getMember;
 import static org.assertj.core.api.Assertions.*;
@@ -95,8 +96,7 @@ class RecordRepositoryTest {
         recordRepository.save(record4);
         em.flush();
         em.clear();
-        RecordWeekResponse weekMyRecord = recordRepository.findWeekMyRecord(saveMember.getId(), null);
-        System.out.println("weekMyRecord = " + weekMyRecord);
+
 
         List<Record> records = recordRepository.findTodayRecordByMemberId(saveMember.getId());
         assertThat(records.size()).isEqualTo(4);
@@ -120,8 +120,8 @@ class RecordRepositoryTest {
         recordRepository.save(record3);
         recordRepository.save(record4);
 
-        RecordWeekResponse weekMyRecord = recordRepository.findWeekMyRecord(saveMember.getId(), null);
-        assertThat(weekMyRecord).isNotNull();
+        Optional<RecordWeekResponse> weekMyRecord = recordRepository.findWeekMyRecord(saveMember.getId(), LocalDate.now());
+        assertThat(weekMyRecord.isPresent()).isTrue();
     }
 
     @Test
@@ -139,7 +139,7 @@ class RecordRepositoryTest {
         recordRepository.save(record3);
         recordRepository.save(record4);
 
-        RecordWeekResponse weekMyRecord = recordRepository.findWeekMyRecord(saveMember.getId(), LocalDate.of(2021,10,1));
-        assertThat(weekMyRecord).isNotNull();
+        Optional<RecordWeekResponse> weekMyRecord = recordRepository.findWeekMyRecord(saveMember.getId(), LocalDate.of(2021, 10, 1));
+        assertThat(weekMyRecord.isPresent()).isFalse();
     }
 }
