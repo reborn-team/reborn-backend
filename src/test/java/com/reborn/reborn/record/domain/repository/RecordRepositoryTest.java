@@ -9,10 +9,12 @@ import com.reborn.reborn.record.presentation.dto.RecordWeekResponse;
 import com.reborn.reborn.workout.domain.Workout;
 import com.reborn.reborn.workout.domain.WorkoutCategory;
 import com.reborn.reborn.workout.domain.repository.WorkoutRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -20,10 +22,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.reborn.reborn.config.ControllerConfig.getMember;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Rollback
 class RecordRepositoryTest {
 
     @Autowired
@@ -37,11 +41,16 @@ class RecordRepositoryTest {
     @Autowired
     EntityManager em;
 
+    @BeforeEach
+    void before() {
+        memberRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("saveAll 을 통해 전체 저장한다.")
     void saveAll() {
-        Member saveMember = memberRepository.save(Member.builder().build());
-        Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
+        Member saveMember = memberRepository.save(getMember());
+        Workout saveWorkout = workoutRepository.save(getWorkout(saveMember));
         MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
         em.flush();
         em.clear();
@@ -60,8 +69,8 @@ class RecordRepositoryTest {
     @Test
     @DisplayName("내 운동 ID로 오늘 등록한 Record를 출력한다.")
     void findByToday() {
-        Member saveMember = memberRepository.save(Member.builder().build());
-        Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
+        Member saveMember = memberRepository.save(getMember());
+        Workout saveWorkout = workoutRepository.save(getWorkout(saveMember));
         MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
         recordRepository.save(new Record(saveMyWorkout, 10L, WorkoutCategory.BACK));
         em.flush();
@@ -73,8 +82,8 @@ class RecordRepositoryTest {
     @Test
     @DisplayName("member ID로 오늘 등록한 Record 리스트를 출력한다.")
     void findByTodayList() {
-        Member saveMember = memberRepository.save(Member.builder().build());
-        Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
+        Member saveMember = memberRepository.save(getMember());
+        Workout saveWorkout = workoutRepository.save(getWorkout(saveMember));
         MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
         Record record = new Record(saveMyWorkout, 10L, WorkoutCategory.BACK);
         Record record2 = new Record(saveMyWorkout, 20L, WorkoutCategory.CHEST);
@@ -93,11 +102,14 @@ class RecordRepositoryTest {
         assertThat(records.size()).isEqualTo(4);
     }
 
+    public static Workout getWorkout(Member saveMember) {
+        return Workout.builder().workoutName("name").workoutCategory(WorkoutCategory.BACK).content("content").member(saveMember).build();
+    }
     @Test
     @DisplayName("오늘 날짜 기준으로 일주일간 Record 리스트를 출력한다.")
     void findRecordByDayOfWeek() {
-        Member saveMember = memberRepository.save(Member.builder().build());
-        Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
+        Member saveMember = memberRepository.save(getMember());
+        Workout saveWorkout = workoutRepository.save(getWorkout(saveMember));
         MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
         Record record = new Record(saveMyWorkout, 10L, WorkoutCategory.BACK);
         Record record2 = new Record(saveMyWorkout, 20L, WorkoutCategory.CHEST);
@@ -115,8 +127,8 @@ class RecordRepositoryTest {
     @Test
     @DisplayName("특정 날짜 기준으로 일주일간 Record 리스트를 출력한다.")
     void findRecordBySpecificDayOfWeek() {
-        Member saveMember = memberRepository.save(Member.builder().build());
-        Workout saveWorkout = workoutRepository.save(Workout.builder().member(saveMember).build());
+        Member saveMember = memberRepository.save(getMember());
+        Workout saveWorkout = workoutRepository.save(getWorkout(saveMember));
         MyWorkout saveMyWorkout = myWorkoutRepository.save(new MyWorkout(saveWorkout, saveMember));
         Record record = new Record(saveMyWorkout, 10L, WorkoutCategory.BACK);
         Record record2 = new Record(saveMyWorkout, 20L, WorkoutCategory.CHEST);

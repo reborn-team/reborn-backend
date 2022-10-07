@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import static com.reborn.reborn.config.ControllerConfig.getMember;
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
@@ -49,7 +50,7 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("회원정보를 수정한다")
     void modifyMember() {
-        Member member = createMember();
+        Member member = getMember();
         memberRepository.save(member);
         em.flush();
         em.clear();
