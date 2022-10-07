@@ -15,15 +15,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.reborn.reborn.config.ControllerConfig.getMember;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@Rollback
 class WorkoutRepositoryTest {
 
     @Autowired
@@ -39,6 +42,7 @@ class WorkoutRepositoryTest {
 
     @BeforeEach
     void before() {
+        memberRepository.deleteAll();
         Member member = createMember();
         memberRepository.save(member);
         for (int i = 0; i < 11; i++) {
@@ -65,7 +69,7 @@ class WorkoutRepositoryTest {
     @Test
     @DisplayName("운동 정보를 상세 조회한다.")
     void detailView() {
-        Member member = createMember();
+        Member member = getMember();
         Workout workout = createWorkout(member, "");
         WorkoutImage workoutImage = new WorkoutImage("", "");
         workoutImage.uploadToWorkout(workout);
@@ -109,7 +113,7 @@ class WorkoutRepositoryTest {
     @Test
     @DisplayName("운동 정보에 이미지를 같이 반환한다")
     void findWorkoutAndImage() {
-        Member member = createMember();
+        Member member = getMember();
         memberRepository.save(member);
         Workout workout = createWorkout(member, "a");
         workoutRepository.save(workout);
@@ -130,7 +134,7 @@ class WorkoutRepositoryTest {
     @Test
     @DisplayName("운동 정보에 이미지가 없으면 list size를 0 반환한다.")
     void findWorkoutAndNoImage() {
-        Member member = createMember();
+        Member member = getMember();
         memberRepository.save(member);
         Workout workout = createWorkout(member, "a");
         workoutRepository.save(workout);
@@ -146,8 +150,8 @@ class WorkoutRepositoryTest {
     @Test
     @DisplayName("운동 정보를 조회할 때 Member 데이터도 반환한다.")
     void findWorkoutAndMember() {
-        Member member = createMember();
-        Member member2 = Member.builder().build();
+        Member member = getMember();
+        Member member2 = Member.builder().email("a").memberRole(MemberRole.USER).password("a").nickname("a").build();
         memberRepository.save(member);
         memberRepository.save(member2);
         Workout workout = createWorkout(member, "a");
