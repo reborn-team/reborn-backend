@@ -44,7 +44,7 @@ public class SecurityConfig {
         ).hasAnyAuthority(USER.getValue(), ADMIN.getValue());
         http.addFilterBefore(localMemberLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(tokenExceptionFilter(), TokenAuthenticationFilter.class);
+        http.addFilterBefore(tokenExceptionFilter(), TokenAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
