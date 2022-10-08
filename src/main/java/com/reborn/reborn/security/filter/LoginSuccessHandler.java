@@ -3,9 +3,9 @@ package com.reborn.reborn.security.filter;
 import com.reborn.reborn.security.domain.UserPrincipal;
 import com.reborn.reborn.security.domain.AuthToken;
 import com.reborn.reborn.security.application.TokenProvider;
-import com.reborn.reborn.security.filter.properties.AppProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,8 @@ import java.util.Date;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final TokenProvider tokenProvider;
-    private final AppProperties appProperties;
+    @Value("${spring.jwt.tokenExpireDate}")
+    private Long tokenExpireDate;
     private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
@@ -36,7 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         AuthToken accessToken = tokenProvider.createAuthToken(
                 principal.getMember().getEmail(),
                 principal.getMember().getMemberRole(),
-                new Date(now.getTime() + appProperties.getAuth().getTokenExpireDate())
+                new Date(now.getTime() + tokenExpireDate)
         );
 
         response.setHeader(AUTHORIZATION, TOKEN_PREFIX + accessToken.getToken());

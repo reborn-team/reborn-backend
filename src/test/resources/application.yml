@@ -36,10 +36,6 @@ spring:
 
   jwt:
     secret-key: 'adssdadasdaeijqriqejriejqirjeiwjrwqieiqjeiqwejiqwjeiqjweijqweijqwiejqwiejiq'
-
-
-app:
-  auth:
     tokenExpireDate: 1800000
 
 file:
