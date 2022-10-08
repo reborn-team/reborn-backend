@@ -50,9 +50,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private LoginRequest getEmailAndPassword(HttpServletRequest request) {
         try {
-            LoginRequest emailAndPassword = objectMapper
-                    .readValue(StreamUtils.copyToString(
-                            request.getInputStream(), StandardCharsets.UTF_8), LoginRequest.class);
+            LoginRequest emailAndPassword = objectMapper.readValue(
+                    StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8), LoginRequest.class);
             ;
             return emailAndPassword;
         } catch (IOException e) {

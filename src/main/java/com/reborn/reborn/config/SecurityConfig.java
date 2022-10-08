@@ -6,6 +6,7 @@ import com.reborn.reborn.security.filter.LoginSuccessHandler;
 import com.reborn.reborn.security.filter.TokenAuthenticationFilter;
 import com.reborn.reborn.security.application.TokenProvider;
 import com.reborn.reborn.security.application.MemberDetailsService;
+import com.reborn.reborn.security.filter.TokenExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +41,10 @@ public class SecurityConfig {
         http.authorizeRequests().antMatchers(
                 "/api/v1/my-workout/**",
                 "/api/v1/members/me"
-              ).hasAnyAuthority(USER.getValue(), ADMIN.getValue());
+        ).hasAnyAuthority(USER.getValue(), ADMIN.getValue());
         http.addFilterBefore(localMemberLoginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(tokenExceptionFilter(), TokenAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
@@ -66,6 +68,10 @@ public class SecurityConfig {
         return new TokenAuthenticationFilter(tokenProvider, memberDetailsService);
     }
 
+    @Bean
+    public TokenExceptionFilter tokenExceptionFilter() {
+        return new TokenExceptionFilter(objectMapper);
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
