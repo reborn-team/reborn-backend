@@ -1,5 +1,6 @@
 package com.reborn.reborn.myworkout.application;
 
+import com.reborn.reborn.myworkout.exception.MyWorkoutNotFoundException;
 import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
@@ -135,12 +136,10 @@ class MyWorkoutServiceTest {
     @DisplayName("내 운동 목록에 추가되어 없다면 삭제하지 않는다.")
     void deleteNonExist() {
         Workout workout = Workout.builder().build();
-        Member member = Member.builder().build();
-        MyWorkout myWorkout = new MyWorkout(workout, member);
 
         given(myWorkoutRepository.findByWorkoutIdAndMemberId(anyLong(), anyLong())).willReturn(Optional.empty());
 
-        myWorkoutService.deleteMyWorkout(1L, 1L);
+        assertThatThrownBy(() -> myWorkoutService.deleteMyWorkout(1L, 1L)).isInstanceOf(MyWorkoutNotFoundException.class);
 
         verify(myWorkoutRepository, never()).delete(any());
         assertThat(workout.getAddCount()).isEqualTo(0L);
