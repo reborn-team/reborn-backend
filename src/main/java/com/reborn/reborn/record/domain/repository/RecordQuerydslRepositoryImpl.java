@@ -55,13 +55,13 @@ public class RecordQuerydslRepositoryImpl implements RecordQuerydslRepository {
 
         RecordWeekResponse response = queryFactory
                 .select(new QRecordWeekResponse(
-                        getDayOfWeekTotalByMember(memberId, MONDAY, date),
-                        getDayOfWeekTotalByMember(memberId, TUESDAY, date),
-                        getDayOfWeekTotalByMember(memberId, WEDNESDAY, date),
-                        getDayOfWeekTotalByMember(memberId, THURSDAY, date),
-                        getDayOfWeekTotalByMember(memberId, FRIDAY, date),
-                        getDayOfWeekTotalByMember(memberId, SATURDAY, date),
-                        getDayOfWeekTotalByMember(memberId, SUNDAY, date)
+                        getTotalByMemberAndDayOfWeek(memberId, MONDAY, date),
+                        getTotalByMemberAndDayOfWeek(memberId, TUESDAY, date),
+                        getTotalByMemberAndDayOfWeek(memberId, WEDNESDAY, date),
+                        getTotalByMemberAndDayOfWeek(memberId, THURSDAY, date),
+                        getTotalByMemberAndDayOfWeek(memberId, FRIDAY, date),
+                        getTotalByMemberAndDayOfWeek(memberId, SATURDAY, date),
+                        getTotalByMemberAndDayOfWeek(memberId, SUNDAY, date)
                 ))
                 .from(record).join(record.myWorkout, myWorkout)
                 .where(
@@ -75,7 +75,7 @@ public class RecordQuerydslRepositoryImpl implements RecordQuerydslRepository {
     }
 
 
-    private JPQLQuery<Long> getDayOfWeekTotalByMember(Long memberId, Week day, LocalDate localDate) {
+    private JPQLQuery<Long> getTotalByMemberAndDayOfWeek(Long memberId, Week day, LocalDate localDate) {
         return JPAExpressions
                 .select(record.total.sum())
                 .from(record)

@@ -1,5 +1,6 @@
 package com.reborn.reborn.myworkout.application;
 
+import com.reborn.reborn.myworkout.exception.MyWorkoutNotFoundException;
 import com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse;
 import com.reborn.reborn.common.presentation.dto.Slice;
 import com.reborn.reborn.member.domain.Member;
@@ -44,12 +45,12 @@ public class MyWorkoutService {
     }
 
     public void deleteMyWorkout(Long memberId, Long workoutId) {
-        myWorkoutRepository.findByWorkoutIdAndMemberId(workoutId, memberId)
-                .ifPresent(myWorkout -> {
-                    myWorkoutRepository.delete(myWorkout);
-                    workoutRepository.findById(workoutId).orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()))
-                            .minusAddCount();
-                });
+        MyWorkout myWorkout = myWorkoutRepository.findByWorkoutIdAndMemberId(workoutId, memberId)
+                .orElseThrow(() -> new MyWorkoutNotFoundException(memberId.toString()));
+
+        myWorkoutRepository.delete(myWorkout);
+        getWorkout(workoutId).minusAddCount();
+
     }
 
     @Transactional(readOnly = true)

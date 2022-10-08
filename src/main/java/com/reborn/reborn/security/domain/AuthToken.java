@@ -50,7 +50,7 @@ public class AuthToken {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (SecurityException | IllegalArgumentException | UnsupportedJwtException e) {
-            throw new InvalidTokenException("잘못된 토큰입니다.");
+            throw new InvalidTokenException();
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException();
         } catch (MalformedJwtException e) {
