@@ -78,6 +78,7 @@ class WorkoutServiceTest {
         assertThatThrownBy(() -> workoutService.create(1L, requestDto)).isInstanceOf(MemberNotFoundException.class);
 
     }
+
     @Test
     @DisplayName("운동 정보를 조회한다.")
     void getMyWorkout() {
@@ -138,8 +139,7 @@ class WorkoutServiceTest {
         Member author = Member.builder().id(1L).build();
         Workout workout = Workout.builder().member(author).build();
 
-        WorkoutResponse dto = WorkoutResponse.of(workout, false);
-        dto.isAuthor(author.getId());
+        WorkoutResponse dto = WorkoutResponse.of(workout, false, true);
 
         assertThat(dto.isAuthor()).isTrue();
     }
@@ -151,8 +151,7 @@ class WorkoutServiceTest {
         Member reader = Member.builder().id(2L).build();
         Workout workout = Workout.builder().member(author).build();
 
-        WorkoutResponse dto = WorkoutResponse.of(workout, false);
-        dto.isAuthor(reader.getId());
+        WorkoutResponse dto = WorkoutResponse.of(workout, false, false);
 
         assertThat(dto.isAuthor()).isFalse();
     }
