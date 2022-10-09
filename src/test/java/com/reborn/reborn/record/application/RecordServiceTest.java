@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -88,9 +89,9 @@ class RecordServiceTest {
         records.add(new Record(myWorkout, 10L, WorkoutCategory.LOWER_BODY));
         records.add(new Record(myWorkout, 50L, WorkoutCategory.CORE));
 
-        given(recordRepository.findTodayRecordByMemberId(1L)).willReturn(records);
+        given(recordRepository.findTodayRecordByMemberId(1L, LocalDate.now())).willReturn(records);
 
-        RecordTodayResponse todayRecord = recordService.getTodayRecord(1L);
+        RecordTodayResponse todayRecord = recordService.getTodayRecord(1L, LocalDate.now());
 
         assertAll(
                 () -> assertThat(todayRecord.getBack()).isEqualTo(20),

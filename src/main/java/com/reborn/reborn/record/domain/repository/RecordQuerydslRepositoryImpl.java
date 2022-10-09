@@ -40,12 +40,12 @@ public class RecordQuerydslRepositoryImpl implements RecordQuerydslRepository {
     }
 
     @Override
-    public List<Record> findTodayRecordByMemberId(Long memberId) {
+    public List<Record> findTodayRecordByMemberId(Long memberId, LocalDate localDate) {
         return queryFactory
                 .selectFrom(record)
                 .where(
                         myWorkout.member.id.eq(memberId),
-                        betweenDate(LocalDate.now(), LocalDate.now())
+                        betweenDate(localDate, localDate)
                 )
                 .innerJoin(record.myWorkout, myWorkout).fetch();
     }

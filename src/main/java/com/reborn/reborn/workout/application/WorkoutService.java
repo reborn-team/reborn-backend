@@ -115,15 +115,19 @@ public class WorkoutService {
                 .orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()));
         Boolean isAdd = myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId);
 
-        WorkoutResponse dto = WorkoutResponse.of(workout, isAdd);
-        dto.isAuthor(memberId);
-        return dto;
+        boolean isAuthor = checkIsAuthor(memberId, workout);
 
+        return WorkoutResponse.of(workout, isAdd, isAuthor);
+
+    }
+
+    private boolean checkIsAuthor(Long memberId, Workout response) {
+        return Objects.equals(response.getMember().getId(), memberId);
     }
 
     private void validIsAuthor(Long authorId, Workout workout) {
         if (!Objects.equals(workout.getMember().getId(), authorId)) {
-            throw new UnAuthorizedException("권한이 없습니다 : "+ authorId);
+            throw new UnAuthorizedException("권한이 없습니다 : " + authorId);
         }
     }
 

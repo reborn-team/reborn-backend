@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
@@ -36,7 +35,8 @@ public class WorkoutResponse {
 
 
     @Builder
-    public WorkoutResponse(Long id, String workoutName, List<FileDto> files, String content, WorkoutCategory workoutCategory, Long memberId, String memberNickname, boolean isAdd) {
+    public WorkoutResponse(Long id, String workoutName, List<FileDto> files, String content, WorkoutCategory workoutCategory,
+                           Long memberId, String memberNickname, boolean isAdd, boolean isAuthor) {
         this.id = id;
         this.workoutName = workoutName;
         this.content = content;
@@ -45,9 +45,10 @@ public class WorkoutResponse {
         this.memberId = memberId;
         this.isAdd = isAdd;
         this.memberNickname = memberNickname;
+        this.isAuthor = isAuthor;
     }
 
-    public static WorkoutResponse of(Workout workout, boolean isAdd) {
+    public static WorkoutResponse of(Workout workout, boolean isAdd, boolean isAuthor) {
 
         List<FileDto> fileDtos = new ArrayList<>();
         workout.getWorkoutImages().forEach(image -> fileDtos.add(new FileDto(image.getOriginFileName(), image.getUploadFileName())));
@@ -60,13 +61,11 @@ public class WorkoutResponse {
                 .memberId(workout.getMember().getId())
                 .memberNickname(workout.getMember().getNickname())
                 .isAdd(isAdd)
+                .isAuthor(isAuthor)
                 .files(fileDtos)
                 .build();
     }
 
-    public void isAuthor(Long memberId) {
-        this.isAuthor = Objects.equals(this.memberId, memberId);
-    }
 
     @Getter
     public static class WorkoutIdResponse {

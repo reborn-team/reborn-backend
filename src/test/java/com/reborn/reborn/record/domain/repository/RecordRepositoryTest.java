@@ -98,7 +98,7 @@ class RecordRepositoryTest {
         em.clear();
 
 
-        List<Record> records = recordRepository.findTodayRecordByMemberId(saveMember.getId());
+        List<Record> records = recordRepository.findTodayRecordByMemberId(saveMember.getId(), LocalDate.now());
         assertThat(records.size()).isEqualTo(4);
     }
 

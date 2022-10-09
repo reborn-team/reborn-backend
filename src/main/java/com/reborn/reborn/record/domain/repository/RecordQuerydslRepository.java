@@ -11,7 +11,7 @@ public interface RecordQuerydslRepository {
 
     Optional<Record> findTodayRecordByMyWorkoutId(Long myWorkoutId);
 
-    List<Record> findTodayRecordByMemberId(Long memberId);
+    List<Record> findTodayRecordByMemberId(Long memberId, LocalDate localDate);
 
     Optional<RecordWeekResponse> findWeekMyRecord(Long memberId, LocalDate localDate);
 }

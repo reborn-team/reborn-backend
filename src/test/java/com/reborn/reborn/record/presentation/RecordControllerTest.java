@@ -47,7 +47,7 @@ class RecordControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("기록 생성 : POST /api/v1/record")
+    @DisplayName("기록 생성 : POST /api/v1/records")
     void recordCreate() throws Exception {
         //given
         Member member = getMember();
@@ -59,7 +59,7 @@ class RecordControllerTest extends ControllerConfig {
         willDoNothing().given(recordService).create(request);
 
         //when
-        mockMvc.perform(post("/api/v1/record")
+        mockMvc.perform(post("/api/v1/records")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(request))
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -71,15 +71,16 @@ class RecordControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("오늘 기록 조회 : GET /api/v1/record/today")
+    @DisplayName("오늘 기록 조회 : GET /api/v1/records/day")
     void getTodayRecord() throws Exception {
         //given
         Member member = getMember();
         RecordTodayResponse response = new RecordTodayResponse(10L, 20L, 30L, 40L);
 
-        given(recordService.getTodayRecord(any())).willReturn(response);
+        given(recordService.getTodayRecord(any(), any())).willReturn(response);
         //when
-        mockMvc.perform(get("/api/v1/record/today")
+        mockMvc.perform(get("/api/v1/records/day")
+                        .queryParam("date", "2022-10-07")
                         .header("Authorization", "Bearer " + getToken(member))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -94,14 +95,14 @@ class RecordControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("주간 기록 조회 : GET /api/v1/record/week")
+    @DisplayName("주간 기록 조회 : GET /api/v1/records/week")
     void getWeekRecord() throws Exception {
         //given
         Member member = getMember();
         RecordWeekResponse response = new RecordWeekResponse(10, 20, 10, 30, 40, 50, 60);
         given(recordService.getWeekRecord(any(),any())).willReturn(response);
         //when
-        mockMvc.perform(get("/api/v1/record/week")
+        mockMvc.perform(get("/api/v1/records/week")
                         .queryParam("date", "2022-10-07"))
                 .andExpect(status().isOk())
                 .andDo(document("record-get-week",
