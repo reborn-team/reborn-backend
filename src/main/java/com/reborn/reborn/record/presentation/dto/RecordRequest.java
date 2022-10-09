@@ -22,6 +22,7 @@ public class RecordRequest {
     public RecordRequest(Long myWorkoutId, Long total, WorkoutCategory workoutCategory) {
         this.myWorkoutId = myWorkoutId;
         this.total = total;
+        this.workoutCategory = workoutCategory;
     }
     @Getter
     @NoArgsConstructor
