@@ -115,7 +115,7 @@ public class WorkoutService {
                 .orElseThrow(() -> new WorkoutNotFoundException(workoutId.toString()));
         Boolean isAdd = myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId);
 
-ㅏ        boolean isAuthor = checkIsAuthor(memberId, workout);
+        boolean isAuthor = checkIsAuthor(memberId, workout);
         WorkoutResponse dto = WorkoutResponse.of(workout, isAdd, isAuthor);
 
         return dto;
