@@ -116,9 +116,8 @@ public class WorkoutService {
         Boolean isAdd = myWorkoutRepository.existsByWorkoutIdAndMemberId(workoutId, memberId);
 
         boolean isAuthor = checkIsAuthor(memberId, workout);
-        WorkoutResponse dto = WorkoutResponse.of(workout, isAdd, isAuthor);
 
-        return dto;
+        return WorkoutResponse.of(workout, isAdd, isAuthor);
 
     }
 
