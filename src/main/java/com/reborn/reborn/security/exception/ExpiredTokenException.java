@@ -6,6 +6,6 @@ import org.springframework.http.HttpStatus;
 public class ExpiredTokenException extends CustomException {
 
     public ExpiredTokenException() {
-        super(HttpStatus.UNAUTHORIZED, "로그인 시간이 만료되었습니다.");
+        super(HttpStatus.FORBIDDEN, "로그인 시간이 만료되었습니다.");
     }
 }

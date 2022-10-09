@@ -17,7 +17,7 @@ import static com.reborn.reborn.myworkout.presentation.dto.MyWorkoutResponse.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/my-workout")
+@RequestMapping("/api/v1/workouts/me")
 @RequiredArgsConstructor
 public class MyWorkoutController {
 
@@ -32,7 +32,7 @@ public class MyWorkoutController {
     @PostMapping("/{workoutId}")
     public ResponseEntity<MyWorkoutIdResponse> addMyWorkoutList(@LoginMember Long memberId, @PathVariable Long workoutId) {
         Long myWorkoutId = myWorkoutService.addMyWorkout(memberId, workoutId);
-        return ResponseEntity.created(URI.create("/api/v1/my-workout/" + myWorkoutId)).body(new MyWorkoutIdResponse(myWorkoutId));
+        return ResponseEntity.created(URI.create("/api/v1/workouts/me/" + myWorkoutId)).body(new MyWorkoutIdResponse(myWorkoutId));
     }
 
     @DeleteMapping("/{workoutId}")

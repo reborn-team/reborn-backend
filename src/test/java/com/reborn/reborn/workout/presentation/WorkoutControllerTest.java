@@ -48,7 +48,7 @@ class WorkoutControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 생성 : POST /api/v1/workout")
+    @DisplayName("운동 생성 : POST /api/v1/workouts")
     void workoutCreate() throws Exception {
         //given
         Member member = Member.builder().email("user").memberRole(MemberRole.USER).build();
@@ -64,7 +64,7 @@ class WorkoutControllerTest extends ControllerConfig {
         given(workoutService.create(any(), any())).willReturn(Workout.builder().build());
 
         //when
-        mockMvc.perform(post("/api/v1/workout")
+        mockMvc.perform(post("/api/v1/workouts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(workoutRequest))
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -84,7 +84,7 @@ class WorkoutControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 조회 : Get /api/v1/workout/{workoutId}")
+    @DisplayName("운동 조회 : Get /api/v1/workouts/{workoutId}")
     void getMyWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
@@ -102,7 +102,7 @@ class WorkoutControllerTest extends ControllerConfig {
 
         given(workoutService.getWorkoutDetailDto(any(), any())).willReturn(workoutResponse);
         //when
-        mockMvc.perform(get("/api/v1/workout/{workoutId}", 1L)
+        mockMvc.perform(get("/api/v1/workouts/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isOk())
                 .andDo(document("workout-getMyWorkout",
@@ -129,7 +129,7 @@ class WorkoutControllerTest extends ControllerConfig {
     }
 
     @Test
-    @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workout")
+    @DisplayName("운동 리스트 페이지 조회 : Get /api/v1/workouts")
     void getPagingWorkout() throws Exception {
         //given
         List<WorkoutPreviewResponse> list = new ArrayList<>();
@@ -140,7 +140,7 @@ class WorkoutControllerTest extends ControllerConfig {
         given(workoutService.getPagingWorkout(any())).willReturn(new Slice<>(list));
 
         //when
-        mockMvc.perform(get("/api/v1/workout")
+        mockMvc.perform(get("/api/v1/workouts")
                         .queryParam("id", "1").queryParam("category", "BACK")
                         .queryParam("title","벤치 프레스").queryParam("nickname","nickname"))
                 .andExpect(status().isOk())
@@ -163,14 +163,14 @@ class WorkoutControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 삭제 : Delete /api/v1/workout/{workoutId}")
+    @DisplayName("운동 삭제 : Delete /api/v1/workouts/{workoutId}")
     void deleteWorkout() throws Exception {
         //given
         Member member = Member.builder().email("user").nickname("nickname").memberRole(MemberRole.USER).build();
 
         doNothing().when(workoutService).deleteWorkout(any(), any());
         //when
-        mockMvc.perform(delete("/api/v1/workout/{workoutId}", 1L)
+        mockMvc.perform(delete("/api/v1/workouts/{workoutId}", 1L)
                         .header("Authorization", "Bearer " + getToken(member)))
                 .andExpect(status().isNoContent())
                 .andDo(document("workout-delete",
@@ -182,7 +182,7 @@ class WorkoutControllerTest extends ControllerConfig {
 
     @Test
     @WithUserDetails(value = "email@naver.com")
-    @DisplayName("운동 수정 : PATCH  /api/v1/workout/{workoutId}")
+    @DisplayName("운동 수정 : PATCH  /api/v1/workouts/{workoutId}")
     void editWorkout() throws Exception {
         //given
         Member member = Member.builder().id(1L).email("user").nickname("nickname").memberRole(MemberRole.USER).build();
@@ -194,7 +194,7 @@ class WorkoutControllerTest extends ControllerConfig {
 
         when(workoutService.updateWorkout(member.getId(), 1L, form)).thenReturn(workout);
         //when
-        mockMvc.perform(patch("/api/v1/workout/{workoutId}", 1L)
+        mockMvc.perform(patch("/api/v1/workouts/{workoutId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(form))
                         .header("Authorization", "Bearer " + getToken(member)))
@@ -214,7 +214,7 @@ class WorkoutControllerTest extends ControllerConfig {
     }
 
     @Test
-    @DisplayName("운동 리스트 저장 순 조회 : Get /api/v1/workout/rank")
+    @DisplayName("운동 리스트 저장 순 조회 : Get /api/v1/workouts/rank")
     void getRank() throws Exception {
         //given
         List<WorkoutPreviewResponse> list = new ArrayList<>();
@@ -226,7 +226,7 @@ class WorkoutControllerTest extends ControllerConfig {
         given(workoutService.getWorkoutListByRank(any())).willReturn(list);
 
         //when
-        mockMvc.perform(get("/api/v1/workout/rank")
+        mockMvc.perform(get("/api/v1/workouts/rank")
                         .queryParam("category", "BACK"))
                 .andExpect(status().isOk())
                 .andDo(document("workout-get-rank",

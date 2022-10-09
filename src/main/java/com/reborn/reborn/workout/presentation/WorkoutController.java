@@ -20,7 +20,7 @@ import static com.reborn.reborn.workout.presentation.dto.WorkoutResponse.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/workout")
+@RequestMapping("/api/v1/workouts")
 @RequiredArgsConstructor
 public class WorkoutController {
 
@@ -35,7 +35,7 @@ public class WorkoutController {
     public ResponseEntity<WorkoutIdResponse> createWorkout(@LoginMember Long memberId, @RequestBody @Valid WorkoutRequest dto) {
         Workout workout = workoutService.create(memberId, dto);
         log.info("save Workout");
-        return ResponseEntity.created(URI.create("/api/v1/workout/" + workout.getId())).body(new WorkoutIdResponse(workout.getId()));
+        return ResponseEntity.created(URI.create("/api/v1/workouts/" + workout.getId())).body(new WorkoutIdResponse(workout.getId()));
     }
 
     @GetMapping("/{workoutId}")

@@ -35,7 +35,7 @@ class FileUploadControllerTest {
     private FileService fileService;
 
     @Test
-    @DisplayName("파일 업로드: POST /api/v1/file")
+    @DisplayName("파일 업로드: POST /api/v1/files")
     void workoutCreate() throws Exception {
         //given
         List<MultipartFile> files = new ArrayList<>();
@@ -52,7 +52,7 @@ class FileUploadControllerTest {
         when(fileService.uploadFile(files)).thenReturn(fileDtos);
 
         //when
-        mockMvc.perform(multipart("/api/v1/file").file("file", file.getBytes()))
+        mockMvc.perform(multipart("/api/v1/files").file("file", file.getBytes()))
                 .andExpect(status().isOk())
                 .andDo(document("upload-file",
                         requestParts(

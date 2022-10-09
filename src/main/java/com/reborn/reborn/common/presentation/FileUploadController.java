@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/file")
+@RequestMapping("/api/v1/files")
 @RequiredArgsConstructor
 public class FileUploadController {
 

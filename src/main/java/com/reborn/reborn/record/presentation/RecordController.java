@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import static com.reborn.reborn.record.presentation.dto.RecordRequest.*;
 
 @RestController
-@RequestMapping("/api/v1/record")
+@RequestMapping("/api/v1/records")
 @RequiredArgsConstructor
 public class RecordController {
 
@@ -29,9 +29,11 @@ public class RecordController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/today")
-    public ResponseEntity<RecordTodayResponse> getTodayRecord(@LoginMember Long memberId) {
-        RecordTodayResponse response = recordService.getTodayRecord(memberId);
+    @GetMapping("/day")
+    public ResponseEntity<RecordTodayResponse> getTodayRecord(@LoginMember Long memberId,
+                                                              @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                                              @RequestParam(value = "date", required = false) LocalDate date) {
+        RecordTodayResponse response = recordService.getTodayRecord(memberId, date);
         return ResponseEntity.ok(response);
     }
 

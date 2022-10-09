@@ -25,7 +25,6 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<JoinResponse> join(@RequestBody @Valid MemberRequest memberRequest) {
         Long memberId = memberService.registerMember(memberRequest);
-        log.info("aa");
         return ResponseEntity.created(URI.create("/api/v1/members/" + memberId)).body(new JoinResponse(memberId));
     }
 
