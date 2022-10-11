@@ -26,15 +26,15 @@
 ![image](https://user-images.githubusercontent.com/103818731/194981652-28754370-e848-4f4e-a293-8416cfc8f778.png)
 
 * 로그인
->
-![image](https://user-images.githubusercontent.com/103818731/194983813-3d8a772d-e6c4-4ec8-a699-d99606b15f5b.png)
+> 
+> ![image](https://user-images.githubusercontent.com/103818731/194983813-3d8a772d-e6c4-4ec8-a699-d99606b15f5b.png)
 
 * 회원가입
 > kakao 주소검색 api를 이용한 주소 등록, id 닉네임 중복체크
-![image](https://user-images.githubusercontent.com/103818731/194983838-277a853e-e289-45c7-bc41-ffa1feb0a9c3.png)
+> ![image](https://user-images.githubusercontent.com/103818731/194983838-277a853e-e289-45c7-bc41-ffa1feb0a9c3.png)
 
 * 루틴관리 / 운동 리스트
-> 운동 등록 카드 리스트 + 검색
+> 개개인이 임의의 운동을 등록 할 수 있는 페이지 + 검색 
 ![image](https://user-images.githubusercontent.com/103818731/194982316-45a5054d-0476-4d86-a4ba-e140aefd805b.png)
 
 * 루틴관리 / 나의 리스트
