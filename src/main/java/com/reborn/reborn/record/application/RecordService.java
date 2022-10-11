@@ -40,16 +40,33 @@ public class RecordService {
 
     }
 
-    public RecordTodayResponse getTodayRecord(Long memberId) {
-        List<Record> records = recordRepository.findTodayRecordByMemberId(memberId);
+    public RecordTodayResponse getTodayRecord(Long memberId, LocalDate localDate) {
+        List<Record> records = recordRepository.findTodayRecordByMemberId(memberId, dateIfNullReturnNow(localDate));
         RecordTodayResponse response = new RecordTodayResponse();
-        records.forEach(record -> response.addTotal(record.getWorkoutCategory(), record.getTotal()));
+        records.forEach(record -> addTotal(record, response));
         return response;
     }
 
     public RecordWeekResponse getWeekRecord(Long memberId, LocalDate localDate) {
         LocalDate date = dateIfNullReturnNow(localDate);
         return recordRepository.findWeekMyRecord(memberId, date).orElse(new RecordWeekResponse());
+    }
+
+    private void addTotal(Record record, RecordTodayResponse response) {
+        switch (record.getWorkoutCategory()) {
+            case BACK:
+                response.setBack(response.getBack() + record.getTotal());
+                break;
+            case CHEST:
+                response.setChest(response.getChest() + record.getTotal());
+                break;
+            case LOWER_BODY:
+                response.setLowerBody(response.getLowerBody() + record.getTotal());
+                break;
+            case CORE:
+                response.setCore(response.getCore() + record.getTotal());
+                break;
+        }
     }
 
     private LocalDate dateIfNullReturnNow(LocalDate date) {
