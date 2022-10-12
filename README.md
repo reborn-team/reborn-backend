@@ -18,7 +18,7 @@
 <img src="https://img.shields.io/badge/IntelliJ IDEA-black?style=flat-square&logo=IntelliJ IDEA&logoColor=#000000"/> <img src="https://img.shields.io/badge/Spring Boot-black?style=flat-square&logo=Spring Boot&logoColor=#6DB33F"/> <img src="https://img.shields.io/badge/MySQL-black?style=flat-square&logo=MySQL&logoColor=#4479A1"/> <img src="https://img.shields.io/badge/Postman-black?style=flat-square&logo=Postman&logoColor=#FF6C37"/> <img src="https://img.shields.io/badge/Docker-black?style=flat-square&logo=Docker&logoColor=#2496ED"/> <img src="https://img.shields.io/badge/Redis-black?style=flat-square&logo=Redis&logoColor=#DC382D"/> <img src="https://img.shields.io/badge/Amazon AWS-black?style=flat-square&logo=Amazon AWS&logoColor=#569A31"/> <img src="https://img.shields.io/badge/Spring Security-black?style=flat-square&logo=Spring Security&logoColor=#6DB33F"/> 
 
 ## Data Model
-<img src="https://user-images.githubusercontent.com/103818731/194981906-0fe1718d-21f2-42eb-8c9d-ab23632d68cd.png"  width="80%" height="500"/>
+<img src="https://user-images.githubusercontent.com/103818731/195243950-f13fb1a5-6bd1-4d84-a9f1-9744dcb3cba4.png"  width="80%" height="500"/>
 
 ## 사이트 기능
 * 메인페이지
