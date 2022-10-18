@@ -47,12 +47,12 @@
 <img src="https://user-images.githubusercontent.com/103818731/194991156-64db41c4-89ee-4f34-9f5d-b737c921b8fe.png"  width="80%" />
 
 
-* 루틴관리 / 나의 리스트
+* 루틴관리 / 나의 리스트(로그인 필요)
 > 운동 리스트에 등록된 목록 중 실제로 프로그램에 등록할 아이템을 담은 페이지 + 검색
 <img src="https://user-images.githubusercontent.com/103818731/194982396-400d3794-67b9-4acb-abbd-424d814ba797.png"  width="80%" />
 
 
-* 프로그램
+* 프로그램(로그인 필요)
 > 나의 리스트에서 가져온 목록으로 실제 운동량을 기록
 <img src="https://user-images.githubusercontent.com/103818731/194982770-a5bfae13-1f76-4235-972f-f72eff38e19a.png"  width="80%" />
 
@@ -72,17 +72,17 @@
 <img src="https://user-images.githubusercontent.com/103818731/194983396-be875bf3-e6b1-4110-b1e1-b87043cdeb86.png"  width="80%" />
 
 
-* 달성도
+* 달성도(로그인 필요)
 > apexchart를 이용한 프로그램에서 받아온 데이터를 통계하여 보여주는 그래프
 <img src="https://user-images.githubusercontent.com/103818731/194983502-61ac3a77-9461-4fa2-aa0c-27387c1a4557.png"  width="80%" />
 
 
-* 내가 쓴 글
+* 내가 쓴 글(로그인 필요)
 > 운동일지에서 등록된 글 중 본인이 등록한 게시글 보여줌
 <img src="https://user-images.githubusercontent.com/103818731/194983599-cf1361e8-f306-4f99-ba68-0f1548b25da1.png"  width="80%" />
 
 
-* 정보 수정
+* 정보 수정(로그인 필요)
 > 회원가입 페이지에서 작성한 내용 중 변경가능한 페이지
 <img src="https://user-images.githubusercontent.com/103818731/194983713-9202f82f-56a4-40e0-b75d-74def6b05cf1.png"  width="80%" />
 
